@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="theme-color" content="#71cec3">
+  <title>Administración | Plop Recibidas</title>
+  <link rel="icon" href="/assets/icons/icon-192.png">
+  <link rel="stylesheet" href="/styles.css?v=17">
+  <style>
+    .login-page{min-height:100svh;display:grid;place-items:center;padding:24px;background:radial-gradient(circle at 15% 20%,rgba(113,206,195,.2),transparent 30%),radial-gradient(circle at 85% 20%,rgba(243,154,180,.2),transparent 30%),#fff8f0}
+    .login-card{width:min(520px,100%);background:#fff;border:1px solid #eadfe7;border-radius:30px;padding:clamp(24px,6vw,42px);box-shadow:0 24px 70px rgba(75,67,92,.16);text-align:center}
+    .login-card img{width:min(320px,82%);margin:0 auto 20px}.login-card h1{font-size:clamp(2rem,7vw,3.2rem);line-height:1.05;margin:6px 0 10px}.login-card>p{color:#706a7c}
+    .login-form{display:grid;gap:14px;margin:26px 0 10px;text-align:left}.login-form label{display:grid;gap:7px;font-weight:900;color:#4b435c}.login-form input{width:100%;border:2px solid #eadfe7;border-radius:15px;padding:13px 14px;font:inherit;outline:none;background:#fff}.login-form input:focus{border-color:#71cec3;box-shadow:0 0 0 4px rgba(113,206,195,.15)}
+    .password-row{position:relative}.password-row input{padding-right:92px}.show-pass{position:absolute;right:8px;top:50%;transform:translateY(-50%);border:0;background:#f6eef4;color:#4b435c;border-radius:999px;padding:8px 10px;font-weight:850;cursor:pointer}
+    .login-form .btn{width:100%;margin-top:5px}.login-note{font-size:.9rem;background:#f8f4f7;border-radius:16px;padding:14px;text-align:left;color:#706a7c}.login-status{min-height:25px;font-weight:850;margin-top:12px}.login-status.error{color:#b53e65}.login-status.ok{color:#277c74}.back-link{display:inline-block;margin-top:16px;color:#4b435c;font-weight:800}
+  </style>
+</head>
+<body>
+  <main class="login-page">
+    <section class="login-card" aria-labelledby="loginTitle">
+      <img src="/assets/logo-plop-recibidas-completo.png" alt="Plop Recibidas">
+      <p class="eyebrow">Acceso privado</p>
+      <h1 id="loginTitle">Panel de administración</h1>
+      <p>Ingreso exclusivo para Stefi y Benja.</p>
+      <form id="loginForm" class="login-form" autocomplete="on">
+        <label>Usuario
+          <input id="adminUser" name="username" type="text" autocomplete="username" autocapitalize="none" spellcheck="false" required>
+        </label>
+        <label>Contraseña
+          <span class="password-row">
+            <input id="adminPassword" name="password" type="password" autocomplete="current-password" required>
+            <button id="showPassword" class="show-pass" type="button" aria-pressed="false">Mostrar</button>
+          </span>
+        </label>
+        <button class="btn primary" type="submit">Entrar al panel</button>
+      </form>
+      <p id="loginStatus" class="login-status" aria-live="polite"></p>
+      <div class="login-note"><strong>Sesión privada</strong><br>La sesión se cierra al tocar “Cerrar sesión” o al cerrar todas las pestañas del navegador.</div>
+      <a class="back-link" href="/">← Volver a la página</a>
+    </section>
+  </main>
+  <script>
+    (()=>{
+      'use strict';
+      const EXPECTED_USER="admin";
+      const EXPECTED_HASH="6ced3a44be0c42ee533439ad84b7714fd4c38291fa04f7bf4acc15c1003d6a1e";
+      const SESSION_KEY='plop.admin.auth.v1';
+      const form=document.getElementById('loginForm');
+      const user=document.getElementById('adminUser');
+      const password=document.getElementById('adminPassword');
+      const status=document.getElementById('loginStatus');
+      const show=document.getElementById('showPassword');
+      const toHex=buffer=>Array.from(new Uint8Array(buffer)).map(byte=>byte.toString(16).padStart(2,'0')).join('');
+      const hash=async value=>toHex(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(value)));
+      const setStatus=(text,type='')=>{status.textContent=text;status.className='login-status '+type};
+      if(sessionStorage.getItem(SESSION_KEY)==='ok') location.replace('/admin/');
+      show.addEventListener('click',()=>{const visible=password.type==='text';password.type=visible?'password':'text';show.textContent=visible?'Mostrar':'Ocultar';show.setAttribute('aria-pressed',String(!visible));password.focus()});
+      form.addEventListener('submit',async event=>{
+        event.preventDefault();setStatus('Verificando…');
+        try{
+          const validUser=user.value.trim().toLowerCase()===EXPECTED_USER;
+          const validPassword=(await hash(password.value))===EXPECTED_HASH;
+          if(!validUser||!validPassword){setStatus('Usuario o contraseña incorrectos.','error');password.select();return}
+          sessionStorage.setItem(SESSION_KEY,'ok');
+          sessionStorage.setItem('plop.admin.user',EXPECTED_USER);
+          setStatus('Acceso autorizado. Abriendo el panel…','ok');
+          location.replace('/admin/');
+        }catch{setStatus('El navegador no pudo validar el acceso. Actualizá Chrome e intentá nuevamente.','error')}
+      });
+    })();
+  </script>
+</body>
+</html>

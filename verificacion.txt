@@ -1,0 +1,20 @@
+PLOP SEGUIMIENTOS V19.3 FINAL
+
+Proyecto: plop-seguimientos
+Project ID: b5291e17-9c69-4f0b-b471-d6d0e128c7c8
+Dominio: https://plop-seguimientos.netlify.app
+Supabase: https://tcjybxmkwdcutvswfmoi.supabase.co
+Modo demo: desactivado
+
+VERIFICACIONES
+- Sintaxis JavaScript validada.
+- Referencias locales comprobadas.
+- Interfaz de cliente separada en /cliente/.
+- Interfaz administrativa separada en /admin/.
+- Acceso cliente sin confirmación por email.
+- Acceso administrador por contraseña.
+- Modal Crear pedido: X, Cancelar, fondo y cierre posterior al guardado.
+- Código privado de 6 dígitos y revocación de códigos anteriores.
+- Envío por WhatsApp, email automático y fallback manual.
+- Renders privados, chat, aprobaciones, anotaciones y paleta de producción.
+- Funciones Netlify protegidas por sesión de Supabase.

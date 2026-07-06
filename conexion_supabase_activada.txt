@@ -1,0 +1,12 @@
+PLOP SEGUIMIENTOS — CONEXIÓN ACTIVADA
+
+Supabase URL:
+https://tcjybxmkwdcutvswfmoi.supabase.co
+
+Modo demostración: DESACTIVADO
+Project ID Netlify:
+b5291e17-9c69-4f0b-b471-d6d0e128c7c8
+Dominio:
+https://plop-seguimientos.netlify.app
+
+La clave incluida es la Publishable key pública. No se incluye service_role ni ninguna contraseña.

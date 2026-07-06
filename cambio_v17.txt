@@ -1,0 +1,5 @@
+PLOP RECIBIDAS V17 — QUIÉNES SOMOS
+
+Se agregó un acceso “Quiénes somos” en el menú principal y en la portada.
+El contenido se abre únicamente al tocar el botón y presenta a Stefi y Benja sin mostrar números telefónicos.
+Se mantiene intacto el modelo visual aprobado, el catálogo, el formulario, el cupón, el sonido y la administración.

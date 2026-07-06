@@ -1,0 +1,52 @@
+{
+  "version": "V18",
+  "project_id": "7b6f62a0-b08a-4525-9496-805c7f3a77c3",
+  "site_slug": "ploprecibidas",
+  "public_interface": "/",
+  "admin_login": "/login.html",
+  "admin_panel": "/admin/",
+  "interfaces_separated": true,
+  "public_flow": [
+    "Inicio",
+    "Catálogo",
+    "Finalizar compra",
+    "Cupón de reserva"
+  ],
+  "original_logo_preserved": true,
+  "plopcito_color": "rosa Plop",
+  "product_microanimations": true,
+  "sound_plop": true,
+  "payment_methods": [
+    "Efectivo",
+    "Transferencia",
+    "Otro medio de pago"
+  ],
+  "transfer": {
+    "alias": "ploprecibidas",
+    "holder": "Stefania Romina Josefina Portorreal",
+    "provider": "Naranja X"
+  },
+  "receipt_required_for": "Transferencia",
+  "deposit_percentage": 50,
+  "weekends_disabled": true,
+  "minimum_business_days": 5,
+  "public_contact": "plopsgo@gmail.com",
+  "client_phone_visibility": "hidden",
+  "netlify_form": "pedidos-plop",
+  "local_admin_duplicate": true,
+  "correccion_catalogo": "Scroll móvil corregido; sin espacios blancos; posición restaurada al inicio; carrito oculto hasta seleccionar productos.",
+  "quienes_somos": {
+    "visible_only_on_click": true,
+    "access_points": [
+      "Menú principal",
+      "Portada"
+    ],
+    "team": [
+      "Stefi — Diseño, creatividad y personalización",
+      "Benja — Organización, pedidos y acompañamiento"
+    ],
+    "public_phone_visibility": "hidden"
+  },
+  "cambio_principal": "Portada limpia y Plopcito bot",
+  "plopcito_bot": true
+}

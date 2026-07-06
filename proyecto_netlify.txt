@@ -1,0 +1,7 @@
+PLOP RECIBIDAS — V18 PLOPCITO BOT
+
+ID del proyecto Netlify:
+7b6f62a0-b08a-4525-9496-805c7f3a77c3
+
+Este ID queda incorporado como referencia interna de la versión.
+La carpeta está lista para publicar mediante Netlify Deploys > Deploy manually.

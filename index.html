@@ -1,0 +1,341 @@
+<!doctype html>
+<!-- PLOP_HOME_PUBLICA_V23_FLAT: portada pública para repo subido sin carpetas -->
+
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#65c9be">
+  <meta name="description" content="Plop Recibidas: productos personalizados para hacer inolvidable tu recibida.">
+  <meta property="og:title" content="Plop Recibidas">
+  <meta property="og:description" content="Tu recibida empieza con Plop.">
+  <meta property="og:image" content="https://ploprecibidas.netlify.app/logo-plop-recibidas-completo.png">
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="icon-192.png">
+  <link rel="apple-touch-icon" href="icon-192.png">
+  <link rel="stylesheet" href="styles.css?v=23-flat">
+  <title>Plop Recibidas | Tu recibida empieza con Plop</title>
+</head>
+<body class="client-app">
+  <a class="skip-link" href="#appMain">Ir al contenido</a>
+
+  <header class="app-header" aria-label="Encabezado principal">
+    <button class="icon-button back-button" id="backButton" type="button" aria-label="Volver" hidden>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
+    </button>
+    <button class="icon-button menu-button" id="menuButton" type="button" aria-label="Abrir menú" aria-expanded="false" aria-controls="appMenu">
+      <span></span><span></span><span></span>
+    </button>
+    <nav class="app-menu" id="appMenu" aria-label="Menú principal" hidden>
+      <button type="button" data-go-stage="home">Inicio</button>
+      <button type="button" data-go-stage="catalog">Catálogo</button>
+      <button type="button" data-open-how>Así trabajamos</button>
+      <button type="button" data-open-about>Quiénes somos</button>
+      <button type="button" data-bot-action="tracking">Seguimiento de pedido</button>
+      <a href="mailto:plopsgo@gmail.com">Contacto</a>
+      <label class="sound-menu-control"><span>Sonido Plop</span><input id="soundToggleMenu" type="checkbox" checked><i></i></label>
+    </nav>
+  </header>
+
+  <main id="appMain" class="app-shell">
+    <section id="homeStage" class="stage stage-home active" data-stage="home" aria-labelledby="homeTitle">
+      <div class="home-stripes" aria-hidden="true"></div>
+      <div class="home-content">
+        <img class="brand-logo brand-logo-hero" src="logo-plop-recibidas-completo.png" alt="Plop Recibidas">
+        <div class="home-copy">
+          <p class="home-kicker">Recibidas personalizadas en Santiago del Estero</p>
+          <h1 id="homeTitle">Tu recibida<br>empieza con <span>Plop.</span></h1>
+          <p>Armá tu combo con marcos, bandas, lonas, carteles y props. Elegís, personalizamos y te entregamos tu cupón de reserva.</p>
+        </div>
+
+        <div class="home-proof" aria-label="Beneficios principales">
+          <span>Diseño personalizado</span>
+          <span>Seña 50%</span>
+          <span>Seguimiento del pedido</span>
+        </div>
+
+        <div class="home-actions">
+          <button class="button button-primary button-large" type="button" data-go-stage="catalog">Ver catálogo y armar pedido</button>
+          <button class="button button-secondary button-large accordion-trigger" type="button" data-open-how>Cómo trabajamos <span>⌄</span></button>
+        </div>
+
+        <div class="home-showcase" aria-label="Productos destacados">
+          <article class="showcase-card showcase-main">
+            <img src="marco-rectangular.jpg" alt="Marco personalizado Plop">
+            <div><strong>Marcos selfie</strong><span>Rectangular, nube, redondo o con forma.</span></div>
+          </article>
+          <article class="showcase-card">
+            <img src="banda-graduados.jpg" alt="Banda para graduados Plop">
+            <div><strong>Bandas</strong><span>Colores y carrera a elección.</span></div>
+          </article>
+          <article class="showcase-card">
+            <img src="props-pack.jpg" alt="Pack de props Plop">
+            <div><strong>Props</strong><span>Frases, memes y accesorios.</span></div>
+          </article>
+        </div>
+
+        <button class="plopcito-home plopcito-bot-trigger" id="homePlopBot" type="button" aria-label="Hablar con Plopcito">
+          <span class="confetti c1"></span><span class="confetti c2"></span><span class="confetti c3"></span><span class="confetti c4"></span>
+          <span class="plopcito-help-bubble">¡Te acompaño paso a paso!</span>
+          <img src="plopcito-con-brazos.png" alt="Plopcito, asistente de Plop Recibidas">
+        </button>
+        <a class="public-email" href="mailto:plopsgo@gmail.com"><span aria-hidden="true">✉</span> plopsgo@gmail.com</a>
+      </div>
+    </section>
+
+    <section id="catalogStage" class="stage" data-stage="catalog" aria-labelledby="catalogTitle" hidden>
+      <div class="stage-inner">
+        <div class="stepper" aria-label="Etapas de compra">
+          <button type="button" data-go-stage="home">Inicio</button><span>›</span>
+          <strong>Catálogo</strong><span>›</span>
+          <span>Finalizar compra</span><span>›</span>
+          <span>Cupón de reserva</span>
+        </div>
+        <img class="brand-logo stage-logo" src="logo-plop-recibidas-completo.png" alt="Plop Recibidas">
+        <header class="stage-heading">
+          <p class="kicker">Catálogo Plop</p>
+          <h2 id="catalogTitle">Elegí tu categoría</h2>
+          <p>Todo es personalizable con tus colores, frases, fotos y carrera.</p>
+        </header>
+        <div id="categoryTabs" class="category-tabs" role="tablist" aria-label="Categorías"></div>
+        <div id="catalogGrid" class="catalog-grid" aria-live="polite"></div>
+
+        <aside id="cartDock" class="cart-dock" aria-live="polite">
+          <button id="cartSummaryButton" class="cart-summary-button" type="button" aria-expanded="false" aria-controls="cartDrawer">
+            <span><strong id="cartCount">0 productos</strong><small id="cartTotalMini">Tu selección está vacía</small></span>
+            <span class="cart-icon">🛍</span>
+          </button>
+          <div id="cartDrawer" class="cart-drawer" hidden>
+            <div class="cart-drawer-head"><h3>Tu selección</h3><button id="closeCartDrawer" type="button" aria-label="Cerrar">×</button></div>
+            <div id="cartItems" class="cart-items"><p class="empty-state">Todavía no agregaste productos.</p></div>
+            <div class="cart-totals">
+              <p><span>Total</span><strong id="cartTotal">$0</strong></p>
+              <p class="accent"><span>Seña 50%</span><strong id="cartDeposit">$0</strong></p>
+              <p><span>Saldo restante</span><strong id="cartBalance">$0</strong></p>
+            </div>
+          </div>
+          <button id="finishSelection" class="button button-primary button-large" type="button" disabled>Finalizar compra</button>
+        </aside>
+        <button class="plopcito-corner plopcito-stage-trigger" type="button" aria-label="Pedir ayuda a Plopcito en el catálogo">
+          <span class="plopcito-stage-bubble">¿Te ayudo a elegir?</span>
+          <img src="plopcito-con-brazos.png" alt="Plopcito">
+        </button>
+        <a class="public-email stage-email" href="mailto:plopsgo@gmail.com"><span aria-hidden="true">✉</span> plopsgo@gmail.com</a>
+      </div>
+    </section>
+
+    <section id="checkoutStage" class="stage" data-stage="checkout" aria-labelledby="checkoutTitle" hidden>
+      <div class="stage-inner checkout-inner">
+        <div class="stepper" aria-label="Etapas de compra">
+          <button type="button" data-go-stage="home">Inicio</button><span>›</span>
+          <button type="button" data-go-stage="catalog">Catálogo</button><span>›</span>
+          <strong>Finalizar compra</strong><span>›</span>
+          <span>Cupón de reserva</span>
+        </div>
+        <img class="brand-logo stage-logo" src="logo-plop-recibidas-completo.png" alt="Plop Recibidas">
+        <header class="stage-heading compact">
+          <p class="kicker">Último paso</p>
+          <h2 id="checkoutTitle">Contanos cómo querés tu pedido</h2>
+          <p>Dejanos los datos principales y Plopcito te acompaña hasta generar tu cupón.</p>
+        </header>
+
+        <form id="orderForm" class="checkout-form" name="pedidos-plop" action="/forms/pedidos-plop.html" method="POST" data-netlify="true" netlify-honeypot="bot-field" enctype="multipart/form-data">
+          <input type="hidden" name="form-name" value="pedidos-plop">
+          <input type="hidden" name="subject" data-remove-prefix value="Nueva solicitud Plop">
+          <input type="hidden" id="orderNumberField" name="numero_solicitud">
+          <input type="hidden" id="orderItemsField" name="productos_elegidos">
+          <input type="hidden" id="orderTotalField" name="total_pedido">
+          <input type="hidden" id="orderDepositField" name="sena_50_por_ciento">
+          <input type="hidden" id="orderBalanceField" name="saldo_restante">
+          <input type="hidden" id="orderUnitsField" name="cantidad_unidades">
+          <input type="hidden" id="orderJsonField" name="detalle_productos_json">
+          <input type="hidden" id="orderCreatedField" name="fecha_solicitud">
+          <input type="hidden" id="receiptReviewField" name="revision_comprobante">
+          <input type="hidden" name="estado_inicial" value="Solicitud recibida - seña pendiente de verificación o coordinación">
+          <input type="hidden" name="cuenta_transferencia" value="Naranja X · Alias ploprecibidas · Stefania Romina Josefina Portorreal">
+          <input type="hidden" name="email_publico" value="plopsgo@gmail.com">
+          <input type="hidden" name="app_seguimiento" value="https://plop-seguimientos.netlify.app/cliente/">
+          <p class="honeypot"><label>No completar: <input name="bot-field"></label></p>
+
+          <div class="form-card customer-card">
+            <label class="field"><span>Nombre y apellido</span><input id="customerName" name="nombre" autocomplete="name" placeholder="Escribí tu nombre completo" required></label>
+            <div class="two-cols">
+              <label class="field"><span>WhatsApp</span><input id="customerWhatsapp" name="whatsapp" inputmode="tel" autocomplete="tel" placeholder="Ej.: 385 555 1234" required></label>
+              <label class="field"><span>Correo <small>(para recibir avisos)</small></span><input id="customerEmail" name="email" type="email" autocomplete="email" placeholder="tu@email.com" required></label>
+            </div>
+            <label class="field"><span>Fecha de entrega</span><select id="deliveryDate" name="fecha_entrega" required><option value="">Seleccioná una fecha</option></select><small>Solo lunes a viernes, con un mínimo de 5 días hábiles.</small></label>
+            <label class="field"><span>Datos del diseño</span><textarea id="designDetails" name="datos_diseno" rows="4" maxlength="500" placeholder="Nombres, carrera, frases, colores, temática y referencias..." required></textarea></label>
+          </div>
+
+          <div class="form-card">
+            <h3>Medio de pago</h3>
+            <div class="payment-options" role="radiogroup" aria-label="Medio de pago">
+              <label><input type="radio" name="medio_pago" value="Efectivo" required><span>💵 Efectivo</span></label>
+              <label><input type="radio" name="medio_pago" value="Transferencia" required><span>🏦 Transferencia</span></label>
+              <label><input type="radio" name="medio_pago" value="Otro medio de pago" required><span>••• Otro medio</span></label>
+            </div>
+            <section id="transferDetails" class="transfer-details" hidden>
+              <div><span>Alias</span><strong>ploprecibidas</strong><button id="copyAlias" type="button">Copiar</button></div>
+              <div><span>Titular</span><strong>Stefania Romina Josefina Portorreal</strong></div>
+              <div><span>Cuenta</span><strong>Naranja X</strong></div>
+            </section>
+            <label id="otherPaymentWrap" class="field" hidden><span>Indicá el otro medio</span><input id="otherPaymentDetail" name="otro_medio_pago" placeholder="Ej.: tarjeta o billetera virtual"></label>
+          </div>
+
+          <div class="checkout-columns">
+            <section class="form-card selected-products-card" aria-labelledby="selectedProductsTitle">
+              <div class="section-row"><h3 id="selectedProductsTitle">Productos seleccionados</h3><button type="button" class="text-button" data-go-stage="catalog">Editar</button></div>
+              <div id="orderReviewItems" class="review-items"></div>
+            </section>
+            <section class="form-card purchase-summary" aria-labelledby="purchaseSummaryTitle">
+              <h3 id="purchaseSummaryTitle">Resumen de tu compra</h3>
+              <p><span>Total</span><strong id="reviewTotal">$0</strong></p>
+              <p class="accent"><span>Seña 50%</span><strong id="reviewDeposit">$0</strong></p>
+              <p><span>Saldo restante</span><strong id="reviewBalance">$0</strong></p>
+              <small>La seña solicita la reserva de la fecha. La confirmación final la realiza Plop.</small>
+            </section>
+          </div>
+
+          <section id="receiptBlock" class="form-card receipt-card" hidden>
+            <label class="receipt-upload"><input id="receipt" name="comprobante" type="file" accept="image/jpeg,image/png,image/webp,application/pdf"><span class="upload-symbol">⇧</span><strong id="receiptTitle">Comprobante de seña</strong><small id="receiptHelp">JPG, PNG, WEBP o PDF.</small></label>
+            <div id="receiptAnalysis" class="receipt-analysis" aria-live="polite"><span>○</span><div><strong>Revisión pendiente</strong><p>Cargá el archivo para verificar formato, tamaño y legibilidad básica.</p></div></div>
+            <div id="receiptPreview" class="receipt-preview" hidden></div>
+          </section>
+
+          <label class="terms-check"><input type="checkbox" name="acepta_condiciones" value="Sí" required><span>Acepto las condiciones de reserva, producción y entrega.</span></label>
+          <button id="submitOrderButton" class="button button-primary button-large" type="submit">Enviar pedido y generar cupón</button>
+          <p id="formStatus" class="form-status" role="status" aria-live="polite"></p>
+        </form>
+        <button class="plopcito-checkout plopcito-stage-trigger" type="button" aria-label="Pedir ayuda a Plopcito para completar el pedido">
+          <span class="plopcito-stage-bubble">¡Ya falta poquito!</span>
+          <img src="plopcito-con-brazos.png" alt="Plopcito">
+        </button>
+        <a class="public-email stage-email" href="mailto:plopsgo@gmail.com"><span aria-hidden="true">✉</span> plopsgo@gmail.com</a>
+      </div>
+    </section>
+
+    <section id="couponStage" class="stage" data-stage="coupon" aria-labelledby="couponStageTitle" hidden>
+      <div class="stage-inner coupon-stage-inner">
+        <div class="stepper" aria-label="Etapas de compra">
+          <button type="button" data-go-stage="home">Inicio</button><span>›</span>
+          <button type="button" data-go-stage="catalog">Catálogo</button><span>›</span>
+          <button type="button" data-go-stage="checkout">Finalizar compra</button><span>›</span>
+          <strong>Cupón de reserva</strong>
+        </div>
+        <img class="brand-logo stage-logo" src="logo-plop-recibidas-completo.png" alt="Plop Recibidas">
+        <header class="stage-heading compact">
+          <h2 id="couponStageTitle">¡Tu pedido ya llegó a Plop!</h2>
+          <p>Guardá este cupón: incluye tu número de pedido y, cuando esté disponible, el acceso de seguimiento.</p>
+        </header>
+        <div id="couponContent"></div>
+        <button class="plopcito-coupon-guide plopcito-stage-trigger" type="button" aria-label="Pedir ayuda a Plopcito con el cupón">
+          <img src="plopcito-con-brazos.png" alt="Plopcito">
+          <span><strong>¡Pedido enviado!</strong> Te explico cómo guardar el cupón y seguir tu pedido.</span>
+        </button>
+        <div class="coupon-actions">
+          <button id="downloadCoupon" class="button button-secondary" type="button">Descargar cupón</button>
+          <button id="shareCoupon" class="button button-primary" type="button">Enviar por WhatsApp</button>
+          <button id="newOrderButton" class="text-button" type="button">Hacer otro pedido</button>
+        </div>
+        <a class="public-email stage-email" href="mailto:plopsgo@gmail.com"><span aria-hidden="true">✉</span> plopsgo@gmail.com</a>
+      </div>
+    </section>
+  </main>
+
+  <dialog id="howDialog" class="site-dialog how-dialog">
+    <button class="dialog-close" type="button" data-close-dialog aria-label="Cerrar">×</button>
+    <img class="dialog-logo" src="logo-plop-recibidas-completo.png" alt="Plop Recibidas">
+    <p class="kicker">Así trabajamos</p>
+    <h2>Tu pedido, fácil y sin dudas</h2>
+    <div class="process-list">
+      <article><span>1</span><div><h3>Elegí</h3><p>Explorá el catálogo y sumá los productos que quieras.</p></div></article>
+      <article><span>2</span><div><h3>Personalizá</h3><p>Completá nombres, carrera, colores, frases y referencias.</p></div></article>
+      <article><span>3</span><div><h3>Reservá</h3><p>La web calcula automáticamente la seña del 50%.</p></div></article>
+      <article><span>4</span><div><h3>Aprobá</h3><p>Te enviamos el diseño para revisar antes de producir.</p></div></article>
+      <article><span>5</span><div><h3>Celebrá</h3><p>Coordinamos la entrega para que recibas todo listo.</p></div></article>
+    </div>
+    <p class="dialog-note">La fecha queda confirmada cuando Plop verifica o coordina la seña.</p>
+  </dialog>
+
+  <dialog id="aboutDialog" class="site-dialog about-dialog">
+    <button class="dialog-close" type="button" data-close-dialog aria-label="Cerrar">×</button>
+    <img class="dialog-logo" src="logo-plop-recibidas-completo.png" alt="Plop Recibidas">
+    <p class="kicker">Quiénes somos</p>
+    <h2>Detrás de cada Plop estamos Stefi y Benja</h2>
+    <p class="about-intro">Creamos Plop Recibidas para acompañar uno de esos momentos que se recuerdan para siempre. Unimos diseño, organización y atención personalizada para que cada pedido tenga la identidad de quien se recibe.</p>
+    <div class="about-team">
+      <article class="about-person stefi">
+        <span class="about-avatar" aria-hidden="true">S</span>
+        <div>
+          <h3>Stefi</h3>
+          <p class="about-role">Diseño, creatividad y personalización</p>
+          <p>Transforma cada idea en una propuesta única, combinando colores, frases, fotos y detalles para que cada producto se sienta realmente personal.</p>
+        </div>
+      </article>
+      <article class="about-person benja">
+        <span class="about-avatar" aria-hidden="true">B</span>
+        <div>
+          <h3>Benja</h3>
+          <p class="about-role">Organización, pedidos y acompañamiento</p>
+          <p>Coordina consultas, fechas, seguimiento y entregas para que el proceso sea claro, ordenado y sencillo desde la elección hasta la entrega.</p>
+        </div>
+      </article>
+    </div>
+    <div class="about-promise">
+      <strong>Lo hacemos bien Plop</strong>
+      <p>Cada pedido se trabaja de forma personalizada, con atención a los detalles y comunicación durante todo el proceso.</p>
+    </div>
+    <a class="about-email" href="mailto:plopsgo@gmail.com">✉ plopsgo@gmail.com</a>
+  </dialog>
+
+  <dialog id="productDialog" class="site-dialog product-dialog">
+    <button class="dialog-close" type="button" data-close-dialog aria-label="Cerrar">×</button>
+    <div id="productDialogContent"></div>
+  </dialog>
+
+
+
+  <button class="plop-bot-launcher" id="plopBotLauncher" type="button" aria-label="Abrir Plopcito" aria-expanded="false" aria-controls="plopBotPanel" hidden>
+    <img src="plopcito-con-brazos.png" alt="">
+    <span id="plopBotLauncherText">Te acompaño</span>
+  </button>
+
+  <aside class="plop-step-guide" id="plopStepGuide" aria-live="polite" hidden>
+    <button class="plop-step-guide-close" id="closePlopStepGuide" type="button" aria-label="Cerrar consejo">×</button>
+    <small id="plopStepGuideStep">Paso 1 de 4</small>
+    <strong id="plopStepGuideTitle">¡Empecemos!</strong>
+    <p id="plopStepGuideText">Voy a acompañarte durante toda la compra.</p>
+    <button class="plop-step-guide-action" id="plopStepGuideAction" type="button">Continuar</button>
+  </aside>
+
+  <section class="plop-bot-panel" id="plopBotPanel" aria-label="Asistente Plopcito" hidden>
+    <header class="plop-bot-header">
+      <img src="plopcito-con-brazos.png" alt="Plopcito">
+      <div><strong>Plopcito</strong><small id="plopBotContext">Inicio · Paso 1 de 4</small><span class="plop-bot-progress"><i id="plopBotProgressBar"></i></span></div>
+      <button id="closePlopBot" type="button" aria-label="Cerrar">×</button>
+    </header>
+    <div class="plop-bot-messages" id="plopBotMessages" aria-live="polite">
+      <div class="plop-bot-message bot">¡Hola! Soy Plopcito 🎓 Puedo ayudarte con productos, precios, pagos, cómo comprar o el seguimiento de tu pedido.</div>
+    </div>
+    <div class="plop-bot-actions" aria-label="Consultas rápidas">
+      <button type="button" data-bot-action="catalog">Ver catálogo</button>
+      <button type="button" data-bot-action="tracking">Seguimiento</button>
+      <button type="button" data-bot-action="how">Cómo comprar</button>
+      <button type="button" data-bot-action="payment">Medios de pago</button>
+      <button type="button" data-bot-action="about">Quiénes somos</button>
+      <button type="button" data-bot-action="contact">Contacto</button>
+    </div>
+    <form class="plop-bot-form" id="plopBotForm">
+      <label class="sr-only" for="plopBotInput">Escribí tu consulta</label>
+      <input id="plopBotInput" maxlength="180" autocomplete="off" placeholder="Escribí tu consulta…" required>
+      <button type="submit" aria-label="Enviar consulta">➤</button>
+    </form>
+  </section>
+
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+  <script>
+    if(/(?:invite_token|confirmation_token|recovery_token|access_token)=/.test(location.hash)) location.replace('/login.html'+location.hash);
+  </script>
+  <script src="app.js?v=23-flat" defer></script>
+</body>
+</html>

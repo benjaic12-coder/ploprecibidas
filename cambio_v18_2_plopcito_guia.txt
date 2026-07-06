@@ -1,0 +1,9 @@
+PLOP RECIBIDAS V18.2
+
+Plopcito ahora acompaña al cliente en las cuatro etapas:
+1. Inicio: invita a abrir el catálogo.
+2. Catálogo: explica cómo elegir y cuándo finalizar.
+3. Pedido: guía datos, pago, comprobante y revisión.
+4. Cupón: recuerda descargarlo y usar Seguimientos.
+
+Incluye consejos contextuales, progreso visual y acceso al bot desde cada etapa.

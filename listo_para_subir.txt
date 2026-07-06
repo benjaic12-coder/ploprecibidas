@@ -1,0 +1,21 @@
+PLOP RECIBIDAS — WEBSITE FINAL
+
+Proyecto Netlify: ploprecibidas
+Project ID: 7b6f62a0-b08a-4525-9496-805c7f3a77c3
+Dominio: https://ploprecibidas.netlify.app
+
+INCLUYE
+- Identidad visual original conservada.
+- Portada, catálogo, compra y cupón.
+- Plopcito bot y acompañante contextual en cada paso.
+- Formulario Netlify Forms corregido.
+- Comprobante por transferencia.
+- Aviso automático al cliente y administradores cuando SMTP está configurado.
+- Enlace a Plop Seguimientos.
+- PWA y caché actualizada.
+
+SUBIR
+Descomprimir el ZIP y arrastrar esta carpeta completa en Netlify > Deploys del proyecto ploprecibidas.
+
+EMAIL AUTOMÁTICO
+Configurar las variables indicadas en .env.example. Las claves privadas no pueden quedar dentro del ZIP.

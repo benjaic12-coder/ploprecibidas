@@ -1,0 +1,8 @@
+PLOP RECIBIDAS V18.1
+
+- Plopcito ahora abre un panel de ayuda funcional.
+- Incluye consultas rápidas y campo de texto libre.
+- Responde sobre productos, precios, seña, pagos, tiempos, contacto y quiénes somos.
+- Incluye acceso directo a Plop Seguimiento.
+- No redirige automáticamente a WhatsApp.
+- Se actualizó el Service Worker para evitar que el navegador conserve la versión anterior.

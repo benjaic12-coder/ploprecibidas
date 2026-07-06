@@ -1,0 +1,8 @@
+PLOP SEGUIMIENTO V19.2
+
+- Cliente: acceso con número de pedido + código de 6 dígitos.
+- No solicita correo ni contraseña al cliente.
+- Administración: correo + contraseña, sin enlace mágico.
+- Código almacenado cifrado con pgcrypto.
+- Generar un código nuevo revoca accesos anteriores.
+- Renders, mensajes, aprobaciones, paletas y estados continúan protegidos con RLS.

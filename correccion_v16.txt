@@ -1,0 +1,12 @@
+PLOP RECIBIDAS — V16
+
+Correcciones aplicadas a partir de los videos:
+- La app abre siempre desde el inicio y no conserva una posición de scroll anterior.
+- El catálogo ya no deja grandes espacios blancos al desplazarse.
+- Al cambiar de categoría vuelve automáticamente al comienzo de los productos.
+- Las categorías con uno o pocos productos terminan correctamente, sin una pantalla vacía extensa.
+- El carrito inferior permanece oculto hasta que se agrega un producto.
+- Al agregar o quitar productos no se reconstruye la animación completa ni se altera la posición de lectura.
+- Se mantiene el logo original, colores aprobados, Plopcito rosa, sonidos, cupón y panel administrativo.
+
+Subir el ZIP completo mediante Netlify > Deploys > Deploy manually.

@@ -1,0 +1,6 @@
+CAMBIO V18
+- Portada reducida a logo, slogan, Plopcito y botón Catálogo.
+- Quiénes somos queda solo dentro del menú.
+- Plopcito de la portada ahora abre un bot de ayuda.
+- Bot flotante disponible en catálogo, finalizar compra y cupón.
+- Caché actualizada a V18.

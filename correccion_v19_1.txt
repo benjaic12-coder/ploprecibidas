@@ -1,0 +1,9 @@
+CORRECCIÓN V19.1
+
+Se agregó plopsgo@gmail.com como tercer administrador autorizado.
+
+Antes de subir esta versión a Netlify, ejecutar una sola vez en Supabase SQL Editor:
+
+supabase/AGREGAR_ADMIN_PLOPSGO.sql
+
+Después cerrar sesión y volver a entrar con plopsgo@gmail.com.

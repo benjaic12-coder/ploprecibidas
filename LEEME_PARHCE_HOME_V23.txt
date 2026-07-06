@@ -1,0 +1,13 @@
+PARCHE URGENTE HOME V23
+
+Este parche corrige el repositorio cuando GitHub subió todos los archivos sin carpetas.
+Subir/reemplazar estos archivos en la raíz del repositorio:
+- index.html
+- app.js
+- sw.js
+- manifest.json
+
+Commit sugerido:
+Corregir home pública v23
+
+Luego ejecutar Trigger deploy en Netlify y abrir la web en incógnito.

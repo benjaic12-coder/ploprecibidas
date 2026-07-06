@@ -1,0 +1,14 @@
+PARCHE IMAGENES V25 - PLOP RECIBIDAS
+
+Este parche corrige imagenes rotas en la home, Plopcito y catalogo.
+
+SUBIDA EN GITHUB:
+1. Descomprimir este ZIP.
+2. Subir TODOS los archivos sueltos en la raiz del repo.
+3. Reemplazar si GitHub pregunta.
+4. Commit: Corregir imagenes Plopcito y catalogo v25
+5. Netlify: Trigger deploy -> Deploy site.
+
+IMPORTANTE:
+Estos archivos van en la raiz porque la version actual esta funcionando en modo plano.
+No subir el ZIP cerrado. Subir los archivos de adentro.

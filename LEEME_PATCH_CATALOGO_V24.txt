@@ -1,0 +1,21 @@
+PLOP RECIBIDAS - PATCH CATÁLOGO V24
+
+Subir estos archivos a la raíz del repositorio GitHub y reemplazar los existentes:
+- index.html
+- app.js
+- styles.css
+- manifest.json
+- sw.js
+
+Commit sugerido:
+Mejorar catálogo y experiencia de compra v24
+
+Cambios:
+- Catálogo con buscador.
+- Accesos rápidos por tipo de producto.
+- Estado de categoría/búsqueda.
+- Tarjetas de producto mejoradas con badges, seña 50%, chips de detalle y disponibilidad.
+- Modal de producto con seña y nota de personalización.
+- Ajustes responsive para móvil.
+
+Después de subir: Netlify > Trigger deploy > Deploy site.

@@ -23,6 +23,33 @@ const PRODUCTS = [
 ];
 
 const CATEGORIES = ['Marcos','Bandas','Carteles colgantes','Lonas','Props','Combos'];
+const CATEGORY_COPY = {
+  'Marcos':'Los protagonistas de la foto: elegí forma, tamaño y estilo.',
+  'Bandas':'La banda personalizada para lucir carrera, nombre y colores.',
+  'Carteles colgantes':'Carteles livianos para casa, auto, fiesta o recibida.',
+  'Lonas':'Alta presencia visual, resistentes y fáciles de trasladar.',
+  'Props':'Frases, memes y accesorios para fotos espontáneas.',
+  'Combos':'Opciones armadas para resolver rápido y ahorrar tiempo.'
+};
+const PRODUCT_BADGES = {
+  'marco-rectangular':'Más pedido',
+  'marco-redondo':'Premium fotos',
+  'marco-nube':'Cute',
+  'marco-forma':'Único',
+  'banda':'Imprescindible',
+  'cartel-chico':'Económico',
+  'cartel-mediano':'Más elegido',
+  'cartel-grande':'Alto impacto',
+  'lona-mediana':'Versátil',
+  'lona-grande':'Gran formato',
+  'props-unidad':'Detalle rápido',
+  'props-pack':'Fotos divertidas',
+  'combo-1':'Inicio ideal',
+  'combo-2':'Kit fotos',
+  'combo-3':'Visual fuerte',
+  'combo-4':'Completo',
+  'combo-5':'Full Plop'
+};
 const MAX_FORM_BYTES = 7.5 * 1024 * 1024;
 const ADMIN_KEYS = {orders:'plop.admin.orders.v2',coupons:'plop.admin.coupons.v2'};
 const $ = (selector, root=document) => root.querySelector(selector);
@@ -30,6 +57,7 @@ const $$ = (selector, root=document) => [...root.querySelectorAll(selector)];
 
 let activeStage = 'home';
 let activeCategory = 'Marcos';
+let catalogSearch = '';
 let cart = [];
 let receiptCheck = {valid:false,message:'Elegí un medio de pago.'};
 let lastOrder = null;
@@ -115,30 +143,54 @@ function scrollCatalogTop(behavior='smooth'){
   const top=Math.max(0,target.getBoundingClientRect().top+window.scrollY-86);
   window.scrollTo({top,behavior});
 }
+function shortCategory(category){return category==='Carteles colgantes'?'Carteles':category;}
+function productBadge(product){return PRODUCT_BADGES[product.id]||'Personalizable';}
+function productKeywords(product){return normalizeBotText([product.name,product.category,product.summary,product.details.join(' '),productBadge(product),product.price<=12000?'económico barato accesible':''].join(' '));}
+function productMatchesSearch(product){if(!catalogSearch)return true;return catalogSearch.split(/\s+/).every(term=>productKeywords(product).includes(term));}
+function visibleProducts(){return PRODUCTS.filter(product=>(catalogSearch||product.category===activeCategory)&&productMatchesSearch(product));}
+function updateCatalogStatus(products){
+  const status=$('#catalogStatus');if(!status)return;
+  const range=products.length?`${money(Math.min(...products.map(p=>p.price)))} a ${money(Math.max(...products.map(p=>p.price)))}`:'sin precios';
+  const context=catalogSearch?`Búsqueda: “${catalogSearch}”`:`${activeCategory}: ${CATEGORY_COPY[activeCategory]||'Productos personalizables.'}`;
+  status.innerHTML=`<span>${escapeHTML(context)}</span><strong>${products.length} ${products.length===1?'opción':'opciones'} · ${range}</strong>`;
+  const clear=$('#clearCatalogSearch');if(clear)clear.hidden=!catalogSearch;
+}
+function setCatalogCategory(category){
+  activeCategory=category;catalogSearch='';
+  const search=$('#catalogSearch');if(search)search.value='';
+  renderTabs();renderCatalog(true);playTone(480,.06,'sine',.025);requestAnimationFrame(()=>scrollCatalogTop('smooth'));
+}
+function setCatalogSearch(value){
+  catalogSearch=normalizeBotText(value);
+  renderTabs();renderCatalog(true);
+  requestAnimationFrame(()=>scrollCatalogTop('smooth'));
+}
 function renderTabs(){
   const container=$('#categoryTabs');
-  container.innerHTML=CATEGORIES.map(category=>`<button type="button" role="tab" aria-selected="${category===activeCategory}" data-category="${escapeHTML(category)}">${escapeHTML(category==='Carteles colgantes'?'Carteles':category)}</button>`).join('');
-  $$('[data-category]',container).forEach(button=>button.addEventListener('click',()=>{
-    activeCategory=button.dataset.category;
-    renderTabs();
-    renderCatalog(true);
-    playTone(480,.06,'sine',.025);
-    requestAnimationFrame(()=>scrollCatalogTop('smooth'));
-  }));
+  container.innerHTML=CATEGORIES.map(category=>{
+    const count=PRODUCTS.filter(product=>product.category===category).length;
+    return `<button type="button" role="tab" aria-selected="${!catalogSearch&&category===activeCategory}" data-category="${escapeHTML(category)}"><span>${escapeHTML(shortCategory(category))}</span><small>${count}</small></button>`;
+  }).join('');
+  $$('[data-category]',container).forEach(button=>button.addEventListener('click',()=>setCatalogCategory(button.dataset.category)));
 }
 function renderCatalog(animate=true){
-  const products=PRODUCTS.filter(product=>product.category===activeCategory);
+  const products=visibleProducts();
+  updateCatalogStatus(products);
   const currentScroll=window.scrollY;
-  $('#catalogGrid').innerHTML=products.map(product=>{
-    const item=cart.find(entry=>entry.id===product.id);const qty=item?.qty||0;
+  $('#catalogGrid').innerHTML=products.length?products.map(product=>{
+    const item=cart.find(entry=>entry.id===product.id);const qty=item?.qty||0;const deposit=Math.round(product.price/2);
+    const chips=product.details.slice(0,2).map(detail=>`<span>${escapeHTML(detail)}</span>`).join('');
     return `<article class="product-card ${animate?'card-enter':''} ${qty?'card-selected':''}" data-product-card="${product.id}" data-theme="${product.theme}">
-      <div class="product-visual"><img src="${product.image}" alt="${escapeHTML(product.name)}" loading="eager" decoding="async">${qty?`<span class="product-qty-badge">${qty} elegido${qty>1?'s':''}</span>`:''}</div>
+      <div class="product-visual"><img src="${product.image}" alt="${escapeHTML(product.name)}" loading="eager" decoding="async"><span class="product-badge">${escapeHTML(productBadge(product))}</span>${qty?`<span class="product-qty-badge">${qty} elegido${qty>1?'s':''}</span>`:''}</div>
       <div class="product-body">
-        <div class="product-meta"><div><h3>${escapeHTML(product.name)}</h3><p>${escapeHTML(product.summary)}</p></div><span class="product-price">${money(product.price)}</span></div>
-        <div class="product-actions"><button class="details-button" type="button" data-details="${product.id}">Ver detalles</button><button class="add-button" type="button" data-add="${product.id}">${qty?'Agregar otro':'Agregar'}</button></div>
+        <div class="product-category-line"><span>${escapeHTML(product.category)}</span><em>Disponible</em></div>
+        <div class="product-meta"><div><h3>${escapeHTML(product.name)}</h3><p>${escapeHTML(product.summary)}</p></div><span class="product-price">${money(product.price)}<small>Seña ${money(deposit)}</small></span></div>
+        <div class="product-chips">${chips}</div>
+        <div class="product-actions"><button class="details-button" type="button" data-details="${product.id}">Ver detalles</button><button class="add-button" type="button" data-add="${product.id}">${qty?'Agregar otro':'Agregar al pedido'}</button></div>
       </div>
     </article>`;
-  }).join('');
+  }).join(''):`<div class="catalog-empty"><strong>No encontré productos con esa búsqueda.</strong><p>Probá con “marco”, “banda”, “props”, “lona” o “combo”.</p><button class="button button-secondary" id="emptyClearSearch" type="button">Ver catálogo completo</button></div>`;
+  $('#emptyClearSearch')?.addEventListener('click',()=>setCatalogSearch(''));
   $$('[data-details]').forEach(button=>button.addEventListener('click',()=>openProduct(button.dataset.details)));
   $$('[data-add]').forEach(button=>button.addEventListener('click',()=>addToCart(button.dataset.add)));
   $$('[data-product-card]').forEach(card=>card.addEventListener('pointerdown',()=>{card.classList.remove('card-bounce');requestAnimationFrame(()=>card.classList.add('card-bounce'));},{passive:true}));
@@ -146,7 +198,7 @@ function renderCatalog(animate=true){
 }
 function openProduct(id){
   const product=getProduct(id);if(!product)return;
-  $('#productDialogContent').innerHTML=`<div class="product-detail"><img src="${product.image}" alt="${escapeHTML(product.name)}"><div><p class="kicker">${escapeHTML(product.category)}</p><h2>${escapeHTML(product.name)}</h2><span class="price">${money(product.price)}</span><p>${escapeHTML(product.summary)}</p><ul class="detail-list">${product.details.map(detail=>`<li>✓ ${escapeHTML(detail)}</li>`).join('')}</ul><div class="product-detail-actions"><button class="button button-primary" id="dialogAddButton" type="button">Agregar al pedido</button><button class="button button-secondary" type="button" data-close-dialog>Seguir mirando</button></div></div></div>`;
+  $('#productDialogContent').innerHTML=`<div class="product-detail"><img src="${product.image}" alt="${escapeHTML(product.name)}"><div><p class="kicker">${escapeHTML(product.category)} · ${escapeHTML(productBadge(product))}</p><h2>${escapeHTML(product.name)}</h2><span class="price">${money(product.price)} <small>Seña ${money(Math.round(product.price/2))}</small></span><p>${escapeHTML(product.summary)}</p><ul class="detail-list">${product.details.map(detail=>`<li>✓ ${escapeHTML(detail)}</li>`).join('')}</ul><div class="product-detail-note"><strong>Incluye personalización</strong><span>Colores, carrera, nombre, frases y referencias se cargan al finalizar compra.</span></div><div class="product-detail-actions"><button class="button button-primary" id="dialogAddButton" type="button">Agregar al pedido</button><button class="button button-secondary" type="button" data-close-dialog>Seguir mirando</button></div></div></div>`;
   const dialog=$('#productDialog');dialog.showModal();
   $('#dialogAddButton').addEventListener('click',()=>{addToCart(id);dialog.close();});
   $$('[data-close-dialog]',dialog).forEach(button=>button.addEventListener('click',()=>dialog.close()));
@@ -576,6 +628,10 @@ function bindEvents(){
   $$('[data-bot-action]').forEach(button=>button.addEventListener('click',()=>handleBotAction(button.dataset.botAction,button)));
   document.addEventListener('keydown',event=>{if(event.key==='Escape'&&!$('#plopBotPanel')?.hidden)closeBot();});
   $$('[data-go-stage]').forEach(button=>button.addEventListener('click',()=>goStage(button.dataset.goStage)));
+  $('#catalogSearch')?.addEventListener('input',event=>setCatalogSearch(event.target.value));
+  $('#clearCatalogSearch')?.addEventListener('click',()=>setCatalogSearch(''));
+  $$('[data-quick-category]').forEach(button=>button.addEventListener('click',()=>setCatalogCategory(button.dataset.quickCategory)));
+  $$('[data-quick-search]').forEach(button=>button.addEventListener('click',()=>{const value=button.dataset.quickSearch||'';const search=$('#catalogSearch');if(search)search.value=value;setCatalogSearch(value);}));
   $$('[data-open-how]').forEach(button=>button.addEventListener('click',()=>{closeMenu();$('#howDialog').showModal();}));
   $$('[data-open-about]').forEach(button=>button.addEventListener('click',()=>{closeMenu();$('#aboutDialog').showModal();}));
   $$('[data-close-dialog]').forEach(button=>button.addEventListener('click',()=>button.closest('dialog')?.close()));
@@ -589,7 +645,7 @@ function bindEvents(){
 }
 function initialStage(){const hash=location.hash.replace('#','');if(hash==='catalog')return 'catalog';if(hash==='checkout'&&cart.length)return 'checkout';return 'home';}
 function init(){
-  try{renderTabs();renderCatalog(true);populateAvailableDates();updateCartUI();updatePaymentUI();bindEvents();goStage(initialStage(),{scroll:false});requestAnimationFrame(()=>window.scrollTo({top:0,behavior:'auto'}));if('serviceWorker'in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js?v=18.2').catch(()=>{}));document.documentElement.dataset.appReady='true';}
+  try{renderTabs();renderCatalog(true);populateAvailableDates();updateCartUI();updatePaymentUI();bindEvents();goStage(initialStage(),{scroll:false});requestAnimationFrame(()=>window.scrollTo({top:0,behavior:'auto'}));if('serviceWorker'in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js?v=24').catch(()=>{}));document.documentElement.dataset.appReady='true';}
   catch(error){console.error(error);showToast('La página no terminó de iniciar. Actualizá una vez.');}
 }
 document.addEventListener('DOMContentLoaded',init);

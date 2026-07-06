@@ -13,7 +13,7 @@
   <link rel="manifest" href="manifest.json">
   <link rel="icon" href="icon-192.png">
   <link rel="apple-touch-icon" href="icon-192.png">
-  <link rel="stylesheet" href="styles.css?v=23-flat">
+  <link rel="stylesheet" href="styles.css?v=24-catalog">
   <title>Plop Recibidas | Tu recibida empieza con Plop</title>
 </head>
 <body class="client-app">
@@ -97,6 +97,36 @@
           <h2 id="catalogTitle">Elegí tu categoría</h2>
           <p>Todo es personalizable con tus colores, frases, fotos y carrera.</p>
         </header>
+
+        <section class="catalog-director-panel" aria-label="Guía rápida del catálogo">
+          <div>
+            <span class="director-badge">Sprint catálogo</span>
+            <h3>Elegí por categoría o buscá el producto exacto</h3>
+            <p>Los precios se calculan solos en tu selección. La seña del 50% aparece antes de finalizar.</p>
+          </div>
+          <div class="catalog-mini-steps" aria-label="Pasos del pedido">
+            <span><b>1</b> Elegí</span>
+            <span><b>2</b> Personalizá</span>
+            <span><b>3</b> Reservá</span>
+          </div>
+        </section>
+
+        <div class="catalog-tools" aria-label="Herramientas del catálogo">
+          <label class="catalog-search" for="catalogSearch">
+            <span>Buscar producto</span>
+            <input id="catalogSearch" type="search" autocomplete="off" inputmode="search" placeholder="Marco, banda, lona, props o combo…">
+          </label>
+          <button id="clearCatalogSearch" class="catalog-clear-search" type="button" hidden>Limpiar búsqueda</button>
+        </div>
+
+        <div class="catalog-quick-picks" id="catalogQuickPicks" aria-label="Accesos rápidos del catálogo">
+          <button type="button" data-quick-category="Combos">Combos listos</button>
+          <button type="button" data-quick-category="Marcos">Marcos selfie</button>
+          <button type="button" data-quick-category="Props">Props para fotos</button>
+          <button type="button" data-quick-search="económico">Más económico</button>
+        </div>
+
+        <div id="catalogStatus" class="catalog-status" aria-live="polite"></div>
         <div id="categoryTabs" class="category-tabs" role="tablist" aria-label="Categorías"></div>
         <div id="catalogGrid" class="catalog-grid" aria-live="polite"></div>
 
@@ -336,6 +366,6 @@
   <script>
     if(/(?:invite_token|confirmation_token|recovery_token|access_token)=/.test(location.hash)) location.replace('/login.html'+location.hash);
   </script>
-  <script src="app.js?v=23-flat" defer></script>
+  <script src="app.js?v=24-catalog" defer></script>
 </body>
 </html>

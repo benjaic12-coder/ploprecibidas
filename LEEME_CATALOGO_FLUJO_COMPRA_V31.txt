@@ -1,0 +1,19 @@
+PLOP RECIBIDAS · V31
+
+Bloque cerrado: catálogo completo + flujo de compra guiado.
+
+Qué cambia:
+- El catálogo abre primero en Combos, porque son las opciones principales.
+- Se agrega guía rápida para abrir Combo 1, 2, 3, 4 o 5 con su composición corregida.
+- Se refuerza el flujo de compra: revisar productos, cargar diseño y reservar fecha.
+- Se mantiene seña 50%, cálculo de total, saldo y cupón.
+- Se actualiza caché a v31 para evitar imágenes viejas.
+
+Subida a GitHub:
+1. Descomprimir este ZIP.
+2. Subir todos los archivos de adentro a la raíz del repo.
+3. Reemplazar existentes.
+4. Commit sugerido: Cerrar catalogo completo y flujo de compra v31
+
+Importante:
+Netlify puede seguir pausado por créditos. Este patch deja GitHub como versión maestra para migrar después.

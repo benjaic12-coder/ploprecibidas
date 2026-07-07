@@ -1,36 +1,36 @@
 'use strict';
-// PLOP_V30_FINAL_COMBOS: catálogo con combos corregidos y cache-busted
+// PLOP_V31_CATALOGO_FLUJO: catálogo completo, combos aprobados y compra guiada
 
 if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
 
 const PRODUCTS = [
-  {id:'marco-rectangular',category:'Marcos',name:'Marco rectangular',price:35000,image:'marco-rectangular.jpg?v=30',summary:'Clásico, amplio y versátil para cualquier carrera.',details:['100 × 70 cm','FoamBoard + vinilo','Corte recto','Diseño personalizado'],theme:'yellow'},
-  {id:'marco-redondo',category:'Marcos',name:'Marco redondo',price:38000,image:'marco-redondo.jpg?v=30',summary:'Protagonista absoluto de la foto.',details:['70 × 70 cm','FoamBoard + vinilo','Corte redondo','Diseño personalizado'],theme:'purple'},
-  {id:'marco-nube',category:'Marcos',name:'Marco tipo nube',price:38000,image:'marco-nube.jpg?v=30',summary:'Llamativo, delicado y totalmente personalizado.',details:['50 × 100 cm','FoamBoard + vinilo','Estilo nube','Diseño personalizado'],theme:'aqua'},
-  {id:'marco-forma',category:'Marcos',name:'Marco con forma',price:38000,image:'marco-forma.jpg?v=30',summary:'Original, divertido y único para tu festejo.',details:['Hasta 100 × 70 cm','FoamBoard + vinilo','Forma a definir','Diseño personalizado'],theme:'pink'},
-  {id:'banda',category:'Bandas',name:'Banda para graduados',price:12000,image:'banda-graduados.jpg?v=30',summary:'Colores, carrera y frase elegidos por vos.',details:['150 × 11 cm','Lona impresa','Doble costura','Resistente al agua y pintura'],theme:'purple'},
-  {id:'cartel-chico',category:'Carteles colgantes',name:'Cartel colgante chico',price:7000,image:'cartel-chico.jpg?v=30',summary:'Liviano y listo para colgar.',details:['25 × 35 cm','FoamBoard + vinilo','Incluye cinta','Diseño personalizado'],theme:'yellow'},
-  {id:'cartel-mediano',category:'Carteles colgantes',name:'Cartel colgante mediano',price:12000,image:'cartel-mediano.jpg?v=30',summary:'El tamaño más elegido para la recibida.',details:['40 × 60 cm','FoamBoard + vinilo','Incluye cinta','Diseño personalizado'],theme:'aqua'},
-  {id:'cartel-grande',category:'Carteles colgantes',name:'Cartel colgante grande',price:30000,image:'cartel-grande.jpg?v=30',summary:'Alta visibilidad para todas las fotos.',details:['70 × 100 cm','FoamBoard + vinilo','Incluye cinta','Diseño personalizado'],theme:'pink'},
-  {id:'lona-mediana',category:'Lonas',name:'Cartel de lona mediano',price:25000,image:'lona-mediana.jpg?v=30',summary:'Ideal para auto, fiesta, capa o fondo de fotos.',details:['100 × 60 cm','Lona impresa','Fácil de trasladar','Resistente a líquidos'],theme:'aqua'},
-  {id:'lona-grande',category:'Lonas',name:'Cartel de lona grande',price:30000,image:'lona-grande.jpg?v=30',summary:'Vistoso, resistente y fácil de lucir.',details:['140 × 60 cm','Lona impresa','Ideal para auto o camioneta','Resistente a líquidos'],theme:'purple'},
-  {id:'props-unidad',category:'Props',name:'Prop individual',price:2000,image:'props-unidad.jpg?v=30',summary:'Una frase, meme, emoji o foto listo para usar.',details:['15 × 21 cm aprox.','Papel impreso + palito','1 unidad','Diseño personalizado'],theme:'pink'},
-  {id:'props-pack',category:'Props',name:'Pack de 8 props',price:12000,image:'props-pack.jpg?v=30',summary:'Más variedad para todas las fotos.',details:['8 unidades','15 × 21 cm aprox.','Papel impreso + palito','Diseños personalizados'],theme:'yellow'},
-  {id:'combo-1',category:'Combos',name:'Combo 1',price:50000,image:'combo-1.jpg?v=30',summary:'Marco selfie + cartel colgante chico + 8 props.',details:['Marco selfie','Cartel colgante chico','8 props','Diseño coordinado'],theme:'aqua'},
-  {id:'combo-2',category:'Combos',name:'Combo 2',price:55000,image:'combo-2.jpg?v=30',summary:'Marco selfie + banda para egresados + 8 props.',details:['Marco selfie','Banda para egresados','8 props','Diseño coordinado'],theme:'yellow'},
-  {id:'combo-3',category:'Combos',name:'Combo 3',price:34000,image:'combo-3.jpg?v=30',summary:'Cartel de lona mediano + 8 props.',details:['Cartel de lona mediano','8 props','Diseño coordinado','Listo para usar'],theme:'purple'},
-  {id:'combo-4',category:'Combos',name:'Combo 4',price:76000,image:'combo-4.jpg?v=30',summary:'Marco para fotos rectangular + banda + 8 props + cartel de lona grande.',details:['Marco para fotos rectangular','Banda para egresados','8 props','Cartel de lona grande'],theme:'pink'},
-  {id:'combo-5',category:'Combos',name:'Combo 5',price:54000,image:'combo-5.jpg?v=30',summary:'Cartel colgante grande + cartel de lona grande.',details:['Cartel colgante grande','Cartel de lona grande','Diseño coordinado','Gran formato'],theme:'aqua'}
+  {id:'marco-rectangular',category:'Marcos',name:'Marco selfie rectangular',price:35000,image:'marco-rectangular.jpg?v=31',summary:'Marco para fotos rectangular, clásico y versátil para cualquier carrera.',details:['100 × 70 cm','FoamBoard + vinilo','Corte recto','Diseño personalizado'],theme:'yellow'},
+  {id:'marco-redondo',category:'Marcos',name:'Marco redondo',price:38000,image:'marco-redondo.jpg?v=31',summary:'Protagonista absoluto de la foto.',details:['70 × 70 cm','FoamBoard + vinilo','Corte redondo','Diseño personalizado'],theme:'purple'},
+  {id:'marco-nube',category:'Marcos',name:'Marco tipo nube',price:38000,image:'marco-nube.jpg?v=31',summary:'Llamativo, delicado y totalmente personalizado.',details:['50 × 100 cm','FoamBoard + vinilo','Estilo nube','Diseño personalizado'],theme:'aqua'},
+  {id:'marco-forma',category:'Marcos',name:'Marco con forma',price:38000,image:'marco-forma.jpg?v=31',summary:'Original, divertido y único para tu festejo.',details:['Hasta 100 × 70 cm','FoamBoard + vinilo','Forma a definir','Diseño personalizado'],theme:'pink'},
+  {id:'banda',category:'Bandas',name:'Banda para graduados',price:12000,image:'banda-graduados.jpg?v=31',summary:'Colores, carrera y frase elegidos por vos.',details:['150 × 11 cm','Lona impresa','Doble costura','Resistente al agua y pintura'],theme:'purple'},
+  {id:'cartel-chico',category:'Carteles colgantes',name:'Cartel colgante chico',price:7000,image:'cartel-chico.jpg?v=31',summary:'Liviano y listo para colgar.',details:['25 × 35 cm','FoamBoard + vinilo','Incluye cinta','Diseño personalizado'],theme:'yellow'},
+  {id:'cartel-mediano',category:'Carteles colgantes',name:'Cartel colgante mediano',price:12000,image:'cartel-mediano.jpg?v=31',summary:'El tamaño más elegido para la recibida.',details:['40 × 60 cm','FoamBoard + vinilo','Incluye cinta','Diseño personalizado'],theme:'aqua'},
+  {id:'cartel-grande',category:'Carteles colgantes',name:'Cartel colgante grande',price:30000,image:'cartel-grande.jpg?v=31',summary:'Alta visibilidad para todas las fotos.',details:['70 × 100 cm','FoamBoard + vinilo','Incluye cinta','Diseño personalizado'],theme:'pink'},
+  {id:'lona-mediana',category:'Lonas',name:'Cartel de lona mediano',price:25000,image:'lona-mediana.jpg?v=31',summary:'Ideal para auto, fiesta, capa o fondo de fotos.',details:['100 × 60 cm','Lona impresa','Fácil de trasladar','Resistente a líquidos'],theme:'aqua'},
+  {id:'lona-grande',category:'Lonas',name:'Cartel de lona grande',price:30000,image:'lona-grande.jpg?v=31',summary:'Vistoso, resistente y fácil de lucir.',details:['140 × 60 cm','Lona impresa','Ideal para auto o camioneta','Resistente a líquidos'],theme:'purple'},
+  {id:'props-unidad',category:'Props',name:'Prop individual',price:2000,image:'props-unidad.jpg?v=31',summary:'Una frase, meme, emoji o foto listo para usar.',details:['15 × 21 cm aprox.','Papel impreso + palito','1 unidad','Diseño personalizado'],theme:'pink'},
+  {id:'props-pack',category:'Props',name:'Pack de 8 props',price:12000,image:'props-pack.jpg?v=31',summary:'Más variedad para todas las fotos.',details:['8 unidades','15 × 21 cm aprox.','Papel impreso + palito','Diseños personalizados'],theme:'yellow'},
+  {id:'combo-1',category:'Combos',name:'Combo 1',price:50000,image:'combo-1.jpg?v=31',summary:'Marco selfie + cartel colgante chico + 8 props.',details:['Marco selfie','Cartel colgante chico','8 props','Diseño coordinado'],theme:'aqua'},
+  {id:'combo-2',category:'Combos',name:'Combo 2',price:55000,image:'combo-2.jpg?v=31',summary:'Marco selfie + banda para egresados + 8 props.',details:['Marco selfie','Banda para egresados','8 props','Diseño coordinado'],theme:'yellow'},
+  {id:'combo-3',category:'Combos',name:'Combo 3',price:34000,image:'combo-3.jpg?v=31',summary:'Cartel de lona mediano + 8 props.',details:['Cartel de lona mediano','8 props','Diseño coordinado','Listo para usar'],theme:'purple'},
+  {id:'combo-4',category:'Combos',name:'Combo 4',price:76000,image:'combo-4.jpg?v=31',summary:'Marco para fotos rectangular + banda + 8 props + cartel de lona grande.',details:['Marco para fotos rectangular','Banda para egresados','8 props','Cartel de lona grande'],theme:'pink'},
+  {id:'combo-5',category:'Combos',name:'Combo 5',price:54000,image:'combo-5.jpg?v=31',summary:'Cartel colgante grande + cartel de lona grande.',details:['Cartel colgante grande','Cartel de lona grande','Diseño coordinado','Gran formato'],theme:'aqua'}
 ];
 
-const CATEGORIES = ['Marcos','Bandas','Carteles colgantes','Lonas','Props','Combos'];
+const CATEGORIES = ['Combos','Marcos','Carteles colgantes','Lonas','Props','Bandas'];
 const CATEGORY_COPY = {
   'Marcos':'Los protagonistas de la foto: elegí forma, tamaño y estilo.',
   'Bandas':'La banda personalizada para lucir carrera, nombre y colores.',
   'Carteles colgantes':'Carteles livianos para casa, auto, fiesta o recibida.',
   'Lonas':'Alta presencia visual, resistentes y fáciles de trasladar.',
   'Props':'Frases, memes y accesorios para fotos espontáneas.',
-  'Combos':'Opciones armadas para resolver rápido y ahorrar tiempo.'
+  'Combos':'Opciones armadas y aprobadas para resolver rápido según lo que incluye cada combo.'
 };
 const PRODUCT_BADGES = {
   'marco-rectangular':'Más pedido',
@@ -57,7 +57,7 @@ const $ = (selector, root=document) => root.querySelector(selector);
 const $$ = (selector, root=document) => [...root.querySelectorAll(selector)];
 
 let activeStage = 'home';
-let activeCategory = 'Marcos';
+let activeCategory = 'Combos';
 let catalogSearch = '';
 let cart = [];
 let receiptCheck = {valid:false,message:'Elegí un medio de pago.'};
@@ -149,6 +149,18 @@ function productBadge(product){return PRODUCT_BADGES[product.id]||'Personalizabl
 function productKeywords(product){return normalizeBotText([product.name,product.category,product.summary,product.details.join(' '),productBadge(product),product.price<=12000?'económico barato accesible':''].join(' '));}
 function productMatchesSearch(product){if(!catalogSearch)return true;return catalogSearch.split(/\s+/).every(term=>productKeywords(product).includes(term));}
 function visibleProducts(){return PRODUCTS.filter(product=>(catalogSearch||product.category===activeCategory)&&productMatchesSearch(product));}
+
+function featuredCombos(){return PRODUCTS.filter(product=>product.category==='Combos');}
+function selectSuggestedProduct(id){
+  const product=getProduct(id);
+  if(!product)return;
+  if(product.category)setCatalogCategory(product.category);
+  setTimeout(()=>{
+    const card=$(`[data-product-card="${CSS.escape(id)}"]`);
+    if(card){card.scrollIntoView({behavior:'smooth',block:'center'});card.classList.add('card-bounce');}
+    openProduct(id);
+  },220);
+}
 function updateCatalogStatus(products){
   const status=$('#catalogStatus');if(!status)return;
   const range=products.length?`${money(Math.min(...products.map(p=>p.price)))} a ${money(Math.max(...products.map(p=>p.price)))}`:'sin precios';
@@ -633,6 +645,7 @@ function bindEvents(){
   $('#clearCatalogSearch')?.addEventListener('click',()=>setCatalogSearch(''));
   $$('[data-quick-category]').forEach(button=>button.addEventListener('click',()=>setCatalogCategory(button.dataset.quickCategory)));
   $$('[data-quick-search]').forEach(button=>button.addEventListener('click',()=>{const value=button.dataset.quickSearch||'';const search=$('#catalogSearch');if(search)search.value=value;setCatalogSearch(value);}));
+  $$('[data-suggest-product]').forEach(button=>button.addEventListener('click',()=>selectSuggestedProduct(button.dataset.suggestProduct)));
   $$('[data-open-how]').forEach(button=>button.addEventListener('click',()=>{closeMenu();$('#howDialog').showModal();}));
   $$('[data-open-about]').forEach(button=>button.addEventListener('click',()=>{closeMenu();$('#aboutDialog').showModal();}));
   $$('[data-close-dialog]').forEach(button=>button.addEventListener('click',()=>button.closest('dialog')?.close()));
@@ -646,7 +659,7 @@ function bindEvents(){
 }
 function initialStage(){const hash=location.hash.replace('#','');if(hash==='catalog')return 'catalog';if(hash==='checkout'&&cart.length)return 'checkout';return 'home';}
 function init(){
-  try{renderTabs();renderCatalog(true);populateAvailableDates();updateCartUI();updatePaymentUI();bindEvents();goStage(initialStage(),{scroll:false});requestAnimationFrame(()=>window.scrollTo({top:0,behavior:'auto'}));if('serviceWorker'in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js?v=24').catch(()=>{}));document.documentElement.dataset.appReady='true';}
+  try{renderTabs();renderCatalog(true);populateAvailableDates();updateCartUI();updatePaymentUI();bindEvents();goStage(initialStage(),{scroll:false});requestAnimationFrame(()=>window.scrollTo({top:0,behavior:'auto'}));if('serviceWorker'in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js?v=31').catch(()=>{}));document.documentElement.dataset.appReady='true';}
   catch(error){console.error(error);showToast('La página no terminó de iniciar. Actualizá una vez.');}
 }
 document.addEventListener('DOMContentLoaded',init);

@@ -1,10 +1,13 @@
-const CACHE='plop-recibidas-v25-assets';
+// Plop Recibidas - cache reset v29
+const VERSION = 'plop-v29-combos-corregidos';
 self.addEventListener('install', event => { self.skipWaiting(); });
 self.addEventListener('activate', event => {
-  event.waitUntil(caches.keys().then(keys => Promise.all(keys.map(key => caches.delete(key)))));
-  self.clients.claim();
+  event.waitUntil((async () => {
+    const names = await caches.keys();
+    await Promise.all(names.map(name => caches.delete(name)));
+    await self.clients.claim();
+  })());
 });
 self.addEventListener('fetch', event => {
-  if (event.request.method !== 'GET') return;
   event.respondWith(fetch(event.request).catch(() => caches.match(event.request)));
 });

@@ -1,0 +1,25 @@
+# Patch Plop Recibidas - Combos corregidos v29
+
+Subir estos archivos a la RAÍZ del repositorio, reemplazando los existentes.
+
+Archivos principales para la web:
+- combo-1.jpg
+- combo-2.jpg
+- combo-3.jpg
+- combo-4.jpg
+- combo-5.jpg
+- sw.js
+
+También se incluyen versiones PNG en alta calidad y una vista previa:
+- combo-1.png a combo-5.png
+- PREVIEW_COMBOS_CORREGIDOS_V29.jpg
+
+Correspondencia final aprobada:
+1. Combo 1: Marco selfie + Cartel colgante chico + 8 props
+2. Combo 2: Marco selfie + Banda para egresados + 8 props
+3. Combo 3: Cartel de lona mediano + 8 props
+4. Combo 4: Marco para fotos rectangular + Banda para egresados + 8 props + Cartel de lona grande
+5. Combo 5: Cartel colgante grande + Cartel de lona grande
+
+Commit sugerido:
+Corregir imagenes finales de combos v29

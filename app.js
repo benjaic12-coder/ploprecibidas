@@ -1,25 +1,26 @@
 'use strict';
+// PLOP_V30_FINAL_COMBOS: catálogo con combos corregidos y cache-busted
 
 if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
 
 const PRODUCTS = [
-  {id:'marco-rectangular',category:'Marcos',name:'Marco rectangular',price:35000,image:'marco-rectangular.jpg',summary:'Clásico, amplio y versátil para cualquier carrera.',details:['100 × 70 cm','FoamBoard + vinilo','Corte recto','Diseño personalizado'],theme:'yellow'},
-  {id:'marco-redondo',category:'Marcos',name:'Marco redondo',price:38000,image:'marco-redondo.jpg',summary:'Protagonista absoluto de la foto.',details:['70 × 70 cm','FoamBoard + vinilo','Corte redondo','Diseño personalizado'],theme:'purple'},
-  {id:'marco-nube',category:'Marcos',name:'Marco tipo nube',price:38000,image:'marco-nube.jpg',summary:'Llamativo, delicado y totalmente personalizado.',details:['50 × 100 cm','FoamBoard + vinilo','Estilo nube','Diseño personalizado'],theme:'aqua'},
-  {id:'marco-forma',category:'Marcos',name:'Marco con forma',price:38000,image:'marco-forma.jpg',summary:'Original, divertido y único para tu festejo.',details:['Hasta 100 × 70 cm','FoamBoard + vinilo','Forma a definir','Diseño personalizado'],theme:'pink'},
-  {id:'banda',category:'Bandas',name:'Banda para graduados',price:12000,image:'banda-graduados.jpg',summary:'Colores, carrera y frase elegidos por vos.',details:['150 × 11 cm','Lona impresa','Doble costura','Resistente al agua y pintura'],theme:'purple'},
-  {id:'cartel-chico',category:'Carteles colgantes',name:'Cartel colgante chico',price:7000,image:'cartel-chico.jpg',summary:'Liviano y listo para colgar.',details:['25 × 35 cm','FoamBoard + vinilo','Incluye cinta','Diseño personalizado'],theme:'yellow'},
-  {id:'cartel-mediano',category:'Carteles colgantes',name:'Cartel colgante mediano',price:12000,image:'cartel-mediano.jpg',summary:'El tamaño más elegido para la recibida.',details:['40 × 60 cm','FoamBoard + vinilo','Incluye cinta','Diseño personalizado'],theme:'aqua'},
-  {id:'cartel-grande',category:'Carteles colgantes',name:'Cartel colgante grande',price:30000,image:'cartel-grande.jpg',summary:'Alta visibilidad para todas las fotos.',details:['70 × 100 cm','FoamBoard + vinilo','Incluye cinta','Diseño personalizado'],theme:'pink'},
-  {id:'lona-mediana',category:'Lonas',name:'Cartel de lona mediano',price:25000,image:'lona-mediana.jpg',summary:'Ideal para auto, fiesta, capa o fondo de fotos.',details:['100 × 60 cm','Lona impresa','Fácil de trasladar','Resistente a líquidos'],theme:'aqua'},
-  {id:'lona-grande',category:'Lonas',name:'Cartel de lona grande',price:30000,image:'lona-grande.jpg',summary:'Vistoso, resistente y fácil de lucir.',details:['140 × 60 cm','Lona impresa','Ideal para auto o camioneta','Resistente a líquidos'],theme:'purple'},
-  {id:'props-unidad',category:'Props',name:'Prop individual',price:2000,image:'props-unidad.jpg',summary:'Una frase, meme, emoji o foto listo para usar.',details:['15 × 21 cm aprox.','Papel impreso + palito','1 unidad','Diseño personalizado'],theme:'pink'},
-  {id:'props-pack',category:'Props',name:'Pack de 8 props',price:12000,image:'props-pack.jpg',summary:'Más variedad para todas las fotos.',details:['8 unidades','15 × 21 cm aprox.','Papel impreso + palito','Diseños personalizados'],theme:'yellow'},
-  {id:'combo-1',category:'Combos',name:'Combo 1',price:34000,image:'combo-1.jpg',summary:'Cartel de lona mediano + 8 props o banda.',details:['Lona mediana','8 props o banda','Diseño coordinado','Listo para usar'],theme:'aqua'},
-  {id:'combo-2',category:'Combos',name:'Combo 2',price:50000,image:'combo-2.jpg',summary:'Marco rectangular + cartel chico + 8 props.',details:['Marco rectangular','Cartel chico','8 props','Marco especial +$3.000'],theme:'yellow'},
-  {id:'combo-3',category:'Combos',name:'Combo 3',price:54000,image:'combo-3.jpg',summary:'Cartel colgante grande + lona grande.',details:['Cartel colgante grande','Lona grande','Diseño coordinado','Listo para usar'],theme:'purple'},
-  {id:'combo-4',category:'Combos',name:'Combo 4',price:55000,image:'combo-4.jpg',summary:'Marco rectangular + banda + 8 props.',details:['Marco rectangular','Banda','8 props','Marco especial +$3.000'],theme:'pink'},
-  {id:'combo-5',category:'Combos',name:'Combo 5',price:76000,image:'combo-5.jpg',summary:'Marco rectangular + banda + 8 props + lona grande.',details:['Marco rectangular','Banda','8 props','Lona grande'],theme:'aqua'}
+  {id:'marco-rectangular',category:'Marcos',name:'Marco rectangular',price:35000,image:'marco-rectangular.jpg?v=30',summary:'Clásico, amplio y versátil para cualquier carrera.',details:['100 × 70 cm','FoamBoard + vinilo','Corte recto','Diseño personalizado'],theme:'yellow'},
+  {id:'marco-redondo',category:'Marcos',name:'Marco redondo',price:38000,image:'marco-redondo.jpg?v=30',summary:'Protagonista absoluto de la foto.',details:['70 × 70 cm','FoamBoard + vinilo','Corte redondo','Diseño personalizado'],theme:'purple'},
+  {id:'marco-nube',category:'Marcos',name:'Marco tipo nube',price:38000,image:'marco-nube.jpg?v=30',summary:'Llamativo, delicado y totalmente personalizado.',details:['50 × 100 cm','FoamBoard + vinilo','Estilo nube','Diseño personalizado'],theme:'aqua'},
+  {id:'marco-forma',category:'Marcos',name:'Marco con forma',price:38000,image:'marco-forma.jpg?v=30',summary:'Original, divertido y único para tu festejo.',details:['Hasta 100 × 70 cm','FoamBoard + vinilo','Forma a definir','Diseño personalizado'],theme:'pink'},
+  {id:'banda',category:'Bandas',name:'Banda para graduados',price:12000,image:'banda-graduados.jpg?v=30',summary:'Colores, carrera y frase elegidos por vos.',details:['150 × 11 cm','Lona impresa','Doble costura','Resistente al agua y pintura'],theme:'purple'},
+  {id:'cartel-chico',category:'Carteles colgantes',name:'Cartel colgante chico',price:7000,image:'cartel-chico.jpg?v=30',summary:'Liviano y listo para colgar.',details:['25 × 35 cm','FoamBoard + vinilo','Incluye cinta','Diseño personalizado'],theme:'yellow'},
+  {id:'cartel-mediano',category:'Carteles colgantes',name:'Cartel colgante mediano',price:12000,image:'cartel-mediano.jpg?v=30',summary:'El tamaño más elegido para la recibida.',details:['40 × 60 cm','FoamBoard + vinilo','Incluye cinta','Diseño personalizado'],theme:'aqua'},
+  {id:'cartel-grande',category:'Carteles colgantes',name:'Cartel colgante grande',price:30000,image:'cartel-grande.jpg?v=30',summary:'Alta visibilidad para todas las fotos.',details:['70 × 100 cm','FoamBoard + vinilo','Incluye cinta','Diseño personalizado'],theme:'pink'},
+  {id:'lona-mediana',category:'Lonas',name:'Cartel de lona mediano',price:25000,image:'lona-mediana.jpg?v=30',summary:'Ideal para auto, fiesta, capa o fondo de fotos.',details:['100 × 60 cm','Lona impresa','Fácil de trasladar','Resistente a líquidos'],theme:'aqua'},
+  {id:'lona-grande',category:'Lonas',name:'Cartel de lona grande',price:30000,image:'lona-grande.jpg?v=30',summary:'Vistoso, resistente y fácil de lucir.',details:['140 × 60 cm','Lona impresa','Ideal para auto o camioneta','Resistente a líquidos'],theme:'purple'},
+  {id:'props-unidad',category:'Props',name:'Prop individual',price:2000,image:'props-unidad.jpg?v=30',summary:'Una frase, meme, emoji o foto listo para usar.',details:['15 × 21 cm aprox.','Papel impreso + palito','1 unidad','Diseño personalizado'],theme:'pink'},
+  {id:'props-pack',category:'Props',name:'Pack de 8 props',price:12000,image:'props-pack.jpg?v=30',summary:'Más variedad para todas las fotos.',details:['8 unidades','15 × 21 cm aprox.','Papel impreso + palito','Diseños personalizados'],theme:'yellow'},
+  {id:'combo-1',category:'Combos',name:'Combo 1',price:50000,image:'combo-1.jpg?v=30',summary:'Marco selfie + cartel colgante chico + 8 props.',details:['Marco selfie','Cartel colgante chico','8 props','Diseño coordinado'],theme:'aqua'},
+  {id:'combo-2',category:'Combos',name:'Combo 2',price:55000,image:'combo-2.jpg?v=30',summary:'Marco selfie + banda para egresados + 8 props.',details:['Marco selfie','Banda para egresados','8 props','Diseño coordinado'],theme:'yellow'},
+  {id:'combo-3',category:'Combos',name:'Combo 3',price:34000,image:'combo-3.jpg?v=30',summary:'Cartel de lona mediano + 8 props.',details:['Cartel de lona mediano','8 props','Diseño coordinado','Listo para usar'],theme:'purple'},
+  {id:'combo-4',category:'Combos',name:'Combo 4',price:76000,image:'combo-4.jpg?v=30',summary:'Marco para fotos rectangular + banda + 8 props + cartel de lona grande.',details:['Marco para fotos rectangular','Banda para egresados','8 props','Cartel de lona grande'],theme:'pink'},
+  {id:'combo-5',category:'Combos',name:'Combo 5',price:54000,image:'combo-5.jpg?v=30',summary:'Cartel colgante grande + cartel de lona grande.',details:['Cartel colgante grande','Cartel de lona grande','Diseño coordinado','Gran formato'],theme:'aqua'}
 ];
 
 const CATEGORIES = ['Marcos','Bandas','Carteles colgantes','Lonas','Props','Combos'];
@@ -46,9 +47,9 @@ const PRODUCT_BADGES = {
   'props-pack':'Fotos divertidas',
   'combo-1':'Inicio ideal',
   'combo-2':'Kit fotos',
-  'combo-3':'Visual fuerte',
+  'combo-3':'Lona + props',
   'combo-4':'Completo',
-  'combo-5':'Full Plop'
+  'combo-5':'Gran formato'
 };
 const MAX_FORM_BYTES = 7.5 * 1024 * 1024;
 const ADMIN_KEYS = {orders:'plop.admin.orders.v2',coupons:'plop.admin.coupons.v2'};

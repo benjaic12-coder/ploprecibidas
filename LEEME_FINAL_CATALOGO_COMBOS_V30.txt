@@ -1,0 +1,29 @@
+PLOP RECIBIDAS — PATCH FINAL CATÁLOGO + COMBOS v30
+
+Estado: versión para cerrar catálogo antes de migrar hosting.
+
+QUÉ INCLUYE
+- Home pública + catálogo + checkout de la versión v28.
+- Combos corregidos visualmente y por descripción.
+- app.js actualizado con las descripciones correctas de los combos.
+- Cache actualizado a v30 para que el navegador no siga mostrando imágenes viejas.
+- Imágenes JPG para la web y PNG de respaldo de los combos.
+
+CORRESPONDENCIA FINAL DE COMBOS
+- Combo 1: Marco selfie + Cartel colgante chico + 8 props.
+- Combo 2: Marco selfie + Banda para egresados + 8 props.
+- Combo 3: Cartel de lona mediano + 8 props.
+- Combo 4: Marco para fotos rectangular + Banda para egresados + 8 props + Cartel de lona grande.
+- Combo 5: Cartel colgante grande + Cartel de lona grande.
+
+CÓMO SUBIR A GITHUB
+1. Descomprimir este ZIP.
+2. Entrar a la carpeta descomprimida.
+3. Subir TODOS los archivos de adentro a la raíz del repo.
+4. Reemplazar los archivos existentes.
+5. Commit sugerido:
+   Cerrar catalogo y combos finales v30
+
+NOTA IMPORTANTE
+Netlify puede no publicar los cambios si la cuenta sigue pausada por créditos.
+Subir esto a GitHub deja la versión maestra lista para migrar después a GitHub Pages, Cloudflare Pages o Vercel.

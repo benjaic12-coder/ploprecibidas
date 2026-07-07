@@ -1,13 +1,10 @@
-// Plop Recibidas - cache reset v29
-const VERSION = 'plop-v29-combos-corregidos';
+const CACHE='plop-recibidas-v30-final-combos';
 self.addEventListener('install', event => { self.skipWaiting(); });
 self.addEventListener('activate', event => {
-  event.waitUntil((async () => {
-    const names = await caches.keys();
-    await Promise.all(names.map(name => caches.delete(name)));
-    await self.clients.claim();
-  })());
+  event.waitUntil(caches.keys().then(keys => Promise.all(keys.map(key => caches.delete(key)))));
+  self.clients.claim();
 });
 self.addEventListener('fetch', event => {
-  event.respondWith(fetch(event.request).catch(() => caches.match(event.request)));
+  if (event.request.method !== 'GET') return;
+  event.respondWith(fetch(event.request, {cache:'no-store'}).catch(() => caches.match(event.request)));
 });

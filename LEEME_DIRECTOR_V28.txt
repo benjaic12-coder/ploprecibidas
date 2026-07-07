@@ -1,0 +1,16 @@
+PLOP RECIBIDAS — PATCH DIRECTOR V28
+
+Objetivo:
+- Resolver imágenes de Plopcito y catálogo sin depender de Canva ni de nuevas capturas.
+- Rediseñar miniaturas de catálogo con estética Plop, más legibles y uniformes.
+- Forzar actualización de caché con ?v=28 y service worker nuevo.
+
+Subida:
+1. Descomprimir este ZIP.
+2. Subir todos los archivos de adentro a la RAÍZ del repo.
+3. Reemplazar existentes.
+4. Commit sugerido: Resolver catalogo visual e imagenes v28
+
+Netlify:
+- Está pausado por créditos. Aunque subas esto a GitHub, Netlify no lo publicará hasta reactivar deploys.
+- Para probarlo ya: activar GitHub Pages en branch main / root.

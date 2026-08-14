@@ -1,4 +1,4 @@
-const CACHE='plop-recibidas-v31-final-combos';
+const CACHE='plop-recibidas-v33-final';
 self.addEventListener('install', event => { self.skipWaiting(); });
 self.addEventListener('activate', event => {
   event.waitUntil(caches.keys().then(keys => Promise.all(keys.map(key => caches.delete(key)))));

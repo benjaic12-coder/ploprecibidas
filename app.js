@@ -1,26 +1,26 @@
 'use strict';
-// PLOP_V31_CATALOGO_FLUJO: catálogo completo, combos aprobados y compra guiada
+// PLOP_V33_FINAL_PRE_MIGRACION: catálogo completo, combos aprobados y compra guiada
 
 if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
 
 const PRODUCTS = [
-  {id:'marco-rectangular',category:'Marcos',name:'Marco selfie rectangular',price:35000,image:'marco-rectangular.jpg?v=31',summary:'Marco para fotos rectangular, clásico y versátil para cualquier carrera.',details:['100 × 70 cm','FoamBoard + vinilo','Corte recto','Diseño personalizado'],theme:'yellow'},
-  {id:'marco-redondo',category:'Marcos',name:'Marco redondo',price:38000,image:'marco-redondo.jpg?v=31',summary:'Protagonista absoluto de la foto.',details:['70 × 70 cm','FoamBoard + vinilo','Corte redondo','Diseño personalizado'],theme:'purple'},
-  {id:'marco-nube',category:'Marcos',name:'Marco tipo nube',price:38000,image:'marco-nube.jpg?v=31',summary:'Llamativo, delicado y totalmente personalizado.',details:['50 × 100 cm','FoamBoard + vinilo','Estilo nube','Diseño personalizado'],theme:'aqua'},
-  {id:'marco-forma',category:'Marcos',name:'Marco con forma',price:38000,image:'marco-forma.jpg?v=31',summary:'Original, divertido y único para tu festejo.',details:['Hasta 100 × 70 cm','FoamBoard + vinilo','Forma a definir','Diseño personalizado'],theme:'pink'},
-  {id:'banda',category:'Bandas',name:'Banda para graduados',price:12000,image:'banda-graduados.jpg?v=31',summary:'Colores, carrera y frase elegidos por vos.',details:['150 × 11 cm','Lona impresa','Doble costura','Resistente al agua y pintura'],theme:'purple'},
-  {id:'cartel-chico',category:'Carteles colgantes',name:'Cartel colgante chico',price:7000,image:'cartel-chico.jpg?v=31',summary:'Liviano y listo para colgar.',details:['25 × 35 cm','FoamBoard + vinilo','Incluye cinta','Diseño personalizado'],theme:'yellow'},
-  {id:'cartel-mediano',category:'Carteles colgantes',name:'Cartel colgante mediano',price:12000,image:'cartel-mediano.jpg?v=31',summary:'El tamaño más elegido para la recibida.',details:['40 × 60 cm','FoamBoard + vinilo','Incluye cinta','Diseño personalizado'],theme:'aqua'},
-  {id:'cartel-grande',category:'Carteles colgantes',name:'Cartel colgante grande',price:30000,image:'cartel-grande.jpg?v=31',summary:'Alta visibilidad para todas las fotos.',details:['70 × 100 cm','FoamBoard + vinilo','Incluye cinta','Diseño personalizado'],theme:'pink'},
-  {id:'lona-mediana',category:'Lonas',name:'Cartel de lona mediano',price:25000,image:'lona-mediana.jpg?v=31',summary:'Ideal para auto, fiesta, capa o fondo de fotos.',details:['100 × 60 cm','Lona impresa','Fácil de trasladar','Resistente a líquidos'],theme:'aqua'},
-  {id:'lona-grande',category:'Lonas',name:'Cartel de lona grande',price:30000,image:'lona-grande.jpg?v=31',summary:'Vistoso, resistente y fácil de lucir.',details:['140 × 60 cm','Lona impresa','Ideal para auto o camioneta','Resistente a líquidos'],theme:'purple'},
-  {id:'props-unidad',category:'Props',name:'Prop individual',price:2000,image:'props-unidad.jpg?v=31',summary:'Una frase, meme, emoji o foto listo para usar.',details:['15 × 21 cm aprox.','Papel impreso + palito','1 unidad','Diseño personalizado'],theme:'pink'},
-  {id:'props-pack',category:'Props',name:'Pack de 8 props',price:12000,image:'props-pack.jpg?v=31',summary:'Más variedad para todas las fotos.',details:['8 unidades','15 × 21 cm aprox.','Papel impreso + palito','Diseños personalizados'],theme:'yellow'},
-  {id:'combo-1',category:'Combos',name:'Combo 1',price:50000,image:'combo-1.jpg?v=31',summary:'Marco selfie + cartel colgante chico + 8 props.',details:['Marco selfie','Cartel colgante chico','8 props','Diseño coordinado'],theme:'aqua'},
-  {id:'combo-2',category:'Combos',name:'Combo 2',price:55000,image:'combo-2.jpg?v=31',summary:'Marco selfie + banda para egresados + 8 props.',details:['Marco selfie','Banda para egresados','8 props','Diseño coordinado'],theme:'yellow'},
-  {id:'combo-3',category:'Combos',name:'Combo 3',price:34000,image:'combo-3.jpg?v=31',summary:'Cartel de lona mediano + 8 props.',details:['Cartel de lona mediano','8 props','Diseño coordinado','Listo para usar'],theme:'purple'},
-  {id:'combo-4',category:'Combos',name:'Combo 4',price:76000,image:'combo-4.jpg?v=31',summary:'Marco para fotos rectangular + banda + 8 props + cartel de lona grande.',details:['Marco para fotos rectangular','Banda para egresados','8 props','Cartel de lona grande'],theme:'pink'},
-  {id:'combo-5',category:'Combos',name:'Combo 5',price:54000,image:'combo-5.jpg?v=31',summary:'Cartel colgante grande + cartel de lona grande.',details:['Cartel colgante grande','Cartel de lona grande','Diseño coordinado','Gran formato'],theme:'aqua'}
+  {id:'marco-rectangular',category:'Marcos',name:'Marco selfie rectangular',price:35000,image:'marco-rectangular.jpg?v=33',summary:'Marco para fotos rectangular, clásico y versátil para cualquier carrera.',details:['100 × 70 cm','FoamBoard + vinilo','Corte recto','Diseño personalizado'],theme:'yellow'},
+  {id:'marco-redondo',category:'Marcos',name:'Marco redondo',price:38000,image:'marco-redondo.jpg?v=33',summary:'Protagonista absoluto de la foto.',details:['70 × 70 cm','FoamBoard + vinilo','Corte redondo','Diseño personalizado'],theme:'purple'},
+  {id:'marco-nube',category:'Marcos',name:'Marco tipo nube',price:38000,image:'marco-nube.jpg?v=33',summary:'Llamativo, delicado y totalmente personalizado.',details:['50 × 100 cm','FoamBoard + vinilo','Estilo nube','Diseño personalizado'],theme:'aqua'},
+  {id:'marco-forma',category:'Marcos',name:'Marco con forma',price:38000,image:'marco-forma.jpg?v=33',summary:'Original, divertido y único para tu festejo.',details:['Hasta 100 × 70 cm','FoamBoard + vinilo','Forma a definir','Diseño personalizado'],theme:'pink'},
+  {id:'banda',category:'Bandas',name:'Banda para graduados',price:12000,image:'banda-graduados.jpg?v=33',summary:'Colores, carrera y frase elegidos por vos.',details:['150 × 11 cm','Lona impresa','Doble costura','Resistente al agua y pintura'],theme:'purple'},
+  {id:'cartel-chico',category:'Carteles colgantes',name:'Cartel colgante chico',price:7000,image:'cartel-chico.jpg?v=33',summary:'Liviano y listo para colgar.',details:['25 × 35 cm','FoamBoard + vinilo','Incluye cinta','Diseño personalizado'],theme:'yellow'},
+  {id:'cartel-mediano',category:'Carteles colgantes',name:'Cartel colgante mediano',price:12000,image:'cartel-mediano.jpg?v=33',summary:'El tamaño más elegido para la recibida.',details:['40 × 60 cm','FoamBoard + vinilo','Incluye cinta','Diseño personalizado'],theme:'aqua'},
+  {id:'cartel-grande',category:'Carteles colgantes',name:'Cartel colgante grande',price:30000,image:'cartel-grande.jpg?v=33',summary:'Alta visibilidad para todas las fotos.',details:['70 × 100 cm','FoamBoard + vinilo','Incluye cinta','Diseño personalizado'],theme:'pink'},
+  {id:'lona-mediana',category:'Lonas',name:'Cartel de lona mediano',price:25000,image:'lona-mediana.jpg?v=33',summary:'Ideal para auto, fiesta, capa o fondo de fotos.',details:['100 × 60 cm','Lona impresa','Fácil de trasladar','Resistente a líquidos'],theme:'aqua'},
+  {id:'lona-grande',category:'Lonas',name:'Cartel de lona grande',price:30000,image:'lona-grande.jpg?v=33',summary:'Vistoso, resistente y fácil de lucir.',details:['140 × 60 cm','Lona impresa','Ideal para auto o camioneta','Resistente a líquidos'],theme:'purple'},
+  {id:'props-unidad',category:'Props',name:'Prop individual',price:2000,image:'props-unidad.jpg?v=33',summary:'Una frase, meme, emoji o foto listo para usar.',details:['15 × 21 cm aprox.','Papel impreso + palito','1 unidad','Diseño personalizado'],theme:'pink'},
+  {id:'props-pack',category:'Props',name:'Pack de 8 props',price:12000,image:'props-pack.jpg?v=33',summary:'Más variedad para todas las fotos.',details:['8 unidades','15 × 21 cm aprox.','Papel impreso + palito','Diseños personalizados'],theme:'yellow'},
+  {id:'combo-1',category:'Combos',name:'Combo 1',price:50000,image:'combo-1.jpg?v=33',summary:'Marco selfie + cartel colgante chico + 8 props.',details:['Marco selfie','Cartel colgante chico','8 props','Diseño coordinado'],theme:'aqua'},
+  {id:'combo-2',category:'Combos',name:'Combo 2',price:55000,image:'combo-2.jpg?v=33',summary:'Marco selfie + banda para egresados + 8 props.',details:['Marco selfie','Banda para egresados','8 props','Diseño coordinado'],theme:'yellow'},
+  {id:'combo-3',category:'Combos',name:'Combo 3',price:34000,image:'combo-3.jpg?v=33',summary:'Cartel de lona mediano + 8 props.',details:['Cartel de lona mediano','8 props','Diseño coordinado','Listo para usar'],theme:'purple'},
+  {id:'combo-4',category:'Combos',name:'Combo 4',price:76000,image:'combo-4.jpg?v=33',summary:'Marco para fotos rectangular + banda + 8 props + cartel de lona grande.',details:['Marco para fotos rectangular','Banda para egresados','8 props','Cartel de lona grande'],theme:'pink'},
+  {id:'combo-5',category:'Combos',name:'Combo 5',price:54000,image:'combo-5.jpg?v=33',summary:'Cartel colgante grande + cartel de lona grande.',details:['Cartel colgante grande','Cartel de lona grande','Diseño coordinado','Gran formato'],theme:'aqua'}
 ];
 
 const CATEGORIES = ['Combos','Marcos','Carteles colgantes','Lonas','Props','Bandas'];
@@ -79,9 +79,10 @@ function isoDate(date){return `${date.getFullYear()}-${String(date.getMonth()+1)
 function humanDate(iso){if(!iso)return 'A confirmar';const [y,m,d]=iso.split('-').map(Number);return new Intl.DateTimeFormat('es-AR',{day:'2-digit',month:'long',year:'numeric'}).format(new Date(y,m-1,d));}
 function addBusinessDays(date,days){const result=new Date(date.getFullYear(),date.getMonth(),date.getDate());let added=0;while(added<days){result.setDate(result.getDate()+1);if(result.getDay()!==0&&result.getDay()!==6)added++;}return result;}
 function generateOrderNumber(){const d=new Date();const date=`${String(d.getFullYear()).slice(-2)}${String(d.getMonth()+1).padStart(2,'0')}${String(d.getDate()).padStart(2,'0')}`;return `PLOP-${date}-${Math.random().toString(36).slice(2,6).toUpperCase()}`;}
+function generateAccessCode(){return String(Math.floor(100000+Math.random()*900000));}
 function trackingAccessBlock(order){
   if(!order?.accessCode)return '';
-  return `<div class="coupon-tracking-access"><span>Seguimiento online</span><strong>${escapeHTML(order.number)}</strong><p>Código privado: <b>${escapeHTML(order.accessCode)}</b></p><a href="https://plop-seguimientos.netlify.app/cliente/" target="_blank" rel="noopener">Abrir seguimiento</a></div>`;
+  return `<div class="coupon-tracking-access"><span>Seguimiento online</span><strong>${escapeHTML(order.number)}</strong><p>Código privado: <b>${escapeHTML(order.accessCode)}</b></p><a href="https://plop-seguimientos.netlify.app/cliente/" target="_blank" rel="noopener">Abrir seguimiento</a><small>Guardá estos datos. Te van a servir para revisar avances, renders y aprobación.</small></div>`;
 }
 
 function showToast(message){
@@ -288,7 +289,7 @@ async function compressReceipt(file){if(!file.type.startsWith('image/'))return f
 async function copyAlias(){try{await navigator.clipboard.writeText('ploprecibidas');showToast('Alias copiado');}catch{showToast('Alias: ploprecibidas');}}
 
 function buildOrder(form){
-  const data=new FormData(form);const t=totals();return {number:$('#orderNumberField').value,name:String(data.get('nombre')||''),whatsapp:String(data.get('whatsapp')||''),email:String(data.get('email')||''),date:String(data.get('fecha_entrega')||''),design:String(data.get('datos_diseno')||''),payment:String(data.get('medio_pago')||''),otherPayment:String(data.get('otro_medio_pago')||''),items:cart.map(item=>{const p=getProduct(item.id);return {id:item.id,name:p?.name||item.id,qty:item.qty,unit:p?.price||0,subtotal:(p?.price||0)*item.qty};}),...t,createdAt:new Date()};
+  const data=new FormData(form);const t=totals();return {number:$('#orderNumberField').value,accessCode:String(data.get('codigo_privado_seguimiento')||''),name:String(data.get('nombre')||''),whatsapp:String(data.get('whatsapp')||''),email:String(data.get('email')||''),date:String(data.get('fecha_entrega')||''),design:String(data.get('datos_diseno')||''),payment:String(data.get('medio_pago')||''),otherPayment:String(data.get('otro_medio_pago')||''),items:cart.map(item=>{const p=getProduct(item.id);return {id:item.id,name:p?.name||item.id,qty:item.qty,unit:p?.price||0,subtotal:(p?.price||0)*item.qty};}),...t,createdAt:new Date()};
 }
 function paymentStatus(order){if(order.payment==='Transferencia')return 'Comprobante recibido · pendiente de verificación';if(order.payment==='Efectivo')return 'Seña en efectivo · pendiente de coordinación';return 'Medio informado · pendiente de coordinación';}
 function renderCoupon(order){
@@ -320,8 +321,8 @@ async function downloadCoupon(){if(!lastOrder)return;const canvas=await couponCa
 async function shareCoupon(){if(!lastOrder)return;const text=couponShareText(lastOrder);try{const canvas=await couponCanvas(lastOrder);const blob=await new Promise(resolve=>canvas.toBlob(resolve,'image/png'));const file=new File([blob],`${lastOrder.number}-cupon-plop.png`,{type:'image/png'});if(navigator.canShare?.({files:[file]})&&navigator.share){await navigator.share({title:'Cupón Plop',text,files:[file]});return;}}catch(error){if(error?.name==='AbortError')return;}window.open(`https://wa.me/?text=${encodeURIComponent(text)}`,'_blank','noopener');}
 function saveDuplicateToAdmin(order){
   try{
-    const orders=JSON.parse(localStorage.getItem(ADMIN_KEYS.orders)||'[]');if(!orders.some(item=>item.id===order.number)){orders.push({id:order.number,name:order.name,whatsapp:order.whatsapp,email:order.email,date:order.date,products:order.items.map(i=>`${i.qty} x ${i.name}`).join(' | '),total:order.total,deposit:order.deposit,balance:order.balance,designDetails:order.design,paymentMethod:order.payment,transferredAmount:0,receiptUrl:'Netlify Forms',submittedAt:order.createdAt.toISOString(),status:'Pendiente',notes:paymentStatus(order),deliveryType:'A confirmar',costEstimate:0,source:'Web pública',createdAt:order.createdAt.toISOString(),updatedAt:new Date().toISOString()});localStorage.setItem(ADMIN_KEYS.orders,JSON.stringify(orders));}
-    const coupons=JSON.parse(localStorage.getItem(ADMIN_KEYS.coupons)||'[]');if(!coupons.some(c=>c.orderId===order.number)){coupons.push({id:`CUP-${order.number}`,number:order.number.replace('PLOP-','CUP-'),orderId:order.number,issuedAt:new Date().toISOString(),status:'Emitido',deliveredAt:'',deliveryMethod:'Web pública',snapshot:{name:order.name,date:order.date,products:order.items.map(i=>`${i.qty} x ${i.name}`).join(' | '),total:order.total,deposit:order.deposit,balance:order.balance}});localStorage.setItem(ADMIN_KEYS.coupons,JSON.stringify(coupons));}
+    const orders=JSON.parse(localStorage.getItem(ADMIN_KEYS.orders)||'[]');if(!orders.some(item=>item.id===order.number)){orders.push({id:order.number,name:order.name,whatsapp:order.whatsapp,email:order.email,date:order.date,products:order.items.map(i=>`${i.qty} x ${i.name}`).join(' | '),total:order.total,deposit:order.deposit,balance:order.balance,designDetails:order.design,paymentMethod:order.payment,transferredAmount:0,receiptUrl:'Netlify Forms',accessCode:order.accessCode||'',submittedAt:order.createdAt.toISOString(),status:'Pendiente',notes:paymentStatus(order),deliveryType:'A confirmar',costEstimate:0,source:'Web pública',createdAt:order.createdAt.toISOString(),updatedAt:new Date().toISOString()});localStorage.setItem(ADMIN_KEYS.orders,JSON.stringify(orders));}
+    const coupons=JSON.parse(localStorage.getItem(ADMIN_KEYS.coupons)||'[]');if(!coupons.some(c=>c.orderId===order.number)){coupons.push({id:`CUP-${order.number}`,number:order.number.replace('PLOP-','CUP-'),orderId:order.number,issuedAt:new Date().toISOString(),status:'Emitido',deliveredAt:'',deliveryMethod:'Web pública',snapshot:{name:order.name,accessCode:order.accessCode||'',date:order.date,products:order.items.map(i=>`${i.qty} x ${i.name}`).join(' | '),total:order.total,deposit:order.deposit,balance:order.balance}});localStorage.setItem(ADMIN_KEYS.coupons,JSON.stringify(coupons));}
   }catch(error){console.warn('No se pudo guardar el duplicado local',error);}
 }
 
@@ -343,7 +344,8 @@ async function notifyWebsiteOrder(order){
         items:order.items,
         total:order.total,
         deposit:order.deposit,
-        balance:order.balance
+        balance:order.balance,
+        accessCode:order.accessCode
       })
     });
     const data=await response.json().catch(()=>({}));
@@ -379,7 +381,9 @@ async function submitOrder(event){
   if(!form.reportValidity())return;
 
   const number=generateOrderNumber();
+  const accessCode=generateAccessCode();
   $('#orderNumberField').value=number;
+  $('#trackingCodeField').value=accessCode;
   $('#orderCreatedField').value=new Date().toISOString();
   $('#receiptReviewField').value=receiptCheck.message;
   $('input[name="subject"]').value=`Nueva solicitud Plop ${number}`;
@@ -418,6 +422,10 @@ async function submitOrder(event){
     }
     if(emailResult.accessCode){
       snapshot.accessCode=emailResult.accessCode;
+      $('#trackingCodeField').value=emailResult.accessCode;
+    }
+    if(!snapshot.accessCode){
+      snapshot.accessCode=accessCode;
     }
     lastOrder=snapshot;
     saveDuplicateToAdmin(snapshot);
@@ -478,7 +486,7 @@ function companionCopy(){
   }
   return {
     key:'coupon',step:'Paso 4 de 4',title:'¡Solicitud enviada!',
-    text:'Descargá el cupón y guardá tu número. Luego podrás consultar el estado en Plop Seguimientos.',
+    text:'Descargá el cupón y guardá tu número junto con el código privado. Te van a servir para consultar el estado en Plop Seguimientos.',
     action:'Descargar cupón',run:downloadCoupon,progress:100,launcher:'¡Lo logramos!'
   };
 }
@@ -659,7 +667,7 @@ function bindEvents(){
 }
 function initialStage(){const hash=location.hash.replace('#','');if(hash==='catalog')return 'catalog';if(hash==='checkout'&&cart.length)return 'checkout';return 'home';}
 function init(){
-  try{renderTabs();renderCatalog(true);populateAvailableDates();updateCartUI();updatePaymentUI();bindEvents();goStage(initialStage(),{scroll:false});requestAnimationFrame(()=>window.scrollTo({top:0,behavior:'auto'}));if('serviceWorker'in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js?v=31').catch(()=>{}));document.documentElement.dataset.appReady='true';}
+  try{renderTabs();renderCatalog(true);populateAvailableDates();updateCartUI();updatePaymentUI();bindEvents();goStage(initialStage(),{scroll:false});requestAnimationFrame(()=>window.scrollTo({top:0,behavior:'auto'}));if('serviceWorker'in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js?v=33').catch(()=>{}));document.documentElement.dataset.appReady='true';}
   catch(error){console.error(error);showToast('La página no terminó de iniciar. Actualizá una vez.');}
 }
 document.addEventListener('DOMContentLoaded',init);

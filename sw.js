@@ -1,4 +1,4 @@
-const CACHE='plop-recibidas-v34-cupon-local';
+const CACHE='plop-recibidas-v35-seguimiento-real';
 self.addEventListener('install', event => { self.skipWaiting(); });
 self.addEventListener('activate', event => {
   event.waitUntil(caches.keys().then(keys => Promise.all(keys.map(key => caches.delete(key)))));

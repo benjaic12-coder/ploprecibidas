@@ -2,7 +2,7 @@ PLOP SEGUIMIENTOS V19.3 FINAL
 
 Proyecto: plop-seguimientos
 Project ID: b5291e17-9c69-4f0b-b471-d6d0e128c7c8
-Dominio: https://plop-seguimientos.netlify.app
+Dominio: https://plopseguimientos.netlify.app
 Supabase: https://tcjybxmkwdcutvswfmoi.supabase.co
 Modo demo: desactivado
 

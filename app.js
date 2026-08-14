@@ -1,26 +1,26 @@
 'use strict';
-// PLOP_V34_CUPON_LOCAL_CLOUDFLARE: catálogo completo, combos aprobados y compra guiada
+// PLOP_V35_INTEGRACION_SEGUIMIENTO: pedido real en Supabase + acceso directo a Plop Seguimientos
 
 if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
 
 const PRODUCTS = [
-  {id:'marco-rectangular',category:'Marcos',name:'Marco selfie rectangular',price:35000,image:'marco-rectangular.jpg?v=34',summary:'Marco para fotos rectangular, clásico y versátil para cualquier carrera.',details:['100 × 70 cm','FoamBoard + vinilo','Corte recto','Diseño personalizado'],theme:'yellow'},
-  {id:'marco-redondo',category:'Marcos',name:'Marco redondo',price:38000,image:'marco-redondo.jpg?v=34',summary:'Protagonista absoluto de la foto.',details:['70 × 70 cm','FoamBoard + vinilo','Corte redondo','Diseño personalizado'],theme:'purple'},
-  {id:'marco-nube',category:'Marcos',name:'Marco tipo nube',price:38000,image:'marco-nube.jpg?v=34',summary:'Llamativo, delicado y totalmente personalizado.',details:['50 × 100 cm','FoamBoard + vinilo','Estilo nube','Diseño personalizado'],theme:'aqua'},
-  {id:'marco-forma',category:'Marcos',name:'Marco con forma',price:38000,image:'marco-forma.jpg?v=34',summary:'Original, divertido y único para tu festejo.',details:['Hasta 100 × 70 cm','FoamBoard + vinilo','Forma a definir','Diseño personalizado'],theme:'pink'},
-  {id:'banda',category:'Bandas',name:'Banda para graduados',price:12000,image:'banda-graduados.jpg?v=34',summary:'Colores, carrera y frase elegidos por vos.',details:['150 × 11 cm','Lona impresa','Doble costura','Resistente al agua y pintura'],theme:'purple'},
-  {id:'cartel-chico',category:'Carteles colgantes',name:'Cartel colgante chico',price:7000,image:'cartel-chico.jpg?v=34',summary:'Liviano y listo para colgar.',details:['25 × 35 cm','FoamBoard + vinilo','Incluye cinta','Diseño personalizado'],theme:'yellow'},
-  {id:'cartel-mediano',category:'Carteles colgantes',name:'Cartel colgante mediano',price:12000,image:'cartel-mediano.jpg?v=34',summary:'El tamaño más elegido para la recibida.',details:['40 × 60 cm','FoamBoard + vinilo','Incluye cinta','Diseño personalizado'],theme:'aqua'},
-  {id:'cartel-grande',category:'Carteles colgantes',name:'Cartel colgante grande',price:30000,image:'cartel-grande.jpg?v=34',summary:'Alta visibilidad para todas las fotos.',details:['70 × 100 cm','FoamBoard + vinilo','Incluye cinta','Diseño personalizado'],theme:'pink'},
-  {id:'lona-mediana',category:'Lonas',name:'Cartel de lona mediano',price:25000,image:'lona-mediana.jpg?v=34',summary:'Ideal para auto, fiesta, capa o fondo de fotos.',details:['100 × 60 cm','Lona impresa','Fácil de trasladar','Resistente a líquidos'],theme:'aqua'},
-  {id:'lona-grande',category:'Lonas',name:'Cartel de lona grande',price:30000,image:'lona-grande.jpg?v=34',summary:'Vistoso, resistente y fácil de lucir.',details:['140 × 60 cm','Lona impresa','Ideal para auto o camioneta','Resistente a líquidos'],theme:'purple'},
-  {id:'props-unidad',category:'Props',name:'Prop individual',price:2000,image:'props-unidad.jpg?v=34',summary:'Una frase, meme, emoji o foto listo para usar.',details:['15 × 21 cm aprox.','Papel impreso + palito','1 unidad','Diseño personalizado'],theme:'pink'},
-  {id:'props-pack',category:'Props',name:'Pack de 8 props',price:12000,image:'props-pack.jpg?v=34',summary:'Más variedad para todas las fotos.',details:['8 unidades','15 × 21 cm aprox.','Papel impreso + palito','Diseños personalizados'],theme:'yellow'},
-  {id:'combo-1',category:'Combos',name:'Combo 1',price:50000,image:'combo-1.jpg?v=34',summary:'Marco selfie + cartel colgante chico + 8 props.',details:['Marco selfie','Cartel colgante chico','8 props','Diseño coordinado'],theme:'aqua'},
-  {id:'combo-2',category:'Combos',name:'Combo 2',price:55000,image:'combo-2.jpg?v=34',summary:'Marco selfie + banda para egresados + 8 props.',details:['Marco selfie','Banda para egresados','8 props','Diseño coordinado'],theme:'yellow'},
-  {id:'combo-3',category:'Combos',name:'Combo 3',price:34000,image:'combo-3.jpg?v=34',summary:'Cartel de lona mediano + 8 props.',details:['Cartel de lona mediano','8 props','Diseño coordinado','Listo para usar'],theme:'purple'},
-  {id:'combo-4',category:'Combos',name:'Combo 4',price:76000,image:'combo-4.jpg?v=34',summary:'Marco para fotos rectangular + banda + 8 props + cartel de lona grande.',details:['Marco para fotos rectangular','Banda para egresados','8 props','Cartel de lona grande'],theme:'pink'},
-  {id:'combo-5',category:'Combos',name:'Combo 5',price:54000,image:'combo-5.jpg?v=34',summary:'Cartel colgante grande + cartel de lona grande.',details:['Cartel colgante grande','Cartel de lona grande','Diseño coordinado','Gran formato'],theme:'aqua'}
+  {id:'marco-rectangular',category:'Marcos',name:'Marco selfie rectangular',price:35000,image:'marco-rectangular.jpg?v=35',summary:'Marco para fotos rectangular, clásico y versátil para cualquier carrera.',details:['100 × 70 cm','FoamBoard + vinilo','Corte recto','Diseño personalizado'],theme:'yellow'},
+  {id:'marco-redondo',category:'Marcos',name:'Marco redondo',price:38000,image:'marco-redondo.jpg?v=35',summary:'Protagonista absoluto de la foto.',details:['70 × 70 cm','FoamBoard + vinilo','Corte redondo','Diseño personalizado'],theme:'purple'},
+  {id:'marco-nube',category:'Marcos',name:'Marco tipo nube',price:38000,image:'marco-nube.jpg?v=35',summary:'Llamativo, delicado y totalmente personalizado.',details:['50 × 100 cm','FoamBoard + vinilo','Estilo nube','Diseño personalizado'],theme:'aqua'},
+  {id:'marco-forma',category:'Marcos',name:'Marco con forma',price:38000,image:'marco-forma.jpg?v=35',summary:'Original, divertido y único para tu festejo.',details:['Hasta 100 × 70 cm','FoamBoard + vinilo','Forma a definir','Diseño personalizado'],theme:'pink'},
+  {id:'banda',category:'Bandas',name:'Banda para graduados',price:12000,image:'banda-graduados.jpg?v=35',summary:'Colores, carrera y frase elegidos por vos.',details:['150 × 11 cm','Lona impresa','Doble costura','Resistente al agua y pintura'],theme:'purple'},
+  {id:'cartel-chico',category:'Carteles colgantes',name:'Cartel colgante chico',price:7000,image:'cartel-chico.jpg?v=35',summary:'Liviano y listo para colgar.',details:['25 × 35 cm','FoamBoard + vinilo','Incluye cinta','Diseño personalizado'],theme:'yellow'},
+  {id:'cartel-mediano',category:'Carteles colgantes',name:'Cartel colgante mediano',price:12000,image:'cartel-mediano.jpg?v=35',summary:'El tamaño más elegido para la recibida.',details:['40 × 60 cm','FoamBoard + vinilo','Incluye cinta','Diseño personalizado'],theme:'aqua'},
+  {id:'cartel-grande',category:'Carteles colgantes',name:'Cartel colgante grande',price:30000,image:'cartel-grande.jpg?v=35',summary:'Alta visibilidad para todas las fotos.',details:['70 × 100 cm','FoamBoard + vinilo','Incluye cinta','Diseño personalizado'],theme:'pink'},
+  {id:'lona-mediana',category:'Lonas',name:'Cartel de lona mediano',price:25000,image:'lona-mediana.jpg?v=35',summary:'Ideal para auto, fiesta, capa o fondo de fotos.',details:['100 × 60 cm','Lona impresa','Fácil de trasladar','Resistente a líquidos'],theme:'aqua'},
+  {id:'lona-grande',category:'Lonas',name:'Cartel de lona grande',price:30000,image:'lona-grande.jpg?v=35',summary:'Vistoso, resistente y fácil de lucir.',details:['140 × 60 cm','Lona impresa','Ideal para auto o camioneta','Resistente a líquidos'],theme:'purple'},
+  {id:'props-unidad',category:'Props',name:'Prop individual',price:2000,image:'props-unidad.jpg?v=35',summary:'Una frase, meme, emoji o foto listo para usar.',details:['15 × 21 cm aprox.','Papel impreso + palito','1 unidad','Diseño personalizado'],theme:'pink'},
+  {id:'props-pack',category:'Props',name:'Pack de 8 props',price:12000,image:'props-pack.jpg?v=35',summary:'Más variedad para todas las fotos.',details:['8 unidades','15 × 21 cm aprox.','Papel impreso + palito','Diseños personalizados'],theme:'yellow'},
+  {id:'combo-1',category:'Combos',name:'Combo 1',price:50000,image:'combo-1.jpg?v=35',summary:'Marco selfie + cartel colgante chico + 8 props.',details:['Marco selfie','Cartel colgante chico','8 props','Diseño coordinado'],theme:'aqua'},
+  {id:'combo-2',category:'Combos',name:'Combo 2',price:55000,image:'combo-2.jpg?v=35',summary:'Marco selfie + banda para egresados + 8 props.',details:['Marco selfie','Banda para egresados','8 props','Diseño coordinado'],theme:'yellow'},
+  {id:'combo-3',category:'Combos',name:'Combo 3',price:34000,image:'combo-3.jpg?v=35',summary:'Cartel de lona mediano + 8 props.',details:['Cartel de lona mediano','8 props','Diseño coordinado','Listo para usar'],theme:'purple'},
+  {id:'combo-4',category:'Combos',name:'Combo 4',price:76000,image:'combo-4.jpg?v=35',summary:'Marco para fotos rectangular + banda + 8 props + cartel de lona grande.',details:['Marco para fotos rectangular','Banda para egresados','8 props','Cartel de lona grande'],theme:'pink'},
+  {id:'combo-5',category:'Combos',name:'Combo 5',price:54000,image:'combo-5.jpg?v=35',summary:'Cartel colgante grande + cartel de lona grande.',details:['Cartel colgante grande','Cartel de lona grande','Diseño coordinado','Gran formato'],theme:'aqua'}
 ];
 
 const CATEGORIES = ['Combos','Marcos','Carteles colgantes','Lonas','Props','Bandas'];
@@ -52,6 +52,9 @@ const PRODUCT_BADGES = {
   'combo-5':'Gran formato'
 };
 const MAX_FORM_BYTES = 7.5 * 1024 * 1024;
+const SUPABASE_URL = 'https://tcjybxmkwdcutvswfmoi.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_We6azmFAiRM7TRHIZF6C7g_2Xu0leRW';
+const TRACKING_CLIENT_URL = 'https://plopseguimientos.netlify.app/cliente/';
 const ADMIN_KEYS = {orders:'plop.admin.orders.v2',coupons:'plop.admin.coupons.v2'};
 const $ = (selector, root=document) => root.querySelector(selector);
 const $$ = (selector, root=document) => [...root.querySelectorAll(selector)];
@@ -66,6 +69,9 @@ let soundEnabled = localStorage.getItem('plop.sound.enabled') !== 'false';
 let audioContext = null;
 let toastTimer = null;
 let guideTimer = null;
+let publicSupabaseClient = null;
+let pendingRequestId = null;
+let pendingAccessCode = null;
 const shownGuideStates = new Set();
 
 function escapeHTML(value=''){
@@ -80,9 +86,14 @@ function humanDate(iso){if(!iso)return 'A confirmar';const [y,m,d]=iso.split('-'
 function addBusinessDays(date,days){const result=new Date(date.getFullYear(),date.getMonth(),date.getDate());let added=0;while(added<days){result.setDate(result.getDate()+1);if(result.getDay()!==0&&result.getDay()!==6)added++;}return result;}
 function generateOrderNumber(){const d=new Date();const date=`${String(d.getFullYear()).slice(-2)}${String(d.getMonth()+1).padStart(2,'0')}${String(d.getDate()).padStart(2,'0')}`;return `PLOP-${date}-${Math.random().toString(36).slice(2,6).toUpperCase()}`;}
 function generateAccessCode(){return String(Math.floor(100000+Math.random()*900000));}
+function trackingLink(order){
+  if(!order?.number||!order?.accessCode)return TRACKING_CLIENT_URL;
+  const hash=new URLSearchParams({pedido:order.number,codigo:order.accessCode}).toString();
+  return `${TRACKING_CLIENT_URL}#${hash}`;
+}
 function trackingAccessBlock(order){
   if(!order?.accessCode)return '';
-  return `<div class="coupon-tracking-access"><span>Seguimiento online</span><strong>${escapeHTML(order.number)}</strong><p>Código privado: <b>${escapeHTML(order.accessCode)}</b></p><a href="https://plop-seguimientos.netlify.app/cliente/" target="_blank" rel="noopener">Abrir seguimiento</a><small>Guardá estos datos. Te van a servir para revisar avances, renders y aprobación.</small></div>`;
+  return `<div class="coupon-tracking-access"><span>Seguimiento online</span><strong>${escapeHTML(order.number)}</strong><p>Código privado: <b>${escapeHTML(order.accessCode)}</b></p><a href="${escapeHTML(trackingLink(order))}" target="_blank" rel="noopener">Abrir seguimiento</a><small>El botón abre este pedido directamente. Guardá también el número y el código por seguridad.</small></div>`;
 }
 
 function showToast(message){
@@ -326,45 +337,67 @@ function saveDuplicateToAdmin(order){
   }catch(error){console.warn('No se pudo guardar el duplicado local',error);}
 }
 
-async function notifyWebsiteOrder(order){
-  try{
-    const response=await fetch('/.netlify/functions/notificar-solicitud',{
-      method:'POST',
-      headers:{'Content-Type':'application/json','Accept':'application/json'},
-      body:JSON.stringify({
-        website:'ploprecibidas',
-        number:order.number,
-        name:order.name,
-        email:order.email,
-        whatsapp:order.whatsapp,
-        date:order.date,
-        design:order.design,
-        payment:order.payment,
-        otherPayment:order.otherPayment,
-        items:order.items,
-        total:order.total,
-        deposit:order.deposit,
-        balance:order.balance,
-        accessCode:order.accessCode
-      })
-    });
-    const data=await response.json().catch(()=>({}));
-    return {ok:response.ok&&data.ok,configured:data.configured!==false,...data};
-  }catch(error){
-    console.warn('No se pudo enviar el aviso por email',error);
-    return {ok:false,configured:true,error:error.message};
-  }
+async function getPublicSupabase(){
+  if(publicSupabaseClient)return publicSupabaseClient;
+  const {createClient}=await import('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm');
+  publicSupabaseClient=createClient(SUPABASE_URL,SUPABASE_ANON_KEY,{
+    auth:{persistSession:true,detectSessionInUrl:false,autoRefreshToken:true}
+  });
+  return publicSupabaseClient;
 }
 
-async function submitNetlifyForm(formData){
-  const response=await fetch('/forms/pedidos-plop.html',{
-    method:'POST',
-    headers:{'Accept':'application/json'},
-    body:formData
+function safeReceiptName(name='comprobante'){
+  return String(name||'comprobante').normalize('NFD').replace(/[\u0300-\u036f]/g,'')
+    .replace(/[^a-zA-Z0-9._-]+/g,'-').replace(/^-+|-+$/g,'').slice(0,100)||'comprobante';
+}
+
+async function registerWebsiteOrder(order,receiptFile){
+  const supabase=await getPublicSupabase();
+  const {data:sessionData}=await supabase.auth.getSession();
+  if(!sessionData.session){
+    const {error:signError}=await supabase.auth.signInAnonymously();
+    if(signError)throw new Error(`No se pudo iniciar el registro seguro: ${signError.message}`);
+  }
+
+  const products=order.items.map(item=>`${item.qty} × ${item.name}`).join(' | ');
+  const {data,error}=await supabase.rpc('create_public_order',{
+    p_request_id:order.requestId,
+    p_customer_name:order.name,
+    p_customer_email:order.email,
+    p_customer_whatsapp:order.whatsapp,
+    p_delivery_date:order.date,
+    p_products:products,
+    p_items:order.items,
+    p_design_details:order.design,
+    p_total:order.total,
+    p_deposit:order.deposit,
+    p_payment_method:order.payment,
+    p_payment_detail:order.otherPayment||null,
+    p_access_code:order.accessCode
   });
-  const text=await response.text().catch(()=>'');
-  const servedBlueprint=/Formulario interno Plop/i.test(text);
-  return {ok:response.ok&&!servedBlueprint,status:response.status,servedBlueprint};
+  if(error)throw new Error(error.message||'No se pudo registrar el pedido.');
+
+  const result=data||{};
+  order.id=result.order_id||'';
+  order.number=result.order_number||order.number;
+  order.accessCode=result.access_code||order.accessCode;
+  order.depositStatus=result.deposit_status||'Pendiente';
+  let receiptWarning='';
+
+  if(receiptFile&&order.id){
+    const path=`${order.id}/${Date.now()}-${safeReceiptName(receiptFile.name)}`;
+    const {error:uploadError}=await supabase.storage.from('payment-receipts').upload(path,receiptFile,{
+      upsert:false,
+      contentType:receiptFile.type||'application/octet-stream'
+    });
+    if(uploadError){
+      receiptWarning=' El pedido quedó registrado, pero el comprobante no pudo subirse; Plop deberá verificarlo por otro medio.';
+    }else{
+      const {error:attachError}=await supabase.rpc('attach_public_receipt',{p_order:order.id,p_path:path});
+      if(attachError)receiptWarning=' El pedido quedó registrado, pero no se pudo vincular el comprobante.';
+    }
+  }
+  return {ok:true,...result,receiptWarning};
 }
 
 async function submitOrder(event){
@@ -380,73 +413,54 @@ async function submitOrder(event){
   if(file&&!receiptCheck.valid){status.textContent=receiptCheck.message||'Revisá el comprobante.';status.className='form-status error';return;}
   if(!form.reportValidity())return;
 
-  const number=generateOrderNumber();
-  const accessCode=generateAccessCode();
-  $('#orderNumberField').value=number;
+  if(!pendingRequestId)pendingRequestId=crypto.randomUUID?.()||`${Date.now()}-${Math.random().toString(16).slice(2)}`;
+  const provisionalNumber=generateOrderNumber();
+  if(!pendingAccessCode)pendingAccessCode=generateAccessCode();
+  const accessCode=pendingAccessCode;
+  $('#orderNumberField').value=provisionalNumber;
   $('#trackingCodeField').value=accessCode;
   $('#orderCreatedField').value=new Date().toISOString();
   $('#receiptReviewField').value=receiptCheck.message;
-  $('input[name="subject"]').value=`Nueva solicitud Plop ${number}`;
+  $('input[name="subject"]').value=`Nueva solicitud Plop ${provisionalNumber}`;
   writeOrderFields();
   const snapshot=buildOrder(form);
+  snapshot.requestId=pendingRequestId;
 
   button.disabled=true;
-  button.textContent='Enviando…';
-  status.textContent='Registrando tu solicitud y preparando el cupón…';
+  button.textContent='Registrando…';
+  status.textContent='Registrando tu pedido en Plop Seguimientos…';
   status.className='form-status';
   try{
-    const formData=new FormData(form);
+    let processedFile=null;
     if(file){
-      const processed=await compressReceipt(file);
-      if(processed.size>MAX_FORM_BYTES)throw new Error('El comprobante supera el tamaño permitido.');
-      formData.set('comprobante',processed,processed.name);
-    }else{
-      formData.delete('comprobante');
+      processedFile=await compressReceipt(file);
+      if(processedFile.size>MAX_FORM_BYTES)throw new Error('El comprobante supera el tamaño permitido.');
     }
 
-    const [formResult,emailResult]=await Promise.all([
-      submitNetlifyForm(formData).catch(error=>({ok:false,error:error.message})),
-      notifyWebsiteOrder(snapshot)
-    ]);
+    const result=await registerWebsiteOrder(snapshot,processedFile);
+    $('#orderNumberField').value=snapshot.number;
+    $('#trackingCodeField').value=snapshot.accessCode;
 
-    if(emailResult.orderNumber){
-      snapshot.number=emailResult.orderNumber;
-      $('#orderNumberField').value=emailResult.orderNumber;
-    }
-    if(emailResult.accessCode){
-      snapshot.accessCode=emailResult.accessCode;
-      $('#trackingCodeField').value=emailResult.accessCode;
-    }
-    if(!snapshot.accessCode){
-      snapshot.accessCode=accessCode;
-    }
-
-    snapshot.deliveryNote = formResult.ok || emailResult.ok
-      ? 'Solicitud registrada online. Plop confirmará fecha y pago.'
-      : 'Cupón generado en el dispositivo. Enviá el cupón a Plop por WhatsApp o email para confirmar la reserva.';
-
+    snapshot.deliveryNote='Solicitud registrada online. Plop confirmará fecha y pago.';
     lastOrder=snapshot;
+    pendingRequestId=null;
+    pendingAccessCode=null;
     saveDuplicateToAdmin(snapshot);
     playConfirmSound();
     renderCoupon(snapshot);
     goStage('coupon');
-    const emailText=emailResult.ok
-      ?' También enviamos la confirmación por correo.'
-      : formResult.ok
-        ?' El pedido quedó registrado y el cupón fue generado.'
-        :' Generamos el cupón como respaldo local; compartilo con Plop para confirmar la reserva.';
-    status.textContent=`Solicitud procesada correctamente.${emailText}`;
+    status.textContent=`Solicitud registrada correctamente en Plop Seguimientos.${result.receiptWarning||''}`;
     status.className='form-status success';
   }catch(error){
     console.error(error);
-    status.textContent=`No pudimos generar el cupón: ${error.message||'error desconocido'}. Los datos siguen cargados para que vuelvas a intentar.`;
+    status.textContent=`No se registró el pedido: ${error.message||'error desconocido'}. No se generó un cupón inválido; podés volver a intentar con los mismos datos.`;
     status.className='form-status error';
   }finally{
     button.disabled=false;
     button.textContent='Enviar pedido y generar cupón';
   }
 }
-function resetOrder(){cart=[];lastOrder=null;receiptCheck={valid:false,message:'Elegí un medio de pago.'};$('#orderForm').reset();$('#deliveryDate').dataset.ready='';populateAvailableDates();updatePaymentUI();updateCartUI();renderCatalog();goStage('home');}
+function resetOrder(){cart=[];lastOrder=null;pendingRequestId=null;pendingAccessCode=null;receiptCheck={valid:false,message:'Elegí un medio de pago.'};$('#orderForm').reset();$('#deliveryDate').dataset.ready='';populateAvailableDates();updatePaymentUI();updateCartUI();renderCatalog();goStage('home');}
 
 function companionCopy(){
   const count=units();
@@ -593,7 +607,7 @@ function handleBotAction(action,button){
     return;
   }
   if(action==='tracking'){
-    addBotMessage('Para ver el estado, los renders y los mensajes de tu pedido ingresá con tu número y código privado. <a href="https://plop-seguimientos.netlify.app/cliente/" target="_blank" rel="noopener">Abrir Plop Seguimiento</a>.');
+    addBotMessage('Para ver el estado, los renders y los mensajes de tu pedido ingresá con tu número y código privado. <a href="https://plopseguimientos.netlify.app/cliente/" target="_blank" rel="noopener">Abrir Plop Seguimiento</a>.');
     return;
   }
   if(action==='payment'){
@@ -612,7 +626,7 @@ function normalizeBotText(text=''){
 function answerBotQuestion(text){
   const q=normalizeBotText(text);
   if(!q)return 'Escribime tu consulta y te ayudo.';
-  if(/seguimiento|estado|pedido|codigo/.test(q))return 'Entrá a <a href="https://plop-seguimientos.netlify.app/cliente/" target="_blank" rel="noopener">Plop Seguimiento</a> con el número de pedido y el código de 6 dígitos que te entregamos.';
+  if(/seguimiento|estado|pedido|codigo/.test(q))return 'Entrá a <a href="https://plopseguimientos.netlify.app/cliente/" target="_blank" rel="noopener">Plop Seguimiento</a> con el número de pedido y el código de 6 dígitos que te entregamos.';
   if(/pago|seña|sena|transfer|alias|efectivo/.test(q))return 'La reserva se realiza con una seña del 50%. Para transferencia: alias <strong>ploprecibidas</strong>, cuenta Naranja X, titular Stefania Romina Josefina Portorreal.';
   if(/demora|anticipacion|fecha|entrega|cuanto tarda/.test(q))return 'Tomamos pedidos con un mínimo de 5 días hábiles. La fecha queda confirmada cuando Plop verifica o coordina la seña.';
   if(/contacto|correo|email|hablar/.test(q))return 'Podés escribirnos a <a href="mailto:plopsgo@gmail.com">plopsgo@gmail.com</a>. También podés dejar tu solicitud directamente desde el catálogo.';
@@ -667,7 +681,7 @@ function bindEvents(){
 }
 function initialStage(){const hash=location.hash.replace('#','');if(hash==='catalog')return 'catalog';if(hash==='checkout'&&cart.length)return 'checkout';return 'home';}
 function init(){
-  try{renderTabs();renderCatalog(true);populateAvailableDates();updateCartUI();updatePaymentUI();bindEvents();goStage(initialStage(),{scroll:false});requestAnimationFrame(()=>window.scrollTo({top:0,behavior:'auto'}));if('serviceWorker'in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js?v=34').catch(()=>{}));document.documentElement.dataset.appReady='true';}
+  try{renderTabs();renderCatalog(true);populateAvailableDates();updateCartUI();updatePaymentUI();bindEvents();goStage(initialStage(),{scroll:false});requestAnimationFrame(()=>window.scrollTo({top:0,behavior:'auto'}));if('serviceWorker'in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js?v=35').catch(()=>{}));document.documentElement.dataset.appReady='true';}
   catch(error){console.error(error);showToast('La página no terminó de iniciar. Actualizá una vez.');}
 }
 document.addEventListener('DOMContentLoaded',init);

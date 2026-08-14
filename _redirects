@@ -1,1 +1,1 @@
-/* /index.html 200
+# Plop Recibidas no usa rutas SPA; sin redirecciones para evitar bucles en Cloudflare Pages.

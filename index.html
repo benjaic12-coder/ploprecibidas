@@ -3,11 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="menu.css">
 <title>Plop Recibidas | Armá tu pedido personalizado</title>
 <meta name="description" content="Armá tu combo de decoración personalizada para tu recibida: marcos, bandas, lonas, carteles y props. Elegí tu idea y coordiná tu pedido con Plop.">
 <link rel="canonical" href="https://ploprecibidas-web.pages.dev/">
 <meta property="og:type" content="website">
+<meta property="og:site_name" content="Plop Recibidas">
 <meta property="og:url" content="https://ploprecibidas-web.pages.dev/">
 <meta property="og:title" content="Plop Recibidas | Armá tu pedido personalizado">
 <meta property="og:description" content="Elegí tu combo, contanos tu idea y coordiná una recibida inolvidable con Plop.">
@@ -17,6 +20,7 @@
 <meta name="twitter:title" content="Plop Recibidas | Armá tu pedido personalizado">
 <meta name="twitter:description" content="Elegí tu combo, contanos tu idea y coordiná tu pedido con Plop.">
 <meta name="twitter:image" content="https://ploprecibidas-web.pages.dev/PREVIEW_FINAL_COMBOS_V30.jpg">
+<meta name="twitter:image:alt" content="Combos de decoración personalizada para recibidas">
 <meta name="theme-color" content="#fff8ed">
 <meta name="robots" content="index,follow">
 <script type="application/ld+json">
@@ -38,6 +42,9 @@
 .help-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}.help-actions button{border:2px solid var(--ink);border-radius:999px;padding:10px 9px;background:var(--yellow);font-weight:900;color:var(--ink);cursor:pointer}.help-actions button+button{background:var(--mint)}
 @media(max-width:760px){.brand-logo-mini{width:58px;height:36px}.brand{font-size:.92rem}.plop-helper{right:10px;bottom:14px}.plop-helper img{width:56px;height:56px}.plop-helper span{font-size:.7rem;padding:7px 8px}.help-panel{right:12px;bottom:78px;width:min(290px,calc(100% - 24px))}}.plop-helper{bottom:94px}.help-panel{bottom:176px}@media(max-width:760px){.plop-helper{bottom:82px}.help-panel{bottom:148px}}.cart:not(.has-items){display:none!important}.plop-helper{transition:transform .2s ease}.plop-helper:focus-visible{outline:3px solid var(--aqua);outline-offset:4px;border-radius:18px}.checkout-modal{width:min(720px,100%)}.checkout-summary{display:grid;gap:7px;background:#fff;border:2px solid var(--ink);border-radius:15px;padding:12px;margin:16px 0}.checkout-summary-row{display:flex;justify-content:space-between;gap:12px;color:var(--brown);font-size:.9rem}.checkout-summary-row strong{color:var(--ink)}.checkout-total{border-top:2px dashed var(--ink);padding-top:9px;margin-top:3px}.checkout-total strong{font-size:1.15rem}.checkout-form{display:grid;gap:12px}.checkout-form .field input,.checkout-form .field select,.checkout-form .field textarea{font:inherit}.consent{display:flex;gap:8px;align-items:flex-start;color:var(--brown);font-size:.78rem;line-height:1.35}.consent input{accent-color:var(--pink2);margin-top:3px}.form-status{min-height:22px;margin:0!important;font-weight:700}.form-status.error{color:#b33d5d}.form-status.success{color:#188f83}.order-success{display:grid;gap:14px}.order-success .notice{margin:0}.order-code{display:inline-block;background:var(--yellow);border:2px solid var(--ink);border-radius:999px;padding:8px 12px;font-weight:900}.success-actions{display:flex;flex-wrap:wrap;gap:9px}.success-actions button{border:2px solid var(--ink);border-radius:999px;padding:12px 16px;font-weight:900;cursor:pointer}.success-actions .primary{background:var(--pink2);color:#fff}.toast{position:fixed;left:50%;bottom:22px;transform:translate(-50%,20px);z-index:60;background:var(--ink);color:#fff;border:2px solid var(--yellow);border-radius:999px;padding:10px 16px;font-weight:700;opacity:0;pointer-events:none;transition:.22s}.toast.show{opacity:1;transform:translate(-50%,0)}.catalog-side{display:grid;gap:12px;justify-items:end;max-width:330px}.catalog-cta{border:2px solid var(--ink);background:var(--paper);color:var(--ink);border-radius:999px;padding:11px 17px;font-weight:900;cursor:pointer;box-shadow:4px 5px 0 var(--ink);transition:.2s}.catalog-cta:hover{transform:translateY(-2px)}.catalog-cta.ready{background:var(--pink2);color:#fff}.catalog-cta:focus-visible{outline:3px solid var(--mint2);outline-offset:3px}
 @media(max-width:760px){.catalog-side{justify-items:start;max-width:none}.catalog-cta{width:100%}}</style>
+<style>
+.skip-link{position:fixed;left:12px;top:12px;z-index:100;padding:10px 14px;border:2px solid var(--ink);border-radius:999px;background:var(--yellow);color:var(--ink);font-weight:900;transform:translateY(-180%);transition:transform .18s ease}.skip-link:focus{transform:translateY(0);outline:3px solid var(--mint2);outline-offset:3px}
+</style>
  .hero-art:before{content:'CATÁLOGO PLOP'}
 .checkout-summary-row{align-items:center}
 .checkout-summary-row strong{font-variant-numeric:tabular-nums}
@@ -45,6 +52,7 @@
 </style>
 </head>
 <body>
+<a class="skip-link" href="#catalog">Ir al catálogo</a>
 <main class="page">
 <header class="top">
 <div class="brand">
@@ -107,7 +115,7 @@
 <nav class="categories" id="categories" aria-label="Categorías de productos">
 </nav>
 </div>
-<div class="status">
+<div class="status" role="status" aria-live="polite">
 <span id="context">Combos listos para elegir</span>
 <strong id="count" aria-live="polite">
 </strong>
@@ -227,7 +235,7 @@ const base='';const products=[['combo-1','Combos','Combo Inicio ideal',50000,'Ma
 <div class="bottom">
 <span class="price">${money(p.price)}<small>Seña ${money(p.price/2)}</small>
 </span>
-<button class="add" data-add="${p.id}">Personalizar +</button>
+<button class="add" data-add="${p.id}" aria-label="Personalizar ${p.name}">Personalizar +</button>
 </div>
 </div>
 </article>`).join(''):`<div class="empty">

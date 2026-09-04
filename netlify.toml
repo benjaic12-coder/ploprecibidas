@@ -1,10 +1,6 @@
-# Proyecto Netlify: 7b6f62a0-b08a-4525-9496-805c7f3a77c3
+# Configuracion del sitio publico Plop Recibidas
 [build]
   publish = "."
-
-[functions]
-  directory = "netlify/functions"
-  node_bundler = "esbuild"
 
 [[headers]]
   for = "/*"
@@ -20,22 +16,26 @@
     Cache-Control = "public, max-age=31536000, immutable"
 
 [[headers]]
-  for = "/sw.js"
-  [headers.values]
-    Cache-Control = "no-cache"
-
-[[headers]]
   for = "/index.html"
   [headers.values]
     Cache-Control = "no-cache"
 
 [[headers]]
-  for = "/login.html"
+  for = "/privacy.html"
   [headers.values]
-    Cache-Control = "no-store, no-cache, must-revalidate"
+    Cache-Control = "public, max-age=3600"
 
 [[headers]]
-  for = "/admin/*"
+  for = "/*.webp"
   [headers.values]
-    Cache-Control = "no-store, no-cache, must-revalidate"
-    X-Robots-Tag = "noindex, nofollow"
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*.jpg"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*.png"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"

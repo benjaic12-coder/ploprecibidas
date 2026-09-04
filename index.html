@@ -4,15 +4,21 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <link rel="stylesheet" href="menu.css">
-<title>Plop Recibidas | Decoración personalizada para tu recibida</title>
+<title>Plop Recibidas | Armá tu pedido personalizado</title>
 <meta name="description" content="Armá tu combo de decoración personalizada para tu recibida: marcos, bandas, lonas, carteles y props. Elegí tu idea y coordiná tu pedido con Plop.">
 <link rel="canonical" href="https://ploprecibidas-web.pages.dev/">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://ploprecibidas-web.pages.dev/">
-<meta property="og:title" content="Plop Recibidas | Decoración personalizada">
+<meta property="og:title" content="Plop Recibidas | Armá tu pedido personalizado">
 <meta property="og:description" content="Elegí tu combo, contanos tu idea y coordiná una recibida inolvidable con Plop.">
 <meta property="og:image" content="https://ploprecibidas-web.pages.dev/PREVIEW_FINAL_COMBOS_V30.jpg">
+<meta property="og:image:alt" content="Combos personalizados de Plop Recibidas">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Plop Recibidas | Armá tu pedido personalizado">
+<meta name="twitter:description" content="Elegí tu combo, contanos tu idea y coordiná tu pedido con Plop.">
+<meta name="twitter:image" content="https://ploprecibidas-web.pages.dev/PREVIEW_FINAL_COMBOS_V30.jpg">
 <meta name="theme-color" content="#fff8ed">
+<meta name="robots" content="index,follow">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"LocalBusiness","name":"Plop Recibidas","description":"Decoración personalizada para recibidas: combos, marcos, bandas, lonas, carteles y props.","url":"https://ploprecibidas-web.pages.dev/","areaServed":"Santiago del Estero","sameAs":[]}
 </script>
@@ -32,6 +38,11 @@
 .help-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}.help-actions button{border:2px solid var(--ink);border-radius:999px;padding:10px 9px;background:var(--yellow);font-weight:900;color:var(--ink);cursor:pointer}.help-actions button+button{background:var(--mint)}
 @media(max-width:760px){.brand-logo-mini{width:58px;height:36px}.brand{font-size:.92rem}.plop-helper{right:10px;bottom:14px}.plop-helper img{width:56px;height:56px}.plop-helper span{font-size:.7rem;padding:7px 8px}.help-panel{right:12px;bottom:78px;width:min(290px,calc(100% - 24px))}}.plop-helper{bottom:94px}.help-panel{bottom:176px}@media(max-width:760px){.plop-helper{bottom:82px}.help-panel{bottom:148px}}.cart:not(.has-items){display:none!important}.plop-helper{transition:transform .2s ease}.plop-helper:focus-visible{outline:3px solid var(--aqua);outline-offset:4px;border-radius:18px}.checkout-modal{width:min(720px,100%)}.checkout-summary{display:grid;gap:7px;background:#fff;border:2px solid var(--ink);border-radius:15px;padding:12px;margin:16px 0}.checkout-summary-row{display:flex;justify-content:space-between;gap:12px;color:var(--brown);font-size:.9rem}.checkout-summary-row strong{color:var(--ink)}.checkout-total{border-top:2px dashed var(--ink);padding-top:9px;margin-top:3px}.checkout-total strong{font-size:1.15rem}.checkout-form{display:grid;gap:12px}.checkout-form .field input,.checkout-form .field select,.checkout-form .field textarea{font:inherit}.consent{display:flex;gap:8px;align-items:flex-start;color:var(--brown);font-size:.78rem;line-height:1.35}.consent input{accent-color:var(--pink2);margin-top:3px}.form-status{min-height:22px;margin:0!important;font-weight:700}.form-status.error{color:#b33d5d}.form-status.success{color:#188f83}.order-success{display:grid;gap:14px}.order-success .notice{margin:0}.order-code{display:inline-block;background:var(--yellow);border:2px solid var(--ink);border-radius:999px;padding:8px 12px;font-weight:900}.success-actions{display:flex;flex-wrap:wrap;gap:9px}.success-actions button{border:2px solid var(--ink);border-radius:999px;padding:12px 16px;font-weight:900;cursor:pointer}.success-actions .primary{background:var(--pink2);color:#fff}.toast{position:fixed;left:50%;bottom:22px;transform:translate(-50%,20px);z-index:60;background:var(--ink);color:#fff;border:2px solid var(--yellow);border-radius:999px;padding:10px 16px;font-weight:700;opacity:0;pointer-events:none;transition:.22s}.toast.show{opacity:1;transform:translate(-50%,0)}.catalog-side{display:grid;gap:12px;justify-items:end;max-width:330px}.catalog-cta{border:2px solid var(--ink);background:var(--paper);color:var(--ink);border-radius:999px;padding:11px 17px;font-weight:900;cursor:pointer;box-shadow:4px 5px 0 var(--ink);transition:.2s}.catalog-cta:hover{transform:translateY(-2px)}.catalog-cta.ready{background:var(--pink2);color:#fff}.catalog-cta:focus-visible{outline:3px solid var(--mint2);outline-offset:3px}
 @media(max-width:760px){.catalog-side{justify-items:start;max-width:none}.catalog-cta{width:100%}}</style>
+ .hero-art:before{content:'CATÁLOGO PLOP'}
+.checkout-summary-row{align-items:center}
+.checkout-summary-row strong{font-variant-numeric:tabular-nums}
+.checkout-trust{margin:12px 0}
+</style>
 </head>
 <body>
 <main class="page">
@@ -43,7 +54,7 @@
 <nav class="top-nav" aria-label="Menú principal">
 <a href="#home">Inicio</a>
 <a href="#catalog">Catálogo</a>
-<a class="menu-checkout" href="#catalog" id="menuCheckout">Ver mi selección</a>
+<a class="menu-checkout" href="#catalog" id="menuCheckout">Continuar con mi pedido</a>
 </nav>
 <small>Elegí tu idea. Nosotros la hacemos Plop.</small>
 </header>
@@ -98,7 +109,7 @@
 </div>
 <div class="status">
 <span id="context">Combos listos para elegir</span>
-<strong id="count">
+<strong id="count" aria-live="polite">
 </strong>
 </div>
 <div class="grid" id="grid">
@@ -108,7 +119,7 @@
 <section class="modal checkout-modal" role="dialog" aria-modal="true" aria-labelledby="checkoutTitle">
 <button class="close" id="checkoutClose" type="button" aria-label="Cerrar pedido">×</button>
 <p class="eyebrow">Paso 3 · Confirmá tu pedido</p>
-<h2 id="checkoutTitle">Dejá tus datos<br>
+<h2 id="checkoutTitle">Confirmá tu pedido<br>
 <span class="scribble">y Plop se ocupa.</span>
 </h2>
 <p>Registramos tu solicitud para que no tengas que ordenar todo por Instagram. Después coordinamos diseño, seña y entrega por WhatsApp.</p>
@@ -145,7 +156,7 @@
 </p>
 <div class="actions">
 <button type="button" id="checkoutBack">Seguir mirando</button>
-<button class="primary" id="checkoutSubmit" type="submit">Enviar solicitud →</button>
+<button class="primary" id="checkoutSubmit" type="submit">Confirmar mi pedido →</button>
 </div>
 </form>
 </section>
@@ -156,7 +167,7 @@
 <aside class="cart" id="cartBar">
 <div class="cart-copy">
 <strong id="cartTitle">Tu selección está vacía</strong>
-<span id="cartSub">Elegí un producto para comenzar.</span>
+<div id="cartSub" class="cart-items"><span>Elegí un producto para comenzar.</span></div>
 </div>
 <div class="stats">
 <div>
@@ -172,7 +183,7 @@
 <b id="balance">$0</b>
 </div>
 </div>
-<button id="continue">Ver mi selección →</button>
+<button id="continue">Continuar con mi pedido →</button>
 <button class="cart-secondary" id="splitBill" type="button">Dividir cuenta</button>
 <button class="cart-clear" id="clearCart" type="button" aria-label="Vaciar selección">Vaciar</button>
 </aside>
@@ -266,8 +277,14 @@ const renderCheckoutSummary=()=>{const totalValue=cart.reduce((sum,item)=>sum+it
 <span>${item.qty} × ${item.name}</span>
 <strong>${money(item.price*item.qty)}</strong>
 </div>`).join('')+`<div class="checkout-summary-row checkout-total">
-<span>Total · seña estimada 50%</span>
-<strong>${money(totalValue)} · ${money(Math.round(totalValue/2))}</strong>
+<span>Total</span>
+<strong>${money(totalValue)}</strong>
+</div><div class="checkout-summary-row">
+<span>Seña fija 50%</span>
+<strong>${money(Math.round(totalValue/2))}</strong>
+</div><div class="checkout-summary-row">
+<span>Saldo restante 50%</span>
+<strong>${money(totalValue-Math.round(totalValue/2))}</strong>
 </div>`};
 const openCheckout=()=>{if(!cart.length){showToast('Elegí al menos un producto para continuar.');document.querySelector('#catalog').scrollIntoView({behavior:'smooth',block:'start'});return;}renderCheckoutSummary();checkoutStatus.textContent='';checkoutStatus.className='form-status';checkoutOverlay.classList.add('open');checkoutOverlay.setAttribute('aria-hidden','false');checkoutForm.querySelector('[name="name"]').focus();};
 const closeCheckout=()=>{checkoutOverlay.classList.remove('open');checkoutOverlay.setAttribute('aria-hidden','true');};
@@ -295,7 +312,7 @@ overlay.addEventListener('click',event=>{if(event.target.closest('.primary')){co
 document.querySelector('#continue').addEventListener('click',event=>{event.preventDefault();event.stopImmediatePropagation();openCheckout();},true);
 checkoutOverlay.addEventListener('click',event=>{if(event.target===checkoutOverlay)closeCheckout();});document.querySelector('#checkoutClose').addEventListener('click',closeCheckout);document.querySelector('#checkoutBack').addEventListener('click',closeCheckout);document.addEventListener('keydown',event=>{if(event.key==='Escape'){closeCheckout();closeModal();}});
 checkoutForm.addEventListener('submit',async event=>{event.preventDefault();const requiredFields=[['name','nombre completo'],['whatsapp','WhatsApp'],['date','fecha estimada'],['design','idea para tu diseño'],['payment','medio para coordinar la seña']];const missing=requiredFields.find(([name])=>!String(new FormData(checkoutForm).get(name)||'').trim());if(missing){checkoutStatus.textContent=`Completá ${missing[1]} para continuar.`;checkoutStatus.className='form-status error';checkoutForm.querySelector(`[name="${missing[0]}"]`).focus();return;}if(!checkoutForm.querySelector('[name="consent"]').checked){checkoutStatus.textContent='Aceptá la confirmación de datos para enviar la solicitud.';checkoutStatus.className='form-status error';checkoutForm.querySelector('[name="consent"]').focus();return;}const order=buildRequest();checkoutSubmit.disabled=true;checkoutSubmit.textContent='Registrando…';checkoutStatus.textContent='Registrando tu solicitud…';checkoutStatus.className='form-status';try{const result=await registerRequest(order);localStorage.setItem('plop.approved.last-order.v47',JSON.stringify(result));showSuccess(result);}catch(error){console.error(error);checkoutStatus.textContent='No pudimos registrar la solicitud. Revisá tu conexión e intentá nuevamente; tus datos siguen cargados.';checkoutStatus.className='form-status error';checkoutSubmit.disabled=false;checkoutSubmit.textContent='Enviar solicitud →';}});const catalogCheckout=document.querySelector('#catalogCheckout');
-const syncCheckoutCta=()=>{const ready=cart.length>0;catalogCheckout.classList.toggle('ready',ready);catalogCheckout.textContent=ready?'Ver mi selección →':'Armar mi pedido →';catalogCheckout.setAttribute('aria-label',ready?'Ver selección de productos elegidos':'Armar un pedido: primero elegí un producto');};
+const syncCheckoutCta=()=>{const ready=cart.length>0;catalogCheckout.classList.toggle('ready',ready);catalogCheckout.textContent=ready?'Continuar con mi pedido →':'Armar mi pedido →';catalogCheckout.setAttribute('aria-label',ready?'Continuar con el pedido elegido':'Armar un pedido: primero elegí un producto');};
 catalogCheckout.addEventListener('click',()=>{if(!cart.length){showToast('Elegí un producto para comenzar.');document.querySelector('#catalog').scrollIntoView({behavior:'smooth',block:'start'});return;}openCheckout();});
 syncCheckoutCta();
 grid.addEventListener('click',()=>setTimeout(syncCheckoutCta,0));

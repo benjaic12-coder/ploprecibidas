@@ -169,7 +169,7 @@ function goStage(name,{scroll=true}={}){
   if(name==='coupon'&&!lastOrder){showToast('Primero completá y enviá la solicitud.');name=cart.length?'checkout':'catalog';}
   const stage=$(`[data-stage="${name}"]`);if(!stage)return;
   $$('[data-stage]').forEach(section=>{section.hidden=true;section.classList.remove('active');});
-  stage.hidden=false;stage.classList.add('active');activeStage=name;
+  stage.hidden=false;stage.classList.add('active');activeStage=name;document.body.dataset.stage=name;
   $('#backButton').hidden=name==='home';
   document.body.dataset.currentStage=name;
   const botLauncher=$('#plopBotLauncher');

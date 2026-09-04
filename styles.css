@@ -524,3 +524,62 @@ body{background:linear-gradient(180deg,#fff 0,#fcfaf7 48%,#f9f7f4 100%);font-fea
 @media(max-width:430px){.catalog-grid{grid-template-columns:1fr}.product-visual{aspect-ratio:1.35/1}.checkout-guide-panel-v32{grid-template-columns:1fr}.coupon-money{grid-template-columns:1fr!important}.home-copy h1{font-size:2.45rem}}
 
 .checkout-save-note{margin:2px 0 0;text-align:center;color:var(--muted);font-size:.78rem;line-height:1.45}
+.stage-home{background:var(--bg)}
+.home-content{max-width:920px}
+.home-visual-hero{position:relative;width:min(920px,100%);height:220px;margin:10px auto 24px;border:3px solid var(--ink);border-radius:28px;overflow:hidden;box-shadow:10px 11px 0 var(--ink);transform:rotate(-.6deg);background:#fff8ed}
+.home-visual-hero img{width:100%;height:100%;object-fit:cover;object-position:center}
+.home-visual-note{position:absolute;right:18px;bottom:16px;background:var(--yellow);border:2px solid var(--ink);border-radius:999px;padding:9px 14px;font-weight:900;transform:rotate(3deg)}
+.catalog-guide-panel,.combo-guide-panel{display:none!important}
+.stage[data-stage="catalog"] .stage-heading{margin-bottom:18px}
+.stage[data-stage="catalog"] .catalog-tools{margin-top:4px}
+.stage[data-stage="catalog"] .category-tabs{margin-top:12px}
+body[data-stage="catalog"] .plop-step-guide{display:none!important}
+/* El asistente sigue disponible en el botón flotante; el panel automático no tapa formularios ni productos. */
+.plop-step-guide{display:none!important}
+/* Corrección de color: la portada vuelve a la paleta original de Plop, manteniendo el ritmo editorial del PDF. */
+.stage-home{background:var(--bg);color:var(--ink)}
+.stage-home:before{background:repeating-linear-gradient(90deg,rgba(101,201,190,.16) 0 48px,transparent 48px 98px);opacity:.8}
+.stage-home .home-copy h1{color:var(--ink);letter-spacing:-.045em}
+.stage-home .home-copy h1 span{color:var(--aqua-dark)}
+.stage-home .home-copy p,.stage-home .home-kicker{color:var(--muted)}
+.stage-home .home-proof span{background:#fff;border-color:var(--line);color:var(--ink)}
+.stage-home .home-visual-hero{height:230px;border-color:var(--ink);box-shadow:10px 11px 0 var(--aqua);background:var(--cream)}
+.stage-home .home-visual-note{border-color:var(--ink);color:var(--ink)}
+.stage-home .public-email{color:var(--muted)}
+.stage-home .plopcito-home{width:min(190px,34vw);margin-top:10px}
+.stage-home .plopcito-home img{max-height:180px;object-fit:contain}
+.stage-home .plopcito-help-bubble{font-size:.74rem;padding:7px 10px;right:-56px;top:10px;white-space:nowrap}
+.stage-home .home-stripes{opacity:.8}
+@media (max-width:760px){.stage-home .home-visual-hero{height:150px;box-shadow:6px 7px 0 var(--aqua)}.stage-home .plopcito-home{width:145px}.stage-home .plopcito-home img{max-height:140px}.stage-home .plopcito-help-bubble{right:-42px;top:2px;font-size:.68rem}}
+.stage[data-stage="catalog"] .catalog-grid{position:relative}
+.stage[data-stage="catalog"] .catalog-grid:after{content:"";position:absolute;right:-18px;bottom:16px;width:180px;height:180px;background:url("assets/plop-stickers.jpg") center/cover no-repeat;opacity:.1;pointer-events:none;z-index:0}
+.stage[data-stage="catalog"] .product-card{position:relative;z-index:1}
+.stage-home{background:#12052d;color:#fff}
+.stage-home:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 20% 12%,rgba(143,74,255,.28),transparent 30%),repeating-linear-gradient(135deg,transparent 0 90px,rgba(137,60,255,.12) 91px 93px,transparent 94px 170px);pointer-events:none}
+.stage-home .home-copy h1{color:#fff;font-weight:900;letter-spacing:-.065em}
+.stage-home .home-copy h1 span{color:#8fe6dc}
+.stage-home .home-copy p,.stage-home .home-kicker{color:#e8ddf5}
+.stage-home .home-proof span{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.2);color:#fff}
+.stage-home .home-visual-hero{height:260px;border-color:#fff;box-shadow:10px 11px 0 #8b42ff;background:#16083a}
+.stage-home .home-visual-hero img{object-position:center}
+.stage-home .home-visual-note{border-color:#fff;color:#12052d}
+.stage-home .showcase-card{background:rgba(255,255,255,.96)}
+.stage-home .public-email{color:#e8ddf5}
+.stage-home .home-stripes{opacity:.55}
+.home-visual-hero{height:220px}
+@media (max-width: 640px){.home-visual-hero{height:150px;border-radius:20px;box-shadow:6px 7px 0 var(--ink);margin-bottom:18px}.home-visual-note{font-size:.75rem;right:10px;bottom:10px;padding:7px 10px}.stage[data-stage="catalog"] .catalog-grid:after{width:120px;height:120px;right:-8px;opacity:.07}}
+.stage-home{background:var(--bg)!important;color:var(--ink)!important}
+.stage-home:before{background:repeating-linear-gradient(90deg,rgba(101,201,190,.16) 0 48px,transparent 48px 98px)!important;opacity:.8!important}
+.stage-home .home-copy h1{color:var(--ink)!important;letter-spacing:-.045em!important}
+.stage-home .home-copy h1 span{color:var(--aqua-dark)!important}
+.stage-home .home-copy p,.stage-home .home-kicker{color:var(--muted)!important}
+.stage-home .home-proof span{background:#fff!important;border-color:var(--line)!important;color:var(--ink)!important}
+.stage-home .home-visual-hero{height:230px!important;border-color:var(--ink)!important;box-shadow:10px 11px 0 var(--aqua)!important;background:var(--cream)!important}
+.stage-home .home-visual-note{border-color:var(--ink)!important;color:var(--ink)!important}
+.stage-home .public-email{color:var(--muted)!important}
+.stage-home .plopcito-home{width:min(190px,34vw)!important;margin-top:10px!important}
+.stage-home .plopcito-home img{max-height:180px!important;object-fit:contain}
+.stage-home .plopcito-help-bubble{font-size:.74rem!important;padding:7px 10px!important;right:-56px!important;top:10px!important;white-space:nowrap}
+.stage-home .home-stripes{opacity:.8!important}
+@media (max-width:760px){.stage-home .home-visual-hero{height:150px!important;box-shadow:6px 7px 0 var(--aqua)!important}.stage-home .plopcito-home{width:145px!important}.stage-home .plopcito-home img{max-height:140px!important}.stage-home .plopcito-help-bubble{right:-42px!important;top:2px!important;font-size:.68rem!important}}
+.stage-home .plopcito-help-bubble{left:50%!important;right:auto!important;top:-10px!important;transform:translateX(-50%)!important;white-space:nowrap!important}

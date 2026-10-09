@@ -359,7 +359,6 @@ grid.addEventListener('click',()=>setTimeout(syncCheckoutCta,0));
 document.querySelector('#menuCheckout').addEventListener('click',event=>{event.preventDefault();if(!cart.length){showToast('Todavía no hay productos elegidos. Empezá por el catálogo.');document.querySelector('#catalog').scrollIntoView({behavior:'smooth',block:'start'});return;}openCheckout();});
 </script>
 <script>
-document.querySelectorAll('#grid img[src^="combo-"]').forEach((image)=>{image.src=image.src.replace(/combo-(\d+)\.png(?:\?[^"']*)?$/,'combo-$1-premium.webp?v=39.0');});
 </script>
 <script>
 const splitPanel=document.querySelector('#splitPanel'),splitPeople=document.querySelector('#splitPeople'),splitResult=document.querySelector('#splitResult');
@@ -404,3 +403,5 @@ chatLauncher.addEventListener('click',()=>chatPanel.hidden?openChat():closeChat(
 </script>
 </body>
 </html>
+
+

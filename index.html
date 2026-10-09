@@ -43,6 +43,10 @@
 @media(max-width:760px){.brand-logo-mini{width:58px;height:36px}.brand{font-size:.92rem}.plop-helper{right:10px;bottom:14px}.plop-helper img{width:56px;height:56px}.plop-helper span{font-size:.7rem;padding:7px 8px}.help-panel{right:12px;bottom:78px;width:min(290px,calc(100% - 24px))}}.plop-helper{bottom:94px}.help-panel{bottom:176px}@media(max-width:760px){.plop-helper{bottom:82px}.help-panel{bottom:148px}}.cart:not(.has-items){display:none!important}.plop-helper{transition:transform .2s ease}.plop-helper:focus-visible{outline:3px solid var(--aqua);outline-offset:4px;border-radius:18px}.checkout-modal{width:min(720px,100%)}.checkout-summary{display:grid;gap:7px;background:#fff;border:2px solid var(--ink);border-radius:15px;padding:12px;margin:16px 0}.checkout-summary-row{display:flex;justify-content:space-between;gap:12px;color:var(--brown);font-size:.9rem}.checkout-summary-row strong{color:var(--ink)}.checkout-total{border-top:2px dashed var(--ink);padding-top:9px;margin-top:3px}.checkout-total strong{font-size:1.15rem}.checkout-form{display:grid;gap:12px}.checkout-form .field input,.checkout-form .field select,.checkout-form .field textarea{font:inherit}.consent{display:flex;gap:8px;align-items:flex-start;color:var(--brown);font-size:.78rem;line-height:1.35}.consent input{accent-color:var(--pink2);margin-top:3px}.form-status{min-height:22px;margin:0!important;font-weight:700}.form-status.error{color:#b33d5d}.form-status.success{color:#188f83}.order-success{display:grid;gap:14px}.order-success .notice{margin:0}.order-code{display:inline-block;background:var(--yellow);border:2px solid var(--ink);border-radius:999px;padding:8px 12px;font-weight:900}.success-actions{display:flex;flex-wrap:wrap;gap:9px}.success-actions button{border:2px solid var(--ink);border-radius:999px;padding:12px 16px;font-weight:900;cursor:pointer}.success-actions .primary{background:var(--pink2);color:#fff}.toast{position:fixed;left:50%;bottom:22px;transform:translate(-50%,20px);z-index:60;background:var(--ink);color:#fff;border:2px solid var(--yellow);border-radius:999px;padding:10px 16px;font-weight:700;opacity:0;pointer-events:none;transition:.22s}.toast.show{opacity:1;transform:translate(-50%,0)}.catalog-side{display:grid;gap:12px;justify-items:end;max-width:330px}.catalog-cta{border:2px solid var(--ink);background:var(--paper);color:var(--ink);border-radius:999px;padding:11px 17px;font-weight:900;cursor:pointer;box-shadow:4px 5px 0 var(--ink);transition:.2s}.catalog-cta:hover{transform:translateY(-2px)}.catalog-cta.ready{background:var(--pink2);color:#fff}.catalog-cta:focus-visible{outline:3px solid var(--mint2);outline-offset:3px}
 @media(max-width:760px){.catalog-side{justify-items:start;max-width:none}.catalog-cta{width:100%}}</style>
 <style>
+.menu-contact{color:var(--ink);text-decoration:none;border:2px solid var(--ink);border-radius:999px;padding:8px 11px;font-size:.78rem;font-weight:900;background:var(--mint)}
+.hero-actions{display:flex;gap:10px;margin-top:18px}.hero-contact{display:inline-block;border:2px solid var(--ink);border-radius:999px;padding:10px 14px;background:var(--yellow);color:var(--ink);font-weight:900;text-decoration:none;box-shadow:3px 4px 0 var(--ink)}
+.success-actions a{display:inline-flex;align-items:center;text-decoration:none}
+@media(max-width:760px){.menu-contact{font-size:.62rem;padding:7px}.hero-actions{margin-top:14px}.hero-contact{font-size:.82rem}}
 .skip-link{position:fixed;left:12px;top:12px;z-index:100;padding:10px 14px;border:2px solid var(--ink);border-radius:999px;background:var(--yellow);color:var(--ink);font-weight:900;transform:translateY(-180%);transition:transform .18s ease}.skip-link:focus{transform:translateY(0);outline:3px solid var(--mint2);outline-offset:3px}
 </style>
  .hero-art:before{content:'CATÁLOGO PLOP'}
@@ -63,6 +67,7 @@
 <a href="#home">Inicio</a>
 <a href="#catalog">Catálogo</a>
 <a class="menu-checkout" href="#catalog" id="menuCheckout">Continuar con mi pedido</a>
+<a class="menu-contact" href="mailto:plopsgo@gmail.com?subject=Consulta%20Plop%20Recibidas">Contacto</a>
 </nav>
 <small>Elegí tu idea. Nosotros la hacemos Plop.</small>
 </header>
@@ -74,6 +79,7 @@
 <span>Plop.</span>
 </h1>
 <p>Combos, marcos, lonas, bandas, carteles y props para que cada foto tenga tu nombre, tu carrera y tu historia.</p>
+<div class="hero-actions"><a class="hero-contact" href="mailto:plopsgo@gmail.com?subject=Consulta%20Plop%20Recibidas">Consultar por email →</a></div>
 </div>
 <div class="hero-art">
 <img src="PREVIEW_FINAL_COMBOS_V30.jpg" alt="Composición de combos personalizados Plop para una recibida">
@@ -138,14 +144,14 @@
 <div class="custom">
 <label class="field">Nombre completo<input name="name" autocomplete="name" required placeholder="Ej.: Sofía Gómez">
 </label>
-<label class="field">WhatsApp<input name="whatsapp" type="tel" autocomplete="tel" required placeholder="Ej.: 385 555 5555">
+<label class="field">WhatsApp<input name="whatsapp" type="tel" autocomplete="tel" required maxlength="40" placeholder="Ej.: 385 555 5555">
 </label>
 <label class="field">Email <span style="font-weight:500;color:var(--brown)">(opcional)</span>
-<input name="email" type="email" autocomplete="email" placeholder="tu@email.com">
+<input name="email" type="email" autocomplete="email" maxlength="160" placeholder="tu@email.com">
 </label>
 <label class="field">Fecha estimada<input name="date" type="date" required>
 </label>
-<label class="field wide">Idea para tu diseño<textarea name="design" required placeholder="Carrera, nombres, colores, frase y cualquier detalle que quieras sumar...">
+<label class="field wide">Idea para tu diseño<textarea name="design" required maxlength="1200" placeholder="Carrera, nombres, colores, frase y cualquier detalle que quieras sumar...">
 </textarea>
 </label>
 <label class="field wide">Medio para coordinar la seña<select name="payment" required>
@@ -240,33 +246,33 @@ const base='';const products=[['combo-1','Combos','Combo Inicio ideal',50000,'Ma
 </div>
 </article>`).join(''):`<div class="empty">
 <strong>No encontramos ese producto.</strong>
-<br>Probá con otra búsqueda o elegí una categoría.</div>`}function update(){const t=cart.reduce((s,x)=>s+x.price*x.qty,0),q=cart.reduce((s,x)=>s+x.qty,0);document.querySelector("#cartBar").classList.toggle("has-items",q>0);cartTitle.textContent=q?`${q} ${q===1?'producto elegido':'productos elegidos'}`:'Tu selección está vacía';cartSub.textContent=cart.length?cart.map(x=>`${x.qty}× ${x.name}`).join(' · '):'Elegí un producto para comenzar.';total.textContent=money(t);deposit.textContent=money(Math.round(t/2));balance.textContent=money(t-Math.round(t/2))}function customize(p){modal.innerHTML=`<button class="close" onclick="closeModal()">×</button>
+<br>Probá con otra búsqueda o elegí una categoría.</div>`}function update(){const t=cart.reduce((s,x)=>s+x.price*x.qty,0),q=cart.reduce((s,x)=>s+x.qty,0);document.querySelector("#cartBar").classList.toggle("has-items",q>0);cartTitle.textContent=q?`${q} ${q===1?'producto elegido':'productos elegidos'}`:'Tu selección está vacía';cartSub.textContent=cart.length?cart.map(x=>`${x.qty}× ${x.name}`).join(' · '):'Elegí un producto para comenzar.';total.textContent=money(t);deposit.textContent=money(Math.round(t/2));balance.textContent=money(t-Math.round(t/2))}function customize(p){modal.setAttribute('role','dialog');modal.setAttribute('aria-modal','true');modal.setAttribute('aria-labelledby','customizeTitle');modal.innerHTML=`<button class="close" type="button" data-close-customize aria-label="Cerrar personalización">×</button>
 <p class="eyebrow">Paso 2 · Personalizá</p>
-<h2>${p.name}<br>
+<h2 id="customizeTitle">${p.name}<br>
 <span class="scribble">Hagámoslo tuyo.</span>
 </h2>
 <p>${p.desc} La seña estimada es ${money(p.price/2)}.</p>
 <div class="custom">
-<label class="field">Nombre o nombres<input placeholder="Ej.: Sofi y Agus">
+<label class="field">Nombre o nombres<input name="names" autocomplete="name" maxlength="120" placeholder="Ej.: Sofi y Agus">
 </label>
-<label class="field">Carrera<input placeholder="Ej.: Medicina">
+<label class="field">Carrera<input name="career" maxlength="120" placeholder="Ej.: Medicina">
 </label>
-<label class="field">Colores<select>
+<label class="field">Colores<select name="colors">
 <option>Elegilos más adelante</option>
 <option>Rosa + aqua</option>
 <option>Lila + amarillo</option>
 </select>
 </label>
-<label class="field">Fecha estimada<input type="date">
+<label class="field">Fecha estimada<input name="customDate" type="date">
 </label>
-<label class="field wide">Idea o frase<textarea placeholder="Contanos qué te gustaría ver...">
+<label class="field wide">Idea o frase<textarea name="idea" maxlength="1200" placeholder="Contanos qué te gustaría ver...">
 </textarea>
 </label>
 </div>
 <div class="actions">
-<button onclick="closeModal()">Seguir mirando</button>
-<button class="primary" onclick="closeModal()">Guardar mi idea →</button>
-</div>`;overlay.classList.add('open')}grid.addEventListener('click',e=>{const b=e.target.closest('[data-add]');if(!b)return;const p=products.find(x=>x.id===b.dataset.add),i=cart.find(x=>x.id===p.id);i?i.qty++:cart.push({...p,qty:1});update();customize(p)});categories.addEventListener('click',e=>{const b=e.target.closest('[data-cat]');if(!b)return;active=b.dataset.cat;query='';search.value='';render()});search.addEventListener('input',e=>{query=e.target.value.trim();render()});document.querySelector('#continue').onclick=()=>{if(!cart.length){alert('Elegí al menos un producto para continuar.');return}customize(cart[0])};overlay.onclick=e=>{if(e.target===overlay)closeModal()};function closeModal(){overlay.classList.remove('open')}render();update();const plopHelper=document.querySelector("#plopHelper"),helpPanel=document.querySelector("#helpPanel");plopHelper.addEventListener("click",()=>{const next=helpPanel.hidden;helpPanel.hidden=!next;plopHelper.setAttribute("aria-expanded",String(next))});helpPanel.addEventListener("click",e=>{if(e.target.closest(".help-close")){helpPanel.hidden=true;plopHelper.setAttribute("aria-expanded","false");return}const b=e.target.closest("[data-help]");if(!b)return;active=b.dataset.help;query="";search.value="";render();helpPanel.hidden=true;plopHelper.setAttribute("aria-expanded","false");document.querySelector("#catalog").scrollIntoView({behavior:"smooth",block:"start"});});
+<button type="button" data-close-customize>Seguir mirando</button>
+<button class="primary" type="button" data-save-customize>Guardar mi idea →</button>
+</div>`;overlay.classList.add('open');modal.querySelector('input,select,textarea')?.focus()}grid.addEventListener('click',e=>{const b=e.target.closest('[data-add]');if(!b)return;const p=products.find(x=>x.id===b.dataset.add),i=cart.find(x=>x.id===p.id);i?i.qty++:cart.push({...p,qty:1});update();customize(p)});categories.addEventListener('click',e=>{const b=e.target.closest('[data-cat]');if(!b)return;active=b.dataset.cat;query='';search.value='';render()});search.addEventListener('input',e=>{query=e.target.value.trim();render()});document.querySelector('#continue').onclick=()=>{if(!cart.length){alert('Elegí al menos un producto para continuar.');return}customize(cart[0])};overlay.onclick=e=>{if(e.target===overlay)closeModal()};function closeModal(){overlay.classList.remove('open');modal.removeAttribute('role');modal.removeAttribute('aria-modal');modal.removeAttribute('aria-labelledby')}render();update();const plopHelper=document.querySelector("#plopHelper"),helpPanel=document.querySelector("#helpPanel");plopHelper.addEventListener("click",()=>{const next=helpPanel.hidden;helpPanel.hidden=!next;plopHelper.setAttribute("aria-expanded",String(next))});helpPanel.addEventListener("click",e=>{if(e.target.closest(".help-close")){helpPanel.hidden=true;plopHelper.setAttribute("aria-expanded","false");return}const b=e.target.closest("[data-help]");if(!b)return;active=b.dataset.help;query="";search.value="";render();helpPanel.hidden=true;plopHelper.setAttribute("aria-expanded","false");document.querySelector("#catalog").scrollIntoView({behavior:"smooth",block:"start"});});
 
 /* Capa de compra: mantiene el formato aprobado y vuelve accionables los pasos. */
 const checkoutOverlay=document.querySelector('#checkoutOverlay');
@@ -275,8 +281,13 @@ const checkoutSummary=document.querySelector('#checkoutSummary');
 const checkoutStatus=document.querySelector('#checkoutStatus');
 const checkoutSubmit=document.querySelector('#checkoutSubmit');
 const toast=document.querySelector('#toast');
+const orderDateField=checkoutForm.querySelector('[name="date"]');
+const addBusinessDays=(date,days)=>{const next=new Date(date);let added=0;while(added<days){next.setDate(next.getDate()+1);const day=next.getDay();if(day!==0&&day!==6)added++;}return next;};
+const dateInputValue=date=>{const y=date.getFullYear(),m=String(date.getMonth()+1).padStart(2,'0'),d=String(date.getDate()).padStart(2,'0');return `${y}-${m}-${d}`;};
+const earliestOrderDate=()=>dateInputValue(addBusinessDays(new Date(),5));
 const STORAGE_KEY='plop.approved.cart.v47';
 let lastCustomizationId='';
+let lastCustomizationTrigger=null;
 let toastTimer;
 const showToast=(message)=>{toast.textContent=message;toast.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>toast.classList.remove('show'),2800)};
 const persistSelection=()=>{try{localStorage.setItem(STORAGE_KEY,JSON.stringify(cart.map(({id,qty,custom})=>({id,qty,custom}))));}catch{}};
@@ -294,32 +305,33 @@ const renderCheckoutSummary=()=>{const totalValue=cart.reduce((sum,item)=>sum+it
 <span>Saldo restante 50%</span>
 <strong>${money(totalValue-Math.round(totalValue/2))}</strong>
 </div>`};
-const openCheckout=()=>{if(!cart.length){showToast('Elegí al menos un producto para continuar.');document.querySelector('#catalog').scrollIntoView({behavior:'smooth',block:'start'});return;}renderCheckoutSummary();checkoutStatus.textContent='';checkoutStatus.className='form-status';checkoutOverlay.classList.add('open');checkoutOverlay.setAttribute('aria-hidden','false');checkoutForm.querySelector('[name="name"]').focus();};
+const openCheckout=()=>{if(!cart.length){showToast('Elegí al menos un producto para continuar.');document.querySelector('#catalog').scrollIntoView({behavior:'smooth',block:'start'});return;}renderCheckoutSummary();checkoutStatus.textContent='';checkoutStatus.className='form-status';checkoutOverlay.classList.add('open');checkoutOverlay.setAttribute('aria-hidden','false');orderDateField.min=earliestOrderDate();checkoutForm.querySelector('[name="name"]').focus();};
 const closeCheckout=()=>{checkoutOverlay.classList.remove('open');checkoutOverlay.setAttribute('aria-hidden','true');};
 const buildRequest=()=>{const formData=new FormData(checkoutForm);const totalValue=cart.reduce((sum,item)=>sum+item.price*item.qty,0);const number=`PLOP-${new Date().toISOString().slice(0,10).replaceAll('-','')}-${Math.random().toString(36).slice(2,6).toUpperCase()}`;const items=cart.map(item=>({id:item.id,name:item.name,qty:item.qty,unit:item.price,subtotal:item.price*item.qty,customization:item.custom||null}));return {requestId:crypto.randomUUID?.()||`${Date.now()}-${Math.random().toString(16).slice(2)}`,number,accessCode:Math.floor(100000+Math.random()*900000).toString(),name:String(formData.get('name')||''),whatsapp:String(formData.get('whatsapp')||''),email:String(formData.get('email')||''),date:String(formData.get('date')||''),design:String(formData.get('design')||''),payment:String(formData.get('payment')||''),items,total:totalValue,deposit:Math.round(totalValue/2),balance:totalValue-Math.round(totalValue/2)};};
 const registerRequest=async(order)=>{const {createClient}=await import('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm');const client=createClient('https://tcjybxmkwdcutvswfmoi.supabase.co','sb_publishable_We6azmFAiRM7TRHIZF6C7g_2Xu0leRW',{auth:{persistSession:true,detectSessionInUrl:false,autoRefreshToken:true}});const session=await client.auth.getSession();if(!session.data.session){const signed=await client.auth.signInAnonymously();if(signed.error)throw signed.error;}const productsText=order.items.map(item=>`${item.qty} × ${item.name}`).join(' | ');const response=await client.rpc('create_public_order',{p_request_id:order.requestId,p_customer_name:order.name,p_customer_email:order.email,p_customer_whatsapp:order.whatsapp,p_delivery_date:order.date,p_products:productsText,p_items:order.items,p_design_details:order.design,p_total:order.total,p_deposit:order.deposit,p_payment_method:order.payment,p_payment_detail:null,p_access_code:order.accessCode});if(response.error)throw response.error;return {...order,...(response.data||{})};};
-const showSuccess=(order)=>{const realNumber=order.order_number||order.number;const code=order.access_code||order.accessCode;checkoutForm.innerHTML=`<div class="order-success">
+const showSuccess=(order)=>{const realNumber=order.order_number||order.number;const code=order.access_code||order.accessCode;const contactHref=`mailto:plopsgo@gmail.com?subject=${encodeURIComponent(`Solicitud ${realNumber}`)}&body=${encodeURIComponent(`Hola Plop, envié la solicitud ${realNumber} con código ${code}.`)}`;checkoutForm.innerHTML=`<div class="order-success">
 <p class="eyebrow">Solicitud recibida</p>
 <h2>Listo, ya está<br>
 <span class="scribble">en manos de Plop.</span>
 </h2>
-<p class="notice">Guardá estos datos. Plop va a revisar tu solicitud y continuar la coordinación por WhatsApp.</p>
+<p class="notice">Guardá estos datos. Plop va a revisar tu solicitud y te responderá por el canal de contacto indicado.</p>
 <div>
 <span class="order-code">${realNumber}</span>
 <p>
 <strong>Código privado:</strong> ${code}</p>
 </div>
 <div class="success-actions">
+<a class="primary" href="${contactHref}">Contactar por email</a>
 <button class="primary" type="button" id="copyOrder">Copiar datos</button>
 <button type="button" id="closeSuccess">Volver al catálogo</button>
 </div>
 </div>`;document.querySelector('#copyOrder').addEventListener('click',async()=>{const text=`Solicitud ${realNumber} · Código ${code}`;try{await navigator.clipboard.writeText(text);showToast('Datos copiados.')}catch{showToast(text)}});document.querySelector('#closeSuccess').addEventListener('click',()=>{cart.length=0;persistSelection();update();closeCheckout();location.hash='catalog';location.reload();});};
 restoreSelection();
-grid.addEventListener('click',event=>{const button=event.target.closest('[data-add]');if(!button)return;lastCustomizationId=button.dataset.add;setTimeout(()=>{persistSelection();},0)});
-overlay.addEventListener('click',event=>{if(event.target.closest('.primary')){const item=cart.find(entry=>entry.id===lastCustomizationId);if(item){const fields=modal.querySelectorAll('input,select,textarea');item.custom={names:fields[0]?.value||'',career:fields[1]?.value||'',colors:fields[2]?.value||'',date:fields[3]?.value||'',idea:fields[4]?.value||''};persistSelection();showToast('Idea guardada en tu selección.');}event.preventDefault();event.stopPropagation();closeModal();}},true);
+grid.addEventListener('click',event=>{const button=event.target.closest('[data-add]');if(!button)return;lastCustomizationId=button.dataset.add;lastCustomizationTrigger=button;setTimeout(()=>{persistSelection();},0)});
+overlay.addEventListener('click',event=>{if(event.target.closest('[data-close-customize]')){closeModal();return;}if(event.target.closest('[data-save-customize]')){const item=cart.find(entry=>entry.id===lastCustomizationId);if(item){const fields=modal.querySelectorAll('input,select,textarea');item.custom={names:modal.querySelector('[name="names"]')?.value||'',career:modal.querySelector('[name="career"]')?.value||'',colors:modal.querySelector('[name="colors"]')?.value||'',date:modal.querySelector('[name="customDate"]')?.value||'',idea:modal.querySelector('[name="idea"]')?.value||''};persistSelection();showToast('Idea guardada en tu selección.');}event.preventDefault();event.stopPropagation();closeModal();lastCustomizationTrigger?.focus();}},true);
 document.querySelector('#continue').addEventListener('click',event=>{event.preventDefault();event.stopImmediatePropagation();openCheckout();},true);
 checkoutOverlay.addEventListener('click',event=>{if(event.target===checkoutOverlay)closeCheckout();});document.querySelector('#checkoutClose').addEventListener('click',closeCheckout);document.querySelector('#checkoutBack').addEventListener('click',closeCheckout);document.addEventListener('keydown',event=>{if(event.key==='Escape'){closeCheckout();closeModal();}});
-checkoutForm.addEventListener('submit',async event=>{event.preventDefault();const requiredFields=[['name','nombre completo'],['whatsapp','WhatsApp'],['date','fecha estimada'],['design','idea para tu diseño'],['payment','medio para coordinar la seña']];const missing=requiredFields.find(([name])=>!String(new FormData(checkoutForm).get(name)||'').trim());if(missing){checkoutStatus.textContent=`Completá ${missing[1]} para continuar.`;checkoutStatus.className='form-status error';checkoutForm.querySelector(`[name="${missing[0]}"]`).focus();return;}if(!checkoutForm.querySelector('[name="consent"]').checked){checkoutStatus.textContent='Aceptá la confirmación de datos para enviar la solicitud.';checkoutStatus.className='form-status error';checkoutForm.querySelector('[name="consent"]').focus();return;}const order=buildRequest();checkoutSubmit.disabled=true;checkoutSubmit.textContent='Registrando…';checkoutStatus.textContent='Registrando tu solicitud…';checkoutStatus.className='form-status';try{const result=await registerRequest(order);localStorage.setItem('plop.approved.last-order.v47',JSON.stringify(result));showSuccess(result);}catch(error){console.error(error);checkoutStatus.textContent='No pudimos registrar la solicitud. Revisá tu conexión e intentá nuevamente; tus datos siguen cargados.';checkoutStatus.className='form-status error';checkoutSubmit.disabled=false;checkoutSubmit.textContent='Enviar solicitud →';}});const catalogCheckout=document.querySelector('#catalogCheckout');
+checkoutForm.addEventListener('submit',async event=>{event.preventDefault();const requiredFields=[['name','nombre completo'],['whatsapp','WhatsApp'],['date','fecha estimada'],['design','idea para tu diseño'],['payment','medio para coordinar la seña']];const missing=requiredFields.find(([name])=>!String(new FormData(checkoutForm).get(name)||'').trim());if(missing){checkoutStatus.textContent=`Completá ${missing[1]} para continuar.`;checkoutStatus.className='form-status error';checkoutForm.querySelector(`[name="${missing[0]}"]`).focus();return;}if(!checkoutForm.querySelector('[name="consent"]').checked){checkoutStatus.textContent='Aceptá la confirmación de datos para enviar la solicitud.';checkoutStatus.className='form-status error';checkoutForm.querySelector('[name="consent"]').focus();return;}const requestedDate=String(new FormData(checkoutForm).get('date')||'');if(requestedDate<earliestOrderDate()){checkoutStatus.textContent=`Elegí una fecha a partir del ${earliestOrderDate().split('-').reverse().join('/')}.`;checkoutStatus.className='form-status error';orderDateField.focus();return;}const order=buildRequest();checkoutSubmit.disabled=true;checkoutSubmit.textContent='Registrando…';checkoutStatus.textContent='Registrando tu solicitud…';checkoutStatus.className='form-status';try{const result=await registerRequest(order);localStorage.setItem('plop.approved.last-order.v47',JSON.stringify({number:result.order_number||result.number,code:result.access_code||result.accessCode,createdAt:new Date().toISOString()}));showSuccess(result);}catch(error){console.error(error);checkoutStatus.textContent='No pudimos registrar la solicitud. Revisá tu conexión e intentá nuevamente; tus datos siguen cargados.';checkoutStatus.className='form-status error';checkoutSubmit.disabled=false;checkoutSubmit.textContent='Enviar solicitud →';}});const catalogCheckout=document.querySelector('#catalogCheckout');
 const syncCheckoutCta=()=>{const ready=cart.length>0;catalogCheckout.classList.toggle('ready',ready);catalogCheckout.textContent=ready?'Continuar con mi pedido →':'Armar mi pedido →';catalogCheckout.setAttribute('aria-label',ready?'Continuar con el pedido elegido':'Armar un pedido: primero elegí un producto');};
 catalogCheckout.addEventListener('click',()=>{if(!cart.length){showToast('Elegí un producto para comenzar.');document.querySelector('#catalog').scrollIntoView({behavior:'smooth',block:'start'});return;}openCheckout();});
 syncCheckoutCta();

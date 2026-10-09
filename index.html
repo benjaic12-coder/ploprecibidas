@@ -14,12 +14,12 @@
 <meta property="og:url" content="https://ploprecibidas-web.pages.dev/">
 <meta property="og:title" content="Plop Recibidas | Armá tu pedido personalizado">
 <meta property="og:description" content="Elegí tu combo, contanos tu idea y coordiná una recibida inolvidable con Plop.">
-<meta property="og:image" content="https://ploprecibidas-web.pages.dev/PREVIEW_FINAL_COMBOS_V30.jpg">
+<meta property="og:image" content="https://ploprecibidas-web.pages.dev/clean-product-assets/combo-4-clean.webp?v=47">
 <meta property="og:image:alt" content="Combos personalizados de Plop Recibidas">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Plop Recibidas | Armá tu pedido personalizado">
 <meta name="twitter:description" content="Elegí tu combo, contanos tu idea y coordiná tu pedido con Plop.">
-<meta name="twitter:image" content="https://ploprecibidas-web.pages.dev/PREVIEW_FINAL_COMBOS_V30.jpg">
+<meta name="twitter:image" content="https://ploprecibidas-web.pages.dev/clean-product-assets/combo-4-clean.webp?v=47">
 <meta name="twitter:image:alt" content="Combos de decoración personalizada para recibidas">
 <meta name="theme-color" content="#fff8ed">
 <meta name="color-scheme" content="light">
@@ -86,7 +86,7 @@
 <div class="hero-actions"><a class="hero-contact" href="https://wa.me/5493856870303?text=Hola%20Plop%2C%20quiero%20armar%20mi%20pedido%20para%20una%20recibida." target="_blank" rel="noopener">Consultar por WhatsApp →</a><a class="hero-email" href="mailto:plopsgo@gmail.com?subject=Consulta%20Plop%20Recibidas">Email</a></div>
 </div>
 <div class="hero-art">
-<img src="PREVIEW_FINAL_COMBOS_V30.jpg" alt="Composición de combos personalizados Plop para una recibida" fetchpriority="high" decoding="async">
+<img src="clean-product-assets/combo-4-clean.webp?v=47" alt="Composición real de un combo completo de Plop Recibidas" fetchpriority="high" decoding="async">
 </div>
 </section>
 <section class="catalog" id="catalog">
@@ -114,13 +114,14 @@
 </section>
 <section class="service-notes" aria-label="Información importante del pedido">
 <article><span class="note-icon">✓</span><div><strong>Confirmación personalizada</strong><p>Revisamos disponibilidad, diseño y fecha antes de producir.</p></div></article>
-<article><span class="note-icon">⌁</span><div><strong>Te respondemos por el canal elegido</strong><p>Después de enviar tu solicitud, coordinamos los detalles por WhatsApp o email.</p></div></article>
-<article><span class="note-icon">★</span><div><strong>La fecha queda reservada al confirmar</strong><p>La disponibilidad depende de la agenda y se confirma con vos.</p></div></article>
+<article><span class="note-icon">⌁</span><div><strong>Entrega o retiro coordinado</strong><p>Te confirmamos la modalidad disponible para tu fecha y localidad.</p></div></article>
+<article><span class="note-icon">★</span><div><strong>Pedí con anticipación</strong><p>La fecha se reserva cuando confirmamos diseño, disponibilidad y seña.</p></div></article>
 </section>
+<p class="catalog-note"><strong>Antes de pedir:</strong> indicá tu fecha estimada, carrera, colores y localidad. Revisamos disponibilidad, diseño, entrega o retiro y te confirmamos la seña antes de producir.</p>
 <div class="tools">
 <label class="search">
 <span>⌕</span>
-<input id="search" type="search" aria-label="Buscar productos" placeholder="Buscá por producto o categoría...">
+<input id="search" type="search" aria-label="Buscar productos" placeholder="Ej.: marco, banda, lona, cartel o props...">
 </label>
 <nav class="categories" id="categories" aria-label="Categorías de productos">
 </nav>
@@ -242,20 +243,7 @@
 </label>
 <div class="split-result" id="splitResult"></div>
 </section>
-<button class="plop-helper" id="plopHelper" type="button" aria-expanded="false" aria-controls="helpPanel" aria-label="Abrir ayuda de Plopcito">
-<img src="plopcito-con-brazos.png?v=37.0" alt="">
-<span>¿Te ayudo a elegir?</span>
-</button>
-<div class="help-panel" id="helpPanel" hidden>
-<button class="help-close" type="button" aria-label="Cerrar ayuda">×</button>
-<p class="eyebrow">Plopcito te acompaña</p>
-<strong>Elegí por dónde empezar.</strong>
-<p>Podés mirar un combo listo o elegir solo el producto que necesitás.</p>
-<div class="help-actions">
-<button type="button" data-help="Combos">Ver combos</button>
-<button type="button" data-help="Marcos">Ver marcos</button>
-</div>
-</div>
+<button id="plopHelper" hidden type="button" aria-hidden="true"></button><div id="helpPanel" hidden></div>
 <div class="overlay" id="overlay">
 <section class="modal" id="modal">
 </section>
@@ -272,7 +260,7 @@ const base='';const products=[['combo-1','Combos','Combo Inicio ideal',50000,'Ma
 <div class="bottom">
 <span class="price">${money(p.price)}<small>Seña ${money(p.price/2)}</small>
 </span>
-<button class="add" data-add="${p.id}" aria-label="Personalizar ${p.name}">Personalizar +</button>
+<button class="add" data-add="${p.id}" aria-label="Elegir y personalizar ${p.name}">Elegir y personalizar</button>
 </div>
 </div>
 </article>`).join(''):`<div class="empty">
@@ -387,7 +375,7 @@ const cleanProductImages={
   'combo-1.png':'clean-product-assets/combo-1-clean.webp','combo-2.png':'clean-product-assets/combo-2-clean.webp','combo-3.png':'clean-product-assets/combo-3-clean.webp','combo-4.png':'clean-product-assets/combo-4-clean.webp','combo-5.png':'clean-product-assets/combo-5-clean.webp',
   'marco-rectangular.jpg':'clean-product-assets/marco-rectangular-clean.webp','marco-redondo.jpg':'clean-product-assets/marco-redondo-clean.webp','marco-nube.jpg':'clean-product-assets/marco-nube-clean.webp','marco-forma.jpg':'clean-product-assets/marco-forma-clean.webp','cartel-chico.jpg':'clean-product-assets/cartel-chico-clean.webp','cartel-mediano.jpg':'clean-product-assets/cartel-mediano-clean.webp','cartel-grande.jpg':'clean-product-assets/cartel-grande-clean.webp','lona-mediana.jpg':'clean-product-assets/lona-mediana-clean.webp','lona-grande.jpg':'clean-product-assets/lona-grande-clean.webp','props-pack.jpg':'clean-product-assets/props-pack-clean.webp','props-unidad.jpg':'clean-product-assets/props-unidad-clean.webp','banda-graduados.jpg':'clean-product-assets/banda-graduados-clean.webp'
 };
-const optimizeProductImages=()=>{document.querySelectorAll('#grid img').forEach((image,index)=>{image.loading=index<5?'eager':'lazy';image.fetchPriority=index<2?'high':'auto';const source=image.getAttribute('src')||'';const file=source.split('/').pop().split('?')[0];if(cleanProductImages[file])image.src=cleanProductImages[file]+'?v=46.0';});};
+const optimizeProductImages=()=>{document.querySelectorAll('#grid img').forEach((image,index)=>{image.loading=index<5?'eager':'lazy';image.fetchPriority=index<2?'high':'auto';const source=image.getAttribute('src')||'';const file=source.split('/').pop().split('?')[0];if(cleanProductImages[file])image.src=cleanProductImages[file]+'?v=47.0';});};
 optimizeProductImages();
 new MutationObserver(optimizeProductImages).observe(document.querySelector('#grid'),{childList:true});
 </script>

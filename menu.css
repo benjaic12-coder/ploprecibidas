@@ -26,5 +26,7 @@ body{overflow-x:hidden}
 @media(prefers-reduced-motion:reduce){.chat-launcher{transition:none}.chat-launcher:hover,.chat-launcher:focus-visible{transform:none}}
 .chat-launcher{padding:7px 13px 7px 8px}.chat-launcher img{width:32px;height:32px;object-fit:contain;filter:drop-shadow(0 3px 3px rgba(57,48,76,.18))}.chat-agent-title{display:flex;align-items:center;gap:9px}.chat-agent-title img{width:48px;height:48px;object-fit:contain;filter:drop-shadow(0 4px 4px rgba(57,48,76,.16))}
 @media(max-width:760px){.chat-launcher{padding:5px 10px 5px 6px}.chat-launcher img{width:28px;height:28px}}
+.product .media,.product:nth-child(1) .media,.product:nth-child(-n+5) .media{height:260px;aspect-ratio:4 / 3;padding:12px;display:grid;place-items:center;overflow:hidden}.product .media img{width:100%;height:100%;object-fit:contain;object-position:center;background:#fff;border-radius:12px}
+@media(max-width:760px){.product .media,.product:nth-child(1) .media,.product:nth-child(-n+5) .media{height:190px;aspect-ratio:4 / 3;padding:8px}.product:nth-child(1) .media{height:220px}}
 
 

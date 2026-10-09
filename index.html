@@ -430,9 +430,10 @@ chatLauncher.addEventListener('click',()=>chatPanel.hidden?openChat():closeChat(
     sessionId=sessionStorage.getItem('plop.analytics.session')||crypto.randomUUID();
     sessionStorage.setItem('plop.analytics.session',sessionId);
   } catch { sessionId=`s-${Date.now()}`; }
+  const attribution=(()=>{const params=new URLSearchParams(location.search);const value={utm_source:params.get('utm_source')||'',utm_medium:params.get('utm_medium')||'',utm_campaign:params.get('utm_campaign')||'',referrer:document.referrer||'',landing_path:location.pathname};try{sessionStorage.setItem('plop.analytics.attribution',JSON.stringify(value))}catch{}return value})(); 
   const track=(eventName,productId=null,metadata={})=>{
     try {
-      const payload={p_event_name:eventName,p_session_id:sessionId,p_product_id:productId,p_metadata:metadata,p_page:location.pathname};
+      const payload={p_event_name:eventName,p_session_id:sessionId,p_product_id:productId,p_metadata:{...attribution,...metadata},p_page:location.pathname};
       fetch(url,{method:'POST',headers:{apikey:key,Authorization:`Bearer ${key}`,'content-type':'application/json'},body:JSON.stringify(payload),keepalive:true}).catch(()=>{});
     } catch {}
   };
@@ -440,7 +441,7 @@ chatLauncher.addEventListener('click',()=>chatPanel.hidden?openChat():closeChat(
   track('page_view');
   document.addEventListener('click',event=>{
     const add=event.target.closest('[data-add]');
-    if(add)track('add_to_cart',add.dataset.add);
+    if(add){track('product_view',add.dataset.add,{interaction:'catalog_card'});track('add_to_cart',add.dataset.add);}
     const chat=event.target.closest('#chatLauncher');
     if(chat)track('chat_opened');
     const contact=event.target.closest('a[href*="wa.me"]');

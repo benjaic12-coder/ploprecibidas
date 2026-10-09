@@ -186,6 +186,28 @@
 <span>Consultanos por WhatsApp, email o Instagram.</span>
 <div class="footer-links"><a href="https://wa.me/5493856870303?text=Hola%20Plop%2C%20quiero%20consultar%20por%20una%20recibida." target="_blank" rel="noopener">WhatsApp +54 9 385 687-0303</a><a href="mailto:plopsgo@gmail.com?subject=Consulta%20Plop%20Recibidas">plopsgo@gmail.com</a><a href="https://www.instagram.com/plop.recibidas/" target="_blank" rel="noopener">@plop.recibidas</a></div>
 </footer>
+<button class="chat-launcher" id="chatLauncher" type="button" aria-expanded="false" aria-controls="plopChat" aria-label="Abrir asistente de atención de Plop">
+<span class="chat-launcher-dot" aria-hidden="true"></span><span>Atención Plop</span>
+</button>
+<aside class="plop-chat" id="plopChat" hidden aria-labelledby="chatTitle" role="dialog" aria-modal="false">
+<header class="plop-chat-header">
+<div><p class="eyebrow">Atención rápida</p><h2 id="chatTitle">Hola, soy Plopcito 👋</h2></div>
+<button class="chat-close" id="chatClose" type="button" aria-label="Cerrar chat">×</button>
+</header>
+<div class="chat-messages" id="chatMessages" role="log" aria-live="polite" aria-relevant="additions"></div>
+<div class="chat-quick-replies" id="chatQuickReplies" aria-label="Preguntas frecuentes">
+<button type="button" data-chat-intent="combos">Ver combos</button>
+<button type="button" data-chat-intent="precio">Precios y seña</button>
+<button type="button" data-chat-intent="personalizar">Personalizar</button>
+<button type="button" data-chat-intent="fecha">Fechas y entrega</button>
+</div>
+<form class="chat-form" id="chatForm">
+<label class="sr-only" for="chatInput">Escribí tu consulta</label>
+<input id="chatInput" name="message" maxlength="300" autocomplete="off" placeholder="Escribí tu consulta...">
+<button type="submit" aria-label="Enviar consulta">Enviar</button>
+</form>
+<div class="chat-handoff"><span>¿Preferís hablar con una persona?</span><a href="https://wa.me/5493856870303?text=Hola%20Plop%2C%20necesito%20ayuda%20con%20mi%20pedido." target="_blank" rel="noopener">WhatsApp →</a></div>
+</aside>
 </main>
 <aside class="cart" id="cartBar">
 <div class="cart-copy">
@@ -359,6 +381,31 @@ document.querySelector('#splitBill').addEventListener('click',()=>{if(!cart.leng
 document.querySelector('#splitClose').addEventListener('click',()=>splitPanel.hidden=true);splitPeople.addEventListener('change',renderSplit);
 document.querySelector('#clearCart').addEventListener('click',()=>{if(!cart.length)return;cart.length=0;persistSelection();update();syncCheckoutCta();splitPanel.hidden=true;showToast('Selección vaciada.');});
 const originalUpdate=update; update=()=>{originalUpdate(); if(!splitPanel.hidden&&cart.length)renderSplit();};
+</script>
+<script>
+const optimizeProductImages=()=>{document.querySelectorAll('#grid img').forEach((image,index)=>{image.loading=index<5?'eager':'lazy';image.fetchPriority=index<2?'high':'auto';image.src=image.src.replace(/combo-(\d+)\.png(?:\?[^"']*)?$/,'combo-$1-premium.webp?v=39.0');});};
+optimizeProductImages();
+new MutationObserver(optimizeProductImages).observe(document.querySelector('#grid'),{childList:true});
+</script>
+<script>
+const chatLauncher=document.querySelector('#chatLauncher'),chatPanel=document.querySelector('#plopChat'),chatClose=document.querySelector('#chatClose'),chatMessages=document.querySelector('#chatMessages'),chatForm=document.querySelector('#chatForm'),chatInput=document.querySelector('#chatInput'),chatQuickReplies=document.querySelector('#chatQuickReplies');
+const CHAT_KEY='plop.chat.history.v1';
+const chatWelcome='¡Hola! Soy Plopcito. Te ayudo a elegir una opción, entender los precios o preparar tu pedido. ¿Por dónde empezamos?';
+const chatReplies={
+combos:'Tenemos combos listos, marcos, carteles, lonas, props y bandas. Los combos aparecen primero en el catálogo y podés filtrarlos por categoría. Si querés, elegí un producto y después personalizalo con nombres, carrera, colores y frase.',
+precio:'Cada tarjeta muestra el precio total y la seña estimada del 50%. En el pedido también ves el saldo restante. La seña y la producción se coordinan después de revisar disponibilidad, diseño y fecha.',
+personalizar:'Elegí un producto y tocá “Personalizar +”. Podés dejar nombres, carrera, colores, fecha estimada e idea o frase. Después continuás con tu selección y completás tus datos.',
+fecha:'La fecha queda sujeta a disponibilidad y confirmación de Plop. Enviá la fecha estimada dentro del pedido y te respondemos para coordinar diseño, seña y entrega.',
+contacto:'Podés escribirnos por WhatsApp al +54 9 385 687-0303, por email a plopsgo@gmail.com o por Instagram en @plop.recibidas.'
+};
+const addChatMessage=(text,kind='bot',save=true)=>{const message=document.createElement('div');message.className=`chat-message ${kind}`;message.textContent=text;chatMessages.appendChild(message);chatMessages.scrollTop=chatMessages.scrollHeight;if(save){try{const history=JSON.parse(localStorage.getItem(CHAT_KEY)||'[]');history.push({text,kind});localStorage.setItem(CHAT_KEY,JSON.stringify(history.slice(-30)));}catch{}}};
+const restoreChat=()=>{let history=[];try{history=JSON.parse(localStorage.getItem(CHAT_KEY)||'[]');}catch{};if(Array.isArray(history)&&history.length){history.forEach(item=>addChatMessage(String(item.text||''),item.kind==='user'?'user':'bot',false));}else addChatMessage(chatWelcome);};
+const openChat=()=>{chatPanel.hidden=false;chatLauncher.setAttribute('aria-expanded','true');if(!chatMessages.children.length)restoreChat();chatInput.focus();};
+const closeChat=()=>{chatPanel.hidden=true;chatLauncher.setAttribute('aria-expanded','false');chatLauncher.focus();};
+const detectChatIntent=(text)=>{const value=text.toLowerCase();if(/combo|marco|cartel|lona|prop|banda|producto/.test(value))return 'combos';if(/precio|cuesta|sale|seña|sena|pago|saldo/.test(value))return 'precio';if(/personal|nombre|carrera|color|frase|diseño|diseno/.test(value))return 'personalizar';if(/fecha|entrega|demora|cuando|cuándo|disponib/.test(value))return 'fecha';if(/whatsapp|instagram|email|correo|contact/.test(value))return 'contacto';return null;};
+const answerChat=(intent)=>{if(intent==='combos'){document.querySelector('#catalog').scrollIntoView({behavior:'smooth',block:'start'});document.querySelector('[data-cat="Combos"]')?.click();}return chatReplies[intent]||'Puedo ayudarte con combos, precios, personalización, fechas y contacto. Elegí una opción o escribime tu duda con más detalle.';};
+const sendChat=(text)=>{const clean=text.trim();if(!clean)return;addChatMessage(clean,'user');chatInput.value='';const intent=detectChatIntent(clean);window.setTimeout(()=>addChatMessage(answerChat(intent),'bot'),180);};
+chatLauncher.addEventListener('click',()=>chatPanel.hidden?openChat():closeChat());chatClose.addEventListener('click',closeChat);chatForm.addEventListener('submit',event=>{event.preventDefault();sendChat(chatInput.value);});chatQuickReplies.addEventListener('click',event=>{const button=event.target.closest('[data-chat-intent]');if(!button)return;const intent=button.dataset.chatIntent;addChatMessage(button.textContent,'user');window.setTimeout(()=>addChatMessage(answerChat(intent),'bot'),180);});document.addEventListener('keydown',event=>{if(event.key==='Escape'&&!chatPanel.hidden)closeChat();});
 </script>
 </body>
 </html>

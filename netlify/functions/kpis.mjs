@@ -1,3 +1,5 @@
+import { hasAdminSession } from './_admin-auth.mjs';
+
 const json = (body, status = 200) => new Response(JSON.stringify(body), {
   status,
   headers: { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store' },
@@ -5,10 +7,7 @@ const json = (body, status = 200) => new Response(JSON.stringify(body), {
 
 export default async (request) => {
   if (request.method !== 'GET') return json({ error: 'method_not_allowed' }, 405);
-
-  const adminToken = Netlify.env.get('PLOP_ADMIN_TOKEN');
-  const suppliedToken = request.headers.get('x-admin-token');
-  if (!adminToken || !suppliedToken || suppliedToken !== adminToken) return json({ error: 'unauthorized' }, 401);
+  if (!await hasAdminSession(request)) return json({ error: 'unauthorized' }, 401);
 
   const supabaseUrl = Netlify.env.get('SUPABASE_URL');
   const serviceRoleKey = Netlify.env.get('SUPABASE_SERVICE_ROLE_KEY');
@@ -32,4 +31,3 @@ export const config = {
   method: ['GET'],
   rateLimit: { action: 'rate_limit', aggregateBy: 'ip', windowSize: 60, windowLimit: 60 },
 };
-

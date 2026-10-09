@@ -60,3 +60,17 @@ body{overflow-x:hidden}
   }
   .chat-open .chat-launcher{display:none}
 }
+
+/* Catálogo táctil: dos columnas reales en escritorio, fichas compactas y sin recortar el producto. */
+@media(min-width:761px){
+  #grid .product,#grid .product:nth-child(1){grid-column:span 6}
+  #grid .product .media,#grid .product:nth-child(1) .media,#grid .product:nth-child(-n+5) .media{height:280px;aspect-ratio:unset;padding:12px}
+  #grid .product .media img{max-width:100%;max-height:100%;object-fit:contain;object-position:center}
+  #grid:has(.product:only-child) .product{grid-column:4 / span 6}
+}
+@media(max-width:760px){
+  #grid{grid-template-columns:1fr;gap:12px}
+  #grid .product,#grid .product:nth-child(1){grid-column:span 1}
+  #grid .product .media,#grid .product:nth-child(1) .media,#grid .product:nth-child(-n+5) .media{height:220px;aspect-ratio:unset;padding:9px}
+  #grid .product .media img{max-width:100%;max-height:100%;object-fit:contain;object-position:center}
+}

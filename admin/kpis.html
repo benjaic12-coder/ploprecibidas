@@ -24,7 +24,7 @@
 <section id="dashboard" class="hidden">
 <header class="admin-header">
 <div><p class="muted">Plop Recibidas · área privada</p><h1>KPIs del catálogo</h1><p class="muted">Pedidos, facturación y embudo de conversión del período seleccionado.</p></div>
-<button id="logout" class="logout" type="button">Cerrar sesión</button>
+<nav style="display:flex;gap:8px;flex-wrap:wrap"><a class="logout" href="/admin/catalog.html" style="text-decoration:none">Editar catálogo</a><button id="logout" class="logout" type="button">Cerrar sesión</button></nav>
 </header>
 <section class="toolbar"><label>Desde<input id="since" type="date"></label><label>Hasta<input id="until" type="date"></label><button id="load" class="primary" type="button">Actualizar KPIs</button></section>
 <p id="status" class="status muted" aria-live="polite"></p>

@@ -250,7 +250,7 @@
 </section>
 </div>
 <script>
-const base='';const products=[
+const base='';let products=[
 ['combo-1','Combos','Combo Inicio ideal',50000,'Marco selfie + cartel chico + 8 props.','Para arrancar con todo','catalog-photos/marco-selfie-castro.webp?v=51.0','Incluye: marco selfie · cartel chico · 8 props.'],
 ['combo-2','Combos','Combo Fotos + banda',55000,'Marco selfie + banda + 8 props.','Para llevar tu carrera a las fotos','catalog-photos/banda-graduados.webp?v=51.0','Incluye: marco selfie · banda · 8 props.'],
 ['combo-3','Combos','Combo Lona + props',34000,'Lona mediana + 8 props.','Simple, visual y completo','catalog-photos/lona-team-anriquez.webp?v=51.0','Incluye: lona mediana · 8 props.'],
@@ -367,6 +367,8 @@ const showSuccess=(order)=>{const realNumber=order.order_number||order.number;co
 </div>
 </div>`;document.querySelector('#copyOrder').addEventListener('click',async()=>{const text=`Solicitud ${realNumber} · Código ${code}`;try{await navigator.clipboard.writeText(text);showToast('Datos copiados.')}catch{showToast(text)}});document.querySelector('#closeSuccess').addEventListener('click',()=>{cart.length=0;persistSelection();update();closeCheckout();location.hash='catalog';location.reload();});};
 restoreSelection();
+const loadManagedCatalog=async()=>{try{const response=await fetch('/api/products',{cache:'no-store'});if(!response.ok)return;const payload=await response.json();if(!Array.isArray(payload.products)||!payload.products.length)return;const managed=payload.products.map(item=>({id:item.id,cat:item.category,name:item.name,price:Number(item.price),desc:item.description||'',tag:item.badge||'',image:item.image_url,spec:item.spec||''}));products.splice(0,products.length,...managed);cart=cart.map(item=>{const current=products.find(product=>product.id===item.id);return current?{...current,qty:item.qty,custom:item.custom}:item});render();update();syncCheckoutCta()}catch(error){console.warn('Se mantiene el catálogo local si el backend no responde.',error)}};
+loadManagedCatalog();
 grid.addEventListener('click',event=>{const button=event.target.closest('[data-add]');if(!button)return;lastCustomizationId=button.dataset.add;lastCustomizationTrigger=button;setTimeout(()=>{persistSelection();},0)});
 overlay.addEventListener('click',event=>{if(event.target.closest('[data-close-customize]')){closeModal();return;}if(event.target.closest('[data-save-customize]')){const item=cart.find(entry=>entry.id===lastCustomizationId);if(item){const fields=modal.querySelectorAll('input,select,textarea');item.custom={names:modal.querySelector('[name="names"]')?.value||'',career:modal.querySelector('[name="career"]')?.value||'',colors:modal.querySelector('[name="colors"]')?.value||'',date:modal.querySelector('[name="customDate"]')?.value||'',idea:modal.querySelector('[name="idea"]')?.value||''};persistSelection();showToast('Idea guardada en tu selección.');}event.preventDefault();event.stopPropagation();closeModal();lastCustomizationTrigger?.focus();}},true);
 document.querySelector('#continue').addEventListener('click',event=>{event.preventDefault();event.stopImmediatePropagation();openCheckout();},true);

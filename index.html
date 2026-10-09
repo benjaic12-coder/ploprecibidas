@@ -15,12 +15,12 @@
 <meta property="og:url" content="https://ploprecibidas-web.pages.dev/">
 <meta property="og:title" content="Plop Recibidas | Armá tu pedido personalizado">
 <meta property="og:description" content="Elegí tu combo, contanos tu idea y coordiná una recibida inolvidable con Plop.">
-<meta property="og:image" content="https://ploprecibidas-web.pages.dev/clean-product-assets/combo-4-clean.webp?v=48">
+<meta property="og:image" content="https://ploprecibidas-web.pages.dev/combo-4.png?v=49">
 <meta property="og:image:alt" content="Combos personalizados de Plop Recibidas">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Plop Recibidas | Armá tu pedido personalizado">
 <meta name="twitter:description" content="Elegí tu combo, contanos tu idea y coordiná tu pedido con Plop.">
-<meta name="twitter:image" content="https://ploprecibidas-web.pages.dev/clean-product-assets/combo-4-clean.webp?v=48">
+<meta name="twitter:image" content="https://ploprecibidas-web.pages.dev/combo-4.png?v=49">
 <meta name="twitter:image:alt" content="Combos de decoración personalizada para recibidas">
 <meta name="theme-color" content="#fff8ed">
 <meta name="color-scheme" content="light">
@@ -87,7 +87,7 @@
 <div class="hero-actions"><a class="hero-contact" href="https://wa.me/5493856870303?text=Hola%20Plop%2C%20quiero%20armar%20mi%20pedido%20para%20una%20recibida." target="_blank" rel="noopener">Consultar por WhatsApp →</a><a class="hero-email" href="mailto:plopsgo@gmail.com?subject=Consulta%20Plop%20Recibidas">Email</a></div>
 </div>
 <div class="hero-art">
-<img src="clean-product-assets/combo-4-clean.webp?v=48" alt="Composición real de un combo completo de Plop Recibidas" fetchpriority="high" decoding="async">
+<img src="combo-4.png?v=49" alt="Imagen real del Combo Completo de Plop Recibidas" fetchpriority="high" decoding="async">
 </div>
 </section>
 <section class="catalog" id="catalog">
@@ -372,10 +372,10 @@ const originalUpdate=update; update=()=>{originalUpdate(); if(!splitPanel.hidden
 </script>
 <script>
 const cleanProductImages={
-  'combo-1.png':'clean-product-assets/combo-1-clean.webp','combo-2.png':'clean-product-assets/combo-2-clean.webp','combo-3.png':'clean-product-assets/combo-3-clean.webp','combo-4.png':'clean-product-assets/combo-4-clean.webp','combo-5.png':'clean-product-assets/combo-5-clean.webp',
-  'marco-rectangular.jpg':'clean-product-assets/marco-rectangular-clean.webp','marco-redondo.jpg':'clean-product-assets/marco-redondo-clean.webp','marco-nube.jpg':'clean-product-assets/marco-nube-clean.webp','marco-forma.jpg':'clean-product-assets/marco-forma-clean.webp','cartel-chico.jpg':'clean-product-assets/cartel-chico-clean.webp','cartel-mediano.jpg':'clean-product-assets/cartel-mediano-clean.webp','cartel-grande.jpg':'clean-product-assets/cartel-grande-clean.webp','lona-mediana.jpg':'clean-product-assets/lona-mediana-clean.webp','lona-grande.jpg':'clean-product-assets/lona-grande-clean.webp','props-pack.jpg':'clean-product-assets/props-pack-clean.webp','props-unidad.jpg':'clean-product-assets/props-unidad-clean.webp','banda-graduados.jpg':'clean-product-assets/banda-graduados-clean.webp'
+  'combo-1.png':'combo-1.png','combo-2.png':'combo-2.png','combo-3.png':'combo-3.png','combo-4.png':'combo-4.png','combo-5.png':'combo-5.png',
+  'marco-rectangular.jpg':'marco-rectangular.jpg','marco-redondo.jpg':'marco-redondo.jpg','marco-nube.jpg':'marco-nube.jpg','marco-forma.jpg':'marco-forma.jpg','cartel-chico.jpg':'cartel-chico.jpg','cartel-mediano.jpg':'cartel-mediano.jpg','cartel-grande.jpg':'cartel-grande.jpg','lona-mediana.jpg':'lona-mediana.jpg','lona-grande.jpg':'lona-grande.jpg','props-pack.jpg':'props-pack.jpg','props-unidad.jpg':'props-unidad.jpg','banda-graduados.jpg':'banda-graduados.jpg'
 };
-const optimizeProductImages=()=>{document.querySelectorAll('#grid img').forEach((image,index)=>{image.loading=index<5?'eager':'lazy';image.fetchPriority=index<2?'high':'auto';const source=image.getAttribute('src')||'';const file=source.split('/').pop().split('?')[0];if(cleanProductImages[file])image.src=cleanProductImages[file]+'?v=48.0';});};
+const optimizeProductImages=()=>{document.querySelectorAll('#grid img').forEach((image,index)=>{image.loading=index<5?'eager':'lazy';image.fetchPriority=index<2?'high':'auto';const source=image.getAttribute('src')||'';const file=source.split('/').pop().split('?')[0];if(cleanProductImages[file])image.src=cleanProductImages[file]+'?v=49.0';});};
 optimizeProductImages();
 new MutationObserver(optimizeProductImages).observe(document.querySelector('#grid'),{childList:true});
 </script>

@@ -41,7 +41,9 @@ export const createSessionCookie = async (secret) => {
 export const clearSessionCookie = () => `${COOKIE_NAME}=; Max-Age=0; Path=/; HttpOnly; Secure; SameSite=Lax`;
 
 export const hasAdminSession = async (request) => {
-  const secret = Netlify.env.get('PLOP_ADMIN_TOKEN');
+  const secret = Netlify.env.get('PLOP_ADMIN_SESSION_SECRET')
+    || Netlify.env.get('PLOP_ADMIN_TOKEN')
+    || Netlify.env.get('SUPABASE_SERVICE_ROLE_KEY');
   if (!secret) return false;
   const value = getCookie(request, COOKIE_NAME);
   const [payload, suppliedSignature] = value.split('.');

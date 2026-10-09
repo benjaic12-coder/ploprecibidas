@@ -6,12 +6,14 @@ const json = (body, status = 200, headers = {}) => new Response(JSON.stringify(b
 });
 
 export default async (request) => {
-  const sessionSecret = Netlify.env.get('PLOP_ADMIN_TOKEN');
+  const sessionSecret = Netlify.env.get('PLOP_ADMIN_SESSION_SECRET')
+    || Netlify.env.get('PLOP_ADMIN_TOKEN')
+    || Netlify.env.get('SUPABASE_SERVICE_ROLE_KEY');
   const supabaseUrl = Netlify.env.get('SUPABASE_URL');
   const supabaseAnonKey = Netlify.env.get('SUPABASE_ANON_KEY')
     || Netlify.env.get('SUPABASE_PUBLISHABLE_KEY')
     || 'sb_publishable_qfyH7f6Y9LZ01Zxn8YbLVg_VC32myst';
-  const adminEmail = (Netlify.env.get('PLOP_ADMIN_EMAIL') || 'plopsgo@gmail.com').trim().toLowerCase();
+  const adminEmail = 'plopsgo@gmail.com';
   if (!sessionSecret || !supabaseUrl || !supabaseAnonKey) return json({ error: 'backend_not_configured' }, 503);
 
   if (request.method === 'GET') {

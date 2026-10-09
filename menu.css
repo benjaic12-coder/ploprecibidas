@@ -34,3 +34,29 @@ body{overflow-x:hidden}
 @media(min-width:761px){.cart{position:static!important;left:auto;bottom:auto;transform:none;margin:12px auto 16px;z-index:10}}
 
 
+
+
+/* Auditoría UX: fichas con especificaciones legibles y chat sin solapamientos */
+.product-spec{
+  display:block;
+  margin-top:7px;
+  color:var(--ink);
+  font-size:.72rem;
+  font-weight:900;
+  line-height:1.3;
+  letter-spacing:.01em;
+}
+@media (max-width:760px){
+  .product-spec{font-size:.68rem}
+  .chat-open .cart{
+    transform:translate(-50%,calc(100% + 46px));
+    opacity:0;
+    pointer-events:none;
+  }
+  .chat-open .plop-chat{
+    bottom:12px;
+    max-height:calc(100vh - 24px);
+    height:min(620px,calc(100vh - 24px));
+  }
+  .chat-open .chat-launcher{display:none}
+}

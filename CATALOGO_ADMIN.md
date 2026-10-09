@@ -2,7 +2,7 @@
 
 ## Acceso
 
-Entrar por `https://ploprecibidas-oficial.netlify.app/admin/` y usar el acceso administrativo existente. Desde el panel de KPIs, abrir **Editar catálogo**. La sesión segura compartida evita un segundo inicio de sesión.
+Entrar por `https://ploprecibidas-oficial.netlify.app/admin/` con el correo autorizado y su contraseña de Supabase Auth. El único correo permitido por defecto es `plopsgo@gmail.com`. Desde el panel de KPIs, abrir **Editar catálogo**. La sesión segura compartida evita un segundo inicio de sesión.
 
 ## Funciones
 
@@ -16,7 +16,9 @@ Entrar por `https://ploprecibidas-oficial.netlify.app/admin/` y usar el acceso a
 
 Ejecutar una vez en Supabase SQL Editor la migración `supabase/migrations/20261010100000_product_catalog_admin.sql`. La migración crea el catálogo, activa RLS sin permisos públicos directos, prepara el bucket y carga los 18 productos actuales como base sin sobrescribir productos ya editados.
 
-Las funciones usan las variables de Netlify ya requeridas por el backend: `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY` y `PLOP_ADMIN_TOKEN`. No colocar la clave service role ni el token administrativo en el HTML.
+Las funciones usan `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY` y `PLOP_ADMIN_TOKEN` en el servidor. El acceso de correo y contraseña se valida con Supabase Auth; el token HMAC permanece solo como secreto interno para firmar la cookie de sesión y ya no se ingresa en el formulario. El correo autorizado se puede cambiar con la variable `PLOP_ADMIN_EMAIL`. La clave pública de Supabase puede configurarse como `SUPABASE_ANON_KEY` / `SUPABASE_PUBLISHABLE_KEY` y, si no, se usa la misma publishable key pública ya incluida en el frontend. No colocar la clave service role ni el secreto HMAC en el HTML.
+
+La cuenta `plopsgo@gmail.com` debe existir en Supabase Auth y tener una contraseña configurada. El formulario no almacena la contraseña; si la cuenta aún no está creada, hay que crearla o recuperar su acceso desde Supabase Auth antes de poder iniciar sesión.
 
 ## Recomendación para las fotos
 

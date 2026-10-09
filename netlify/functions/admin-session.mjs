@@ -6,11 +6,17 @@ const json = (body, status = 200, headers = {}) => new Response(JSON.stringify(b
 });
 
 export default async (request) => {
-  const configuredToken = Netlify.env.get('PLOP_ADMIN_TOKEN');
-  if (!configuredToken) return json({ error: 'backend_not_configured' }, 503);
+  const sessionSecret = Netlify.env.get('PLOP_ADMIN_TOKEN');
+  const supabaseUrl = Netlify.env.get('SUPABASE_URL');
+  const supabaseAnonKey = Netlify.env.get('SUPABASE_ANON_KEY')
+    || Netlify.env.get('SUPABASE_PUBLISHABLE_KEY')
+    || 'sb_publishable_qfyH7f6Y9LZ01Zxn8YbLVg_VC32myst';
+  const adminEmail = (Netlify.env.get('PLOP_ADMIN_EMAIL') || 'plopsgo@gmail.com').trim().toLowerCase();
+  if (!sessionSecret || !supabaseUrl || !supabaseAnonKey) return json({ error: 'backend_not_configured' }, 503);
 
   if (request.method === 'GET') {
-    return json({ authenticated: await hasAdminSession(request) }, await hasAdminSession(request) ? 200 : 401);
+    const authenticated = await hasAdminSession(request);
+    return json({ authenticated }, authenticated ? 200 : 401);
   }
 
   if (request.method === 'DELETE') {
@@ -20,9 +26,21 @@ export default async (request) => {
   if (request.method !== 'POST') return json({ error: 'method_not_allowed' }, 405);
 
   const body = await request.json().catch(() => ({}));
-  if (!body.token || body.token !== configuredToken) return json({ error: 'unauthorized' }, 401);
+  const email = String(body.email || '').trim().toLowerCase();
+  const password = String(body.password || '');
+  if (email !== adminEmail || !password || password.length > 256) return json({ error: 'invalid_credentials' }, 401);
 
-  return json({ authenticated: true }, 200, { 'set-cookie': await createSessionCookie(configuredToken) });
+  const authResponse = await fetch(`${supabaseUrl}/auth/v1/token?grant_type=password`, {
+    method: 'POST',
+    headers: { apikey: supabaseAnonKey, 'content-type': 'application/json' },
+    body: JSON.stringify({ email, password }),
+  });
+  const authData = await authResponse.json().catch(() => null);
+  if (!authResponse.ok || authData?.user?.email?.toLowerCase() !== adminEmail) {
+    return json({ error: 'invalid_credentials' }, 401);
+  }
+
+  return json({ authenticated: true }, 200, { 'set-cookie': await createSessionCookie(sessionSecret) });
 };
 
 export const config = {

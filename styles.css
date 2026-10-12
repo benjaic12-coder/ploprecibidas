@@ -552,7 +552,7 @@ body[data-stage="catalog"] .plop-step-guide{display:none!important}
 .stage-home .home-stripes{opacity:.8}
 @media (max-width:760px){.stage-home .home-visual-hero{height:150px;box-shadow:6px 7px 0 var(--aqua)}.stage-home .plopcito-home{width:145px}.stage-home .plopcito-home img{max-height:140px}.stage-home .plopcito-help-bubble{right:-42px;top:2px;font-size:.68rem}}
 .stage[data-stage="catalog"] .catalog-grid{position:relative}
-.stage[data-stage="catalog"] .catalog-grid:after{content:"";position:absolute;right:-18px;bottom:16px;width:180px;height:180px;background:url("assets/plop-stickers.jpg") center/cover no-repeat;opacity:.1;pointer-events:none;z-index:0}
+.stage[data-stage="catalog"] .catalog-grid:after{content:"";position:absolute;right:-18px;bottom:16px;width:180px;height:180px;background:url("plopcito-con-brazos.png") center/cover no-repeat;opacity:.1;pointer-events:none;z-index:0}
 .stage[data-stage="catalog"] .product-card{position:relative;z-index:1}
 .stage-home{background:#12052d;color:#fff}
 .stage-home:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 20% 12%,rgba(143,74,255,.28),transparent 30%),repeating-linear-gradient(135deg,transparent 0 90px,rgba(137,60,255,.12) 91px 93px,transparent 94px 170px);pointer-events:none}

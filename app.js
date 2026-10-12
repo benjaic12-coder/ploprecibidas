@@ -382,11 +382,15 @@ function safeReceiptName(name='comprobante'){
 
 async function registerWebsiteOrder(order,receiptFile){
   const supabase=await getPublicSupabase();
-  const {data:sessionData}=await supabase.auth.getSession();
+  let {data:sessionData}=await supabase.auth.getSession();
   if(!sessionData.session){
     const {error:signError}=await supabase.auth.signInAnonymously();
     if(signError)throw new Error('No pudimos iniciar el pedido. Intentá nuevamente.');
+    const refreshed=await supabase.auth.getSession();
+    sessionData=refreshed.data;
   }
+  const ownerId=sessionData?.session?.user?.id;
+  if(!ownerId)throw new Error('No pudimos validar la sesión del pedido. Recargá la página e intentá nuevamente.');
 
   const products=order.items.map(item=>`${item.qty} × ${item.name}`).join(' | ');
   const {data,error}=await supabase.rpc('create_public_order',{
@@ -414,7 +418,7 @@ async function registerWebsiteOrder(order,receiptFile){
   let receiptWarning='';
 
   if(receiptFile&&order.id){
-    const path=`${order.id}/${Date.now()}-${safeReceiptName(receiptFile.name)}`;
+    const path=`${ownerId}/${order.id}-${Date.now()}-${safeReceiptName(receiptFile.name)}`;
     const {error:uploadError}=await supabase.storage.from('payment-receipts').upload(path,receiptFile,{
       upsert:false,
       contentType:receiptFile.type||'application/octet-stream'

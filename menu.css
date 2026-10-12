@@ -74,3 +74,25 @@ body{overflow-x:hidden}
   #grid .product .media,#grid .product:nth-child(1) .media,#grid .product:nth-child(-n+5) .media{height:220px;aspect-ratio:unset;padding:9px}
   #grid .product .media img{max-width:100%;max-height:100%;object-fit:contain;object-position:center}
 }
+
+
+/* Ajustes de auditoría: preservar las fotos completas y evitar recortes en tarjetas. */
+.category-grid .media img,
+.category-grid .product:nth-child(-n+5) .media img,
+#grid .product .media img {
+  object-fit: contain !important;
+  object-position: center;
+  background: #fff;
+}
+.category-grid .media,
+.category-grid .product:nth-child(-n+5) .media {
+  background: #fffaf5;
+}
+@media (max-width: 600px) {
+  .category-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .section-bandas .category-grid,
+  .section-combos .category-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .category-grid .body h3 { overflow-wrap: anywhere; }
+  .category-grid .body p { min-height: 0; }
+  .category-grid .product-spec { display: block; overflow-wrap: anywhere; }
+}

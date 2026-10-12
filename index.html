@@ -292,24 +292,24 @@ const base='';let products=[
 ['banda','Bandas','Banda para graduados',12000,'Colores, carrera y frase a elección.','Imprescindible','catalog-photos/banda-graduados.webp?v=53.0','Colores, carrera y frase a elección']
 ].map(x=>({id:x[0],cat:x[1],name:x[2],price:x[3],desc:x[4],tag:x[5],image:x[6],spec:x[7]}));
 const localImageById={
-'combo-1':'catalog-photos/marco-selfie-castro.webp?v=53.0',
-'combo-2':'catalog-photos/banda-graduados.webp?v=53.0',
-'combo-3':'catalog-photos/lona-team-anriquez.webp?v=53.0',
-'combo-4':'catalog-photos/cartel-colgante-brit.webp?v=53.0',
-'combo-5':'clean-product-assets/cartel-grande-clean.webp?v=53.0',
-'marco-rectangular':'catalog-photos/marco-selfie-rosa.webp?v=53.0',
-'marco-redondo':'catalog-photos/marco-redondo.webp?v=53.0',
+'combo-1':'clean-product-assets/combo-1-clean.webp?v=53.0',
+'combo-2':'clean-product-assets/combo-2-clean.webp?v=53.0',
+'combo-3':'clean-product-assets/combo-3-clean.webp?v=53.0',
+'combo-4':'clean-product-assets/combo-4-clean.webp?v=53.0',
+'combo-5':'clean-product-assets/combo-5-clean.webp?v=53.0',
+'marco-rectangular':'clean-product-assets/marco-rectangular-clean.webp?v=53.0',
+'marco-redondo':'clean-product-assets/marco-redondo-clean.webp?v=53.0',
 'marco-nube':'clean-product-assets/marco-nube-clean.webp?v=53.0',
-'marco-forma':'catalog-photos/marco-forma.webp?v=53.0',
+'marco-forma':'clean-product-assets/marco-forma-clean.webp?v=53.0',
 'cartel-chico':'clean-product-assets/cartel-chico-clean.webp?v=53.0',
 'cartel-mediano':'clean-product-assets/cartel-mediano-clean.webp?v=53.0',
 'cartel-grande':'clean-product-assets/cartel-grande-clean.webp?v=53.0',
 'cartel-forma':'clean-product-assets/cartel-grande-clean.webp?v=53.0',
 'lona-mediana':'clean-product-assets/lona-mediana-clean.webp?v=53.0',
-'lona-grande':'catalog-photos/lona-team-anriquez.webp?v=53.0',
+'lona-grande':'clean-product-assets/lona-grande-clean.webp?v=53.0',
 'props-pack':'clean-product-assets/props-pack-clean.webp?v=53.0',
 'props-unidad':'clean-product-assets/props-unidad-clean.webp?v=53.0',
-'banda':'catalog-photos/banda-graduados.webp?v=53.0'
+'banda':'clean-product-assets/banda-graduados-clean.webp?v=53.0'
 };
 const localImageFor=(id)=>localImageById[id]||'logo-plop-recibidas-completo.png?v=53.0';
 const cats=['Todas','Marcos','Bandas','Carteles','Lonas','Props','Combos'];let active='Todas',query='',cart=[];const money=n=>n.toLocaleString('es-AR',{style:'currency',currency:'ARS',maximumFractionDigits:0});const grid=document.querySelector('#grid'),categories=document.querySelector('#categories'),count=document.querySelector('#count'),context=document.querySelector('#context');function visible(){return products.filter(p=>(active==='Todas'||p.cat===active||(active==='Carteles'&&p.cat==='Carteles colgantes'))&&(!query||[p.name,p.cat,p.desc,p.tag].join(' ').toLowerCase().includes(query.toLowerCase())))}function renderCats(){categories.innerHTML=cats.map(c=>`<button class="${active===c?'active':''}" data-cat="${c}">${c}</button>`).join('')}function productCard(p){return `<article class="product">

@@ -365,7 +365,7 @@ input:focus-visible, select:focus-visible, textarea:focus-visible {
   .chat-open .cart, body.chat-open .cart, body.chat-open #cartDock {
     opacity:0;
     pointer-events:none;
-    transform:translateY(140%);
+    transform:translate(-50%,140%);
   }
   body.chat-open .chat-launcher { display:none; }
   .site-footer { margin-bottom:calc(160px + env(safe-area-inset-bottom)); }

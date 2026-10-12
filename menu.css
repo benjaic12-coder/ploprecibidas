@@ -380,3 +380,101 @@ input:focus-visible, select:focus-visible, textarea:focus-visible {
   .product,.product .media img,#catalogGrid .product-card,.catalog-cta,.chat-launcher { transition:none !important; }
   .product:hover,#catalogGrid .product-card:hover { transform:none; }
 }
+
+
+/* Final UX polish: predictable cards, clearer keyboard focus and collision-free mobile controls. */
+:root {
+  --plop-surface: #fffdf8;
+  --plop-border: 2px solid var(--ink);
+  --plop-shadow: 4px 5px 0 rgba(57,48,76,.12);
+}
+#catalogGrid .product-card,
+.category-grid .product,
+#grid .product {
+  min-width: 0;
+  overflow: hidden;
+}
+#catalogGrid .product-visual img,
+.product .media img,
+.category-grid .media img {
+  object-fit: contain;
+}
+#catalogGrid .product-meta h3,
+.category-grid .product .body h3,
+#grid .product .body h3 {
+  overflow-wrap: anywhere;
+}
+#catalogGrid .product-actions button,
+.category-grid .product .add,
+#grid .product .add,
+.cart button,
+.chat-quick-replies button {
+  touch-action: manipulation;
+}
+#catalogGrid .product-actions button:focus-visible,
+.category-grid .product .add:focus-visible,
+#grid .product .add:focus-visible,
+.cart button:focus-visible,
+.chat-quick-replies button:focus-visible,
+.chat-close:focus-visible,
+#plopBotLauncher:focus-visible,
+#plopBotPanel button:focus-visible {
+  outline: 3px solid var(--mint2);
+  outline-offset: 3px;
+}
+#cartDock, .cart {
+  padding-bottom: max(10px, env(safe-area-inset-bottom));
+}
+@media (min-width: 761px) {
+  #catalogGrid .product-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(57,48,76,.12);
+  }
+}
+@media (max-width: 760px) {
+  /* Keep the chat launcher visually separate from the fixed cart. */
+  .chat-launcher, #plopBotLauncher {
+    right: 12px;
+    bottom: calc(112px + env(safe-area-inset-bottom));
+    max-width: calc(100vw - 24px);
+  }
+  .plop-chat, #plopBotPanel {
+    right: 12px;
+    bottom: calc(12px + env(safe-area-inset-bottom));
+    width: calc(100vw - 24px);
+    max-width: calc(100vw - 24px);
+    max-height: calc(100dvh - 24px - env(safe-area-inset-top));
+  }
+  body.chat-open .cart,
+  body.chat-open #cartDock {
+    visibility: hidden;
+    pointer-events: none;
+  }
+  .cart {
+    gap: 7px;
+    min-width: 0;
+  }
+  .cart-copy { min-width: 0; }
+  .cart-copy strong { font-size: .9rem; }
+  .cart-copy span { font-size: .7rem; }
+  .stats { gap: 8px; }
+  .stats small { font-size: .61rem; }
+  .stats b { font-size: .78rem; }
+  .site-footer {
+    padding-bottom: calc(20px + env(safe-area-inset-bottom));
+  }
+}
+@media (max-width: 380px) {
+  .cart { flex-wrap: wrap; }
+  .cart-copy { flex: 1 1 100%; }
+  .stats { flex: 1; justify-content: space-between; }
+  .chat-launcher { font-size: .8rem; padding: 9px 11px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
+}

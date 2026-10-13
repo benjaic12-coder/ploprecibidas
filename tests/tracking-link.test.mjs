@@ -1,0 +1,4 @@
+import {test} from 'node:test';import assert from 'node:assert/strict';import {trackingPath} from '../lib/tracking-link.ts';
+const origin='https://plop-recibidas.pages.dev',code='PLOP-AABBCCDDEEFF',token='34b0c872-ee68-4be6-83ff-ba9fccb3ce99';
+test('Seguimiento admite código y preserva token privado sin parámetros de campaña',()=>{assert.equal(trackingPath(code.toLowerCase(),origin),'/pedido/'+code);assert.equal(trackingPath(origin+'/pedido/'+code+'?utm_source=test#'+token,origin),'/pedido/'+code+'#'+token)});
+test('Rechaza otros sitios, scripts, acceso administrativo y enlaces incompletos',()=>{for(const input of ['https://foreign.test/pedido/'+code,'javascript:alert(1)',origin+'/admin','texto cualquiera',origin+'/pedido/'+code+'#invalid'])assert.throws(()=>trackingPath(input,origin));});

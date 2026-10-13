@@ -14,7 +14,7 @@ base('banda','Banda para graduados','Bandas',12000,'Elegí los colores y la fras
 base('cartel-chico','Cartel colgante chico','Carteles',7000,'Liviano y listo para acompañarte.','25 × 35 cm','Plástico corrugado y vinilo',{includes:'Diseño personalizado + cinta para colgar'}),
 base('cartel-mediano','Cartel colgante mediano','Carteles',12000,'El detalle perfecto para tus fotos.','40 × 60 cm','Plástico corrugado y vinilo',{includes:'Diseño personalizado + cinta para colgar'}),
 base('cartel-grande','Cartel colgante grande','Carteles',30000,'Una frase que merece verse a lo grande.','70 × 100 cm','Plástico corrugado y vinilo',{includes:'Diseño personalizado + cinta para colgar'}),
-base('cartel-forma','Cartel con forma','Carteles',18000,'Tu idea recortada con una silueta especial.','Máximo 40 × 60 cm','Plástico corrugado y vinilo',{image:'/products/cartel-forma.svg',imageKind:'Esquema ilustrativo · forma a coordinar',includes:'Diseño personalizado + cinta'}),
+base('cartel-forma','Cartel con forma','Carteles',18000,'Tu idea recortada con una silueta especial.','Máximo 40 × 60 cm','Plástico corrugado y vinilo',{image:'/products/cartel-forma.webp',imageKind:'Esquema ilustrativo · forma a coordinar',includes:'Diseño personalizado + cinta'}),
 base('lona-mediana','Lona mediana','Lonas',25000,'Para el auto, la fiesta o tus mejores fotos.','100 × 60 cm','Lona impresa'),
 base('lona-grande','Lona grande','Lonas',30000,'Un fondo para una historia enorme.','140 × 60 cm','Lona impresa'),
 base('prop','Prop individual','Props',2000,'Tu meme, tu foto o esa frase que siempre decís.','Aproximadamente 15 × 21 cm','Papel impreso',{includes:'1 prop personalizado con palito, listo para usar'}),

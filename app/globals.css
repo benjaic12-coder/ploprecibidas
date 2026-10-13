@@ -9,3 +9,6 @@
 .section-heading h2.eyebrow{font-size:11px;letter-spacing:2px;margin:0;line-height:1.5}
 :focus-visible{outline:3px solid #233b39;outline-offset:3px}
 @media(max-width:740px){.admin-tabs button{min-height:44px;flex-shrink:0}.form-grid{grid-template-columns:1fr}.product-cta{min-height:44px}.privacy-preferences{font-size:10px;padding:8px;min-height:36px}.cart-item-actions{flex-wrap:wrap}.bank-info b{overflow-wrap:anywhere}}
+.product-image.original-photo{background:#f7f5f0}
+.product-image.original-photo>img{object-fit:contain;padding:8px}
+.hero-photo>img{object-fit:contain;background:#f7f5f0}

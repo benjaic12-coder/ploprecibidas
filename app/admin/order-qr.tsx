@@ -6,7 +6,7 @@ import {createOrderQr,qrMatchesOrder,type OrderQr} from '@/lib/internal-order-qr
 export default function OrderQR({uuid,code,status,isTest=false}:{uuid:string;code:string;status:string;isTest?:boolean}){
  const [qr,setQr]=useState<OrderQr|null>(null),[busy,setBusy]=useState(false),[error,setError]=useState('');
  const sequence=useRef(0);
- useEffect(()=>{sequence.current++;setQr(null);setBusy(false);setError('');return()=>{sequence.current++}},[uuid,isTest]);
+ useEffect(()=>{void generate();return()=>{sequence.current++}},[uuid,isTest]);
  async function generate(){
   const request=++sequence.current;setBusy(true);setError('');setQr(null);
   try{
@@ -35,10 +35,10 @@ export default function OrderQR({uuid,code,status,isTest=false}:{uuid:string;cod
   image.src=value.image;
  }
  return <section className="notice" style={{margin:'12px 0',display:'grid',gap:10}} aria-label="QR interno del pedido">
-  <strong>QR interno y etiqueta</strong>
+  <strong>QR interno automático y etiqueta</strong>
   <p style={{margin:0,fontSize:12}}>Escaneá para abrir todos los datos de esta ficha. Solo el equipo autorizado puede consultarlos.</p>
   <div style={{display:'flex',gap:8,flexWrap:'wrap'}}>
-   <button type="button" className="btn outline" disabled={busy} onClick={generate}>{busy?'Generando…':qr?'Actualizar QR':'Generar QR y etiqueta'}</button>
+   <button type="button" className="btn outline" disabled={busy} onClick={generate}>{busy?'Generando…':qr?'Actualizar QR':'Reintentar QR'}</button>
    {qr?.uuid===uuid&&<><button type="button" className="btn aqua" onClick={print}>Imprimir etiqueta</button><button type="button" className="btn outline" onClick={download}>Descargar QR</button></>}
   </div>
   {error&&<p className="error" role="alert">{error}</p>}

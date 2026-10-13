@@ -8,6 +8,7 @@ function fixture(){let saved=null,creates=0;
   if(path==='/auth/v1/user')return Response.json({id:opts.headers.Authorization==='Bearer owner'?'owner':'foreign',is_anonymous:true});
   if(path.endsWith('/rpc/plop_rate_limit'))return Response.json(true);
   if(path.endsWith('/plop_catalog'))return Response.json(PRODUCTS.map(p=>({id:p.id,data:p,price:p.price,available:true})));
+  if(path.endsWith('/plop_notifications'))return Response.json([]);
   if(path.endsWith('/plop_settings'))return Response.json([{value:{leadDays:7}}]);
   if(path.endsWith('/plop_orders')){
    if(opts.method==='POST'){creates++;const body=JSON.parse(opts.body);saved={...body,id:uuid,code,deposit:Math.ceil(body.total/2),verified_paid:0,status:'nuevo',internal_notes:'Nota privada de ejemplo',created_at:new Date().toISOString()};return Response.json([saved]);}

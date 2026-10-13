@@ -1,0 +1,13 @@
+import {execFileSync} from 'node:child_process';
+import {readFileSync,writeFileSync,copyFileSync} from 'node:fs';
+execFileSync(process.execPath,['node_modules/vite/bin/vite.js','build','--config','netlify.vite.config.ts','--outDir','../dist-cloudflare'],{stdio:'inherit'});
+const rawSite=process.env.SITE_URL || process.env.CF_PAGES_URL;
+if (!rawSite) throw Error('Configure SITE_URL or CF_PAGES_URL for the Cloudflare build.');
+const site=new URL(rawSite).origin;
+let html=readFileSync('dist-cloudflare/index.html','utf8');
+html=html.replace('content="/products/combo-4.webp"',`content="${site}/products/combo-4.webp"`);
+html=html.replace('</head>',`<link rel="canonical" href="${site}/"></head>`);
+writeFileSync('dist-cloudflare/index.html',html);
+writeFileSync('dist-cloudflare/sitemap.xml',`<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>${site}/</loc></url><url><loc>${site}/privacy</loc></url></urlset>`);
+copyFileSync('cloudflare/_headers','dist-cloudflare/_headers');
+writeFileSync('dist-cloudflare/_routes.json',JSON.stringify({version:1,include:['/api/*'],exclude:[]}));

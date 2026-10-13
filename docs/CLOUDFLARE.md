@@ -34,5 +34,8 @@ El procesador programado `netlify/functions/process-notifications.mjs` es espec�
 
 ## Estado
 
+Flujo preparado: `.github/workflows/cloudflare-pages.yml`. Verifica pruebas, TypeScript y build en cada push a la rama de producción actual. Solo publica si existe el secreto de repositorio `CLOUDFLARE_API_TOKEN`; sin él muestra explícitamente que la publicación automática está pendiente.
+La integración actual de Cloudflare devuelve 9109 Unauthorized al consultar los permisos necesarios para crear una clave de CI. No se creó ninguna clave permanente ni se guardó un secreto en GitHub. Para activar CI, un administrador debe crear una clave de Cloudflare con permiso Account → Cloudflare Pages → Edit limitado a esta cuenta y guardarla directamente como secreto de Actions en `benjaic12-coder/ploprecibidas`, con nombre `CLOUDFLARE_API_TOKEN`. No pegar la clave en chat ni en el código.
+
 Adaptación compilada; dos pruebas de proxy aprobadas y TypeScript sin errores. Tienda publicada: catálogo real cargado en navegador, Combo 1–5, carrito y formulario habilitados; Combo 1 total $50.000 y seña $25.000. No se enviaron pedidos, pagos ni mensajes reales durante esta verificación.
 Backend `plop-v2` versión 10: se añadió únicamente el origen exacto `https://plop-recibidas.pages.dev` a la lista de confianza, conservando la autorización del equipo y comprobantes privados.

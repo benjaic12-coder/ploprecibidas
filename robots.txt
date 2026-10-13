@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://ploprecibidas-web.pages.dev/sitemap.xml

@@ -1,0 +1,2 @@
+export default async function(){const url=Netlify.env.get('SUPABASE_URL'),key=Netlify.env.get('SUPABASE_SERVICE_ROLE_KEY');if(!url||!key)return Response.json({pendingConfiguration:true},{status:503});const response=await fetch(url+'/functions/v1/plop-v2/process-notifications',{method:'POST',headers:{Authorization:'Bearer '+key,apikey:key},signal:AbortSignal.timeout(25000)});return new Response(response.body,{status:response.status,headers:{'Content-Type':'application/json'}})}
+export const config={schedule:'0 * * * *'};

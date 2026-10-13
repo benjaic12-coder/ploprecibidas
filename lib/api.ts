@@ -1,0 +1,10 @@
+'use client';
+type Session={access_token:string;refresh_token:string;expires_at?:number;expires_in?:number;user?:{email?:string}};
+const key=(admin:boolean)=>admin?'plop-admin-session':'plop-customer-session';
+export function getSession(admin=false):Session|null{try{return JSON.parse((admin?sessionStorage:localStorage).getItem(key(admin))||'null')}catch{return null}}
+export function setSession(session:Session,admin=false){(admin?sessionStorage:localStorage).setItem(key(admin),JSON.stringify({...session,expires_at:session.expires_at||Math.floor(Date.now()/1000)+(session.expires_in||3600)}));}
+export function clearAdmin(){sessionStorage.removeItem(key(true));}
+async function session(admin:boolean){let s=getSession(admin);if(s&&s.expires_at&&s.expires_at<Date.now()/1000+30){try{const r=await fetch('/api/refresh',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({refresh_token:s.refresh_token})});if(!r.ok)throw Error();s=await r.json() as Session;setSession(s,admin);}catch{s=null;(admin?sessionStorage:localStorage).removeItem(key(admin))}}
+ if(!s&&!admin){const r=await fetch('/api/session',{method:'POST'});const d=await r.json() as any;if(!r.ok)throw Error(d.error||'No pudimos iniciar tu pedido');s=d;setSession(d)}if(!s)throw Error('Ingresá para abrir el panel.');return s;}
+export async function api<T=any>(path:string,options:RequestInit={},admin=false):Promise<T>{const s=await session(admin);const headers=new Headers(options.headers);headers.set('Authorization','Bearer '+s.access_token);const r=await fetch('/api'+path,{...options,headers,signal:AbortSignal.timeout(28000)});const d=await r.json() as any;if(!r.ok)throw Error(d.error||'No pudimos completar la operación.');return d as T;}
+export async function login(email:string,password:string,register=false){const r=await fetch('/api'+(register?'/register':'/login'),{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,password})});const d=await r.json() as any;if(!r.ok)throw Error(d.error);if(d.access_token)setSession(d,true);return d;}

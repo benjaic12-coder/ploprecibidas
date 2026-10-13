@@ -1,0 +1,10 @@
+create index if not exists plop_historial_estados_pedido_fecha on public.historial_estados(pedido_id,fecha);
+create index if not exists plop_historial_pagos_pago_fecha on public.historial_pagos(pago_id,fecha);
+create index if not exists plop_pagos_creado_por on public.pagos(creado_por);
+create index if not exists plop_pagos_verificador on public.pagos(quien_verifico);
+create index if not exists plop_campaigns_coupon on public.plop_campaigns(coupon);
+create index if not exists plop_coupons_product on public.plop_coupons(product_id);
+create index if not exists plop_events_product on public.plop_events(product_id);
+create index if not exists plop_marketing_jobs_contact on public.plop_marketing_jobs(contact_id);
+create index if not exists plop_notifications_pedido on public.plop_notifications(pedido_id);
+create index if not exists plop_orders_customer on public.plop_orders(customer_id);

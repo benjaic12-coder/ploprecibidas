@@ -125,3 +125,17 @@ create policy plop_receipts_upload on storage.objects for insert to authenticate
 create policy plop_receipts_staff_read on storage.objects for select to authenticated using(bucket_id='plop-v2-comprobantes' and plop_private.is_staff());
 revoke all on all functions in schema plop_private from public,anon;
 commit;
+
+-- Applied migration queue_whatsapp_for_new_orders (2026-10-13).
+-- Queue each new order in the same transaction, before any provider call.
+create or replace function plop_private.queue_order_whatsapp() returns trigger language plpgsql security definer set search_path='' as $$
+begin
+ if not new.is_test then
+  insert into public.plop_notifications(pedido_id,event,dedupe_key)
+  values(new.id,'whatsapp_pedido_nuevo','whatsapp:nuevo:'||new.id)
+  on conflict(dedupe_key) do nothing;
+ end if;
+ return new;
+end; $$;
+revoke execute on function plop_private.queue_order_whatsapp() from public,anon,authenticated;
+create trigger plop_queue_order_whatsapp after insert on public.plop_orders for each row execute function plop_private.queue_order_whatsapp();

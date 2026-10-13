@@ -4,6 +4,9 @@
   functions = "netlify/functions"
 [build.environment]
   NODE_VERSION = "24"
+  # SITE_URL is the public storefront address, not a credential.
+  # Keep scanning enabled for every other environment variable and source file.
+  SECRETS_SCAN_OMIT_KEYS = "SITE_URL"
 [[redirects]]
   from = "/api/*"
   to = "/.netlify/functions/api/:splat"

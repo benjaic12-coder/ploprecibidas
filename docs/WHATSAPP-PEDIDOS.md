@@ -1,6 +1,6 @@
 # Avisos de pedidos a WhatsApp de Plop
 
-Destino fijo autorizado: 5493856870303. No envía campañas ni mensajes a clientes.
+Destino interno configurable, separado del teléfono público de contacto. Se guarda en `plop_settings` con clave `whatsapp_internal`, bajo acceso exclusivo del backend. No envía campañas ni mensajes a clientes.
 
 Cada pedido aceptado registra `whatsapp_pedido_nuevo` en `plop_notifications` con clave única `whatsapp:nuevo:<UUID>`. Los reintentos no duplican el aviso y reparan una cola faltante. Los pedidos de prueba se excluyen. El procesador reclama trabajos antes de enviar, registra intentos, separa el canal email y conserva fallos para reintentar. Un resultado de Meta aceptado no acredita entrega al teléfono; se guarda `delivery_status: accepted`.
 
@@ -9,7 +9,7 @@ Cada pedido aceptado registra `whatsapp_pedido_nuevo` en `plop_notifications` co
 Configurar únicamente como secretos del backend Supabase:
 
 - `WHATSAPP_ACCESS_TOKEN`: token de un remitente autorizado de Cloud API.
-- `WHATSAPP_PHONE_NUMBER_ID`: ID del número remitente; el destinatario es el WhatsApp de Plop.
+- `WHATSAPP_PHONE_NUMBER_ID`: ID del número remitente; el destinatario es el teléfono de control interno.
 - `WHATSAPP_GRAPH_VERSION`: versión soportada de Graph API, formato `vN.N`.
 - `WHATSAPP_ORDER_TEMPLATE`: nombre de plantilla aprobada para este aviso.
 - `WHATSAPP_TEMPLATE_LANGUAGE`: idioma de la plantilla, por defecto `es_AR`.
@@ -30,3 +30,5 @@ Integración preparada y cubierta por pruebas aisladas. No hay una conexión Wha
 Documentación: https://developers.facebook.com/documentation/business-messaging/whatsapp/reference/whatsapp-business-phone-number/message-api
 
 La migración `queue_whatsapp_for_new_orders` registra el aviso en la misma transacción que crea el pedido. Se verificó el trigger activo el 13/10/2026; el backend conserva el encolado idempotente como reparación de reintentos. No se generaron mensajes para pedidos anteriores.
+
+- `WHATSAPP_ORDER_RECIPIENT`: destinatario de respaldo en formato internacional, solo dígitos. La configuración interna de producción tiene prioridad. Nunca publicar el teléfono interno en el código ni en el catálogo público.

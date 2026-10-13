@@ -2,6 +2,12 @@
 
 La tienda y su API mantienen la base, Auth y comprobantes privados en el Supabase actual. No se migran datos ni se expone una clave de servicio.
 
+URL pública activa: https://plop-recibidas.pages.dev/
+Proyecto: `plop-recibidas`, cuenta `050d03453800b9195278522d68c479ff`.
+Publicación inicial por Direct Upload: `a5ef729f-1651-4463-8cb3-6b20b0243670`, estado success. Los archivos públicos se sirven como assets; solo `/api/*` invoca Functions. El código fuente permanece en GitHub.
+
+La vinculación automática de GitHub no se completó: Cloudflare devuelve el error 8000011 de instalación. Para evitar depender del acceso al panel, se publicó el build preparado mediante la API y una autorización temporal de subida. Las próximas publicaciones requieren repetir Direct Upload o configurar CI; no se han configurado actualizaciones automáticas. Un proyecto de Direct Upload no se convierte a Git integration: usar CI con Wrangler o un proyecto nuevo conectado a Git si se desea esa modalidad.
+
 ## Proyecto conectado a GitHub
 
 - Repositorio: `benjaic12-coder/ploprecibidas`.
@@ -28,4 +34,5 @@ El procesador programado `netlify/functions/process-notifications.mjs` es espec�
 
 ## Estado
 
-Adaptación compilada; dos pruebas de proxy aprobadas y TypeScript sin errores. Publicación pendiente de acceso a Cloudflare: el inicio con GitHub devolvió `Unable to sign in`.
+Adaptación compilada; dos pruebas de proxy aprobadas y TypeScript sin errores. Tienda publicada: catálogo real cargado en navegador, Combo 1–5, carrito y formulario habilitados; Combo 1 total $50.000 y seña $25.000. No se enviaron pedidos, pagos ni mensajes reales durante esta verificación.
+Backend `plop-v2` versión 10: se añadió únicamente el origen exacto `https://plop-recibidas.pages.dev` a la lista de confianza, conservando la autorización del equipo y comprobantes privados.

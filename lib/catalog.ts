@@ -26,5 +26,21 @@ export type Customization={names:string;career:string;colors:string;phrase:strin
 export type CartItem={key:string;productId:string;quantity:number;custom:Customization};
 export const emptyCustom=():Customization=>({names:'',career:'',colors:'Rosa + aqua',phrase:'',frame:'Rectangular',choice:'8 props',size:'70 cm'});
 export function unitPrice(p:Product,c:Customization){return p.price+(p.frameOption&&c.frame!=='Rectangular'?3000:0);}
+const catalogRank=new Map(PRODUCTS.map((p,index)=>[p.id,index]));
+export function recommendedOrder(a:Product,b:Product){
+ return (catalogRank.get(a.id)??Number.MAX_SAFE_INTEGER)-(catalogRank.get(b.id)??Number.MAX_SAFE_INTEGER)||a.name.localeCompare(b.name,'es-AR');
+}
+export function personalizedDimensions(p:Product,c:Customization){
+ if(p.id==='marco-redondo')return `Diámetro ${c.size}`;
+ if(!p.frameOption)return p.dimensions;
+ const frame=c.frame==='Redondo'?`Marco redondo · diámetro ${c.size}`:c.frame==='Tipo nube'?'Marco tipo nube · aproximadamente 50 × 100 cm':c.frame==='Con forma'?'Marco con forma · máximo 100 × 70 cm · forma a coordinar':'Marco 100 × 70 cm';
+ return p.dimensions.replace(/^Marco 100 × 70 cm/,frame);
+}
+export function personalizedIncludes(p:Product,c:Customization){
+ let includes=p.includes;
+ if(p.frameOption)includes=includes.replace(/Marco rectangular/i,`Marco ${c.frame.toLowerCase()}`);
+ if(p.choiceOption)includes=`Lona mediana + ${c.choice==='Banda'?'banda para graduados':'8 props'}`;
+ return includes;
+}
 export function localToday(now=new Date()){return new Intl.DateTimeFormat('en-CA',{timeZone:'America/Argentina/Cordoba',year:'numeric',month:'2-digit',day:'2-digit'}).format(now);}
 export function earliestDate(days=7,now=new Date()){const date=new Date(`${localToday(now)}T12:00:00Z`);date.setUTCDate(date.getUTCDate()+days);return date.toISOString().slice(0,10);}

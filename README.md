@@ -34,7 +34,7 @@ Node 24, pnpm según `packageManager` y el lockfile incluido. Ejecutar `pnpm ins
 
 ## Configuración de Supabase
 
-Proyecto usado: `lzbohzakmntypeejgquf` (`plop-recibidas-produccion`). URL: `https://lzbohzakmntypeejgquf.supabase.co`.
+Proyecto Supabase: configurar la referencia y la URL del proyecto desde el panel de Supabase. No guardar URLs reales de configuración en la documentación pública; usar variables de entorno en Netlify.
 
 1. En Authentication → Providers / Sign In, activar **Anonymous Sign-ins**. Mantener la confirmación de email para el equipo y configurar SMTP si el correo de confirmación no llega. Nunca publicar service_role.
 2. Si se instala en otro proyecto, aplicar las seis migraciones en orden con Supabase CLI y después `supabase/seed.sql`. En el proyecto actual ya están aplicadas: no repetirlas. Los SQL de `docs/` son copias de consulta, no migraciones adicionales.

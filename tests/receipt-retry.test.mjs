@@ -10,6 +10,7 @@ async function scenario({amount=25000,paymentOrder=orderId,orderStatus='nuevo'}=
  const h=createHandler({SUPABASE_URL:'https://backend.test',SUPABASE_ANON_KEY:'public',SUPABASE_SERVICE_ROLE_KEY:'server'},async(url,options={})=>{
   const path=String(url);requests.push({path,method:options.method||'GET'});
   if(path.endsWith('/auth/v1/user'))return Response.json({id:'buyer'});
+  if(path.includes('/rpc/plop_expire_qr_reservations'))return Response.json(0);
   if(path.includes('/rpc/plop_rate_limit'))return Response.json(true);
   if(path.includes('/plop_orders?id='))return Response.json([{id:orderId,owner_id:'buyer',status:orderStatus,total:50000,deposit:25000,verified_paid:25000}]);
   if(path.includes('/pagos?request_key='))return Response.json([]);

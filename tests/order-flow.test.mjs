@@ -6,6 +6,7 @@ function fixture(){let saved=null,creates=0;
  const handler=createHandler({SUPABASE_URL:'https://backend.test',SUPABASE_ANON_KEY:'public',SUPABASE_SERVICE_ROLE_KEY:'server'},async(raw,opts={})=>{
   const url=new URL(raw),path=url.pathname;
   if(path==='/auth/v1/user')return Response.json({id:opts.headers.Authorization==='Bearer owner'?'owner':'foreign',is_anonymous:true});
+  if(path.includes('/rpc/plop_expire_qr_reservations'))return Response.json(0);
   if(path.endsWith('/rpc/plop_rate_limit'))return Response.json(true);
   if(path.endsWith('/plop_catalog'))return Response.json(PRODUCTS.map(p=>({id:p.id,data:p,price:p.price,available:true})));
   if(path.endsWith('/plop_notifications'))return Response.json([]);

@@ -2,7 +2,7 @@
 
 Bot de atención exclusivo, separado de `@plop_recibidas_avisos_bot`.
 
-Estado: código preparado y probado. Falta crear el nuevo bot en BotFather, guardar su token y activar el webhook. No modifica el bot de avisos, sus secretos, pedidos ni notificaciones.
+Estado: bot @plopcito_recibidas_bot activado y conectado. Código desplegado en la función plopcito y enlace publicado desde la web. Configuración verificada por Telegram. No modifica el bot de avisos, sus secretos, pedidos ni notificaciones.
 
 ## Activación
 
@@ -15,7 +15,7 @@ Estado: código preparado y probado. Falta crear el nuevo bot en BotFather, guar
 
 ## Alcance
 
-Respuestas automáticas con el catálogo vigente y botones de ayuda. No usa un modelo de IA ni confirma reservas, pagos o descuentos. Los pedidos y comprobantes se gestionan desde la web y su enlace privado. Los avisos internos continúan en el bot original. No se guardan conversaciones; solo IDs de actualización para evitar respuestas duplicadas. El endpoint recibe chats privados y limita consultas por usuario.
+Respuestas automáticas con el catálogo vigente y botones de ayuda. No usa un modelo de IA ni confirma reservas, pagos o descuentos. Los pedidos y comprobantes se gestionan desde la web y su enlace privado. Los avisos internos continúan en el bot original. No se guardan los textos de las conversaciones. Se guardan IDs de actualización para evitar respuestas duplicadas y una selección de hasta cinco productos, con clave HMAC y vencimiento a los 30 minutos, para interpretar preguntas de seguimiento. Respuestas amables con voseo y sin afirmar políticas no confirmadas. Cubre presupuestos, materiales, medidas, diseño, cambios, pagos, envíos, retiro, descuentos, errores y reclamos; las condiciones desconocidas se consultan con el equipo. El endpoint recibe chats privados y limita consultas por usuario.
 
 ## Verificación local
 

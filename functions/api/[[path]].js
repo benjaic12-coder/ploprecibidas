@@ -13,7 +13,7 @@ export async function proxy(request, env, transport = fetch) {
     const response = await transport(endpoint.replace(/\/$/,'')+'/functions/v1/plop-v2'+url.pathname.slice(4)+url.search, {
       method:request.method, headers,
       body:['GET','HEAD'].includes(request.method)?undefined:await request.arrayBuffer(),
-      signal:AbortSignal.timeout(28000), redirect:'manual'
+      signal:AbortSignal.timeout(url.pathname==='/api/orders'?120000:28000), redirect:'manual'
     });
     return new Response(response.body,{status:response.status,headers:{
       'Content-Type':response.headers.get('content-type') || 'application/json',

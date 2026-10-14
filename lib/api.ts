@@ -40,3 +40,10 @@ export async function login(email:string,password:string,register=false){
  const data=await jsonRequest(register?'/register':'/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,password})});
  if(data.access_token)setSession(data,true);return data;
 }
+
+export async function uploadOrder(form:FormData,onProgress:(percent:number)=>void){
+ const value=await session(false);
+ return new Promise<any>((resolve,reject)=>{const xhr=new XMLHttpRequest();xhr.open('POST','/api/orders');xhr.setRequestHeader('Authorization','Bearer '+value.access_token);xhr.timeout=120000;xhr.upload.onprogress=e=>{if(e.lengthComputable)onProgress(Math.min(99,Math.round(e.loaded/e.total*100)))};xhr.onerror=()=>reject(Error('Se interrumpió la conexión. El borrador sigue guardado; reintentá para comprobar tu solicitud.'));xhr.ontimeout=()=>reject(Error('La carga está tardando. El borrador sigue guardado; reintentá sin cambiar el pedido para comprobar si llegó.'));xhr.onload=()=>{let data:any;try{data=JSON.parse(xhr.responseText)}catch{reject(Error('No pudimos confirmar la respuesta. Reintentá con el mismo pedido.'));return}if(xhr.status>=200&&xhr.status<300){onProgress(100);resolve(data)}else{if(xhr.status===401)localStorage.removeItem(key(false));reject(new ApiError(data?.error||'No pudimos guardar el pedido.',xhr.status))}};xhr.send(form)});
+}
+export async function requestPasswordReset(email:string){return jsonRequest('/recover',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email})})}
+export async function resetPassword(password:string){return api('/recover/password',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({password})},true)}

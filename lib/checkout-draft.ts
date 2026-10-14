@@ -1,0 +1,8 @@
+export type CheckoutDraft={customer:Record<string,unknown>;links:string;files:File[];requestKey:string;updated:number};
+const tabKey='plop-draft-tab-v1';
+function key(){let value=sessionStorage.getItem(tabKey);if(!value){value=crypto.randomUUID();sessionStorage.setItem(tabKey,value)}return value}
+function database():Promise<IDBDatabase>{return new Promise((resolve,reject)=>{const r=indexedDB.open('plop-checkout-drafts-v1',1);r.onupgradeneeded=()=>r.result.createObjectStore('drafts');r.onsuccess=()=>{const db=r.result,tx=db.transaction('drafts','readwrite'),cursor=tx.objectStore('drafts').openCursor();cursor.onsuccess=()=>{const c=cursor.result;if(c){if(Date.now()-Number(c.value.updated||0)>86400000)c.delete();c.continue()}};tx.oncomplete=()=>resolve(db);tx.onerror=()=>{db.close();reject(tx.error)}};r.onerror=()=>reject(r.error)})}
+async function operation<T>(mode:IDBTransactionMode,action:(store:IDBObjectStore,id:string)=>IDBRequest<T>):Promise<T>{const id=key(),db=await database();return new Promise((resolve,reject)=>{const tx=db.transaction('drafts',mode),request=action(tx.objectStore('drafts'),id);let result:T;request.onsuccess=()=>{result=request.result};tx.oncomplete=()=>{db.close();resolve(result)};tx.onerror=()=>{db.close();reject(tx.error)}})}
+export async function readCheckoutDraft():Promise<CheckoutDraft|null>{const draft=await operation<CheckoutDraft|undefined>('readonly',(s,id)=>s.get(id));if(!draft)return null;if(Date.now()-draft.updated>86400000){await clearCheckoutDraft();return null}return draft}
+export function saveCheckoutDraft(draft:CheckoutDraft){return operation('readwrite',(s,id)=>s.put(draft,id))}
+export function clearCheckoutDraft(){return operation('readwrite',(s,id)=>s.delete(id))}

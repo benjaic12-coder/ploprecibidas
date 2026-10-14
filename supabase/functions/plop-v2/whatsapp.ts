@@ -23,7 +23,7 @@ export async function processOrderWhatsApp(rest:(path:string,options?:RequestIni
   const claim=await rest('plop_notifications?id=eq.'+job.id+'&status=in.(pending,failed)',{method:'PATCH',headers:{Prefer:'return=representation'},body:JSON.stringify({status:'sending',claimed_at:new Date().toISOString(),attempts:job.attempts+1})});if(!claim.length)continue;
   try{
    const order=(await rest('plop_orders?id=eq.'+job.pedido_id+'&select=*'))[0];
-   if(!order||order.is_test){await rest('plop_notifications?id=eq.'+job.id,{method:'PATCH',body:JSON.stringify({status:'failed',attempts:5,last_error:'Pedido de prueba o inexistente: no enviar aviso.'})});continue;}
+   if(!order||order.is_test||order.status==='cancelado'){await rest('plop_notifications?id=eq.'+job.id,{method:'PATCH',body:JSON.stringify({status:'failed',attempts:5,last_error:'Pedido de prueba o inexistente: no enviar aviso.'})});continue;}
    const result=await transport('https://graph.facebook.com/'+env.WHATSAPP_GRAPH_VERSION+'/'+env.WHATSAPP_PHONE_NUMBER_ID+'/messages',{method:'POST',headers:{Authorization:'Bearer '+env.WHATSAPP_ACCESS_TOKEN,'Content-Type':'application/json'},body:JSON.stringify(orderWhatsAppPayload(order,env)),signal:AbortSignal.timeout(12000)});
    const response=await result.json().catch(()=>null);
    if(!result.ok||!response?.messages?.[0]?.id)throw Error('WhatsApp no aceptó el aviso. Revisá el remitente y la plantilla aprobada.');

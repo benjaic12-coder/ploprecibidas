@@ -9,7 +9,7 @@ export function routeHtml(html,origin,path){
 }
 export function writeRoutePages(directory,html,origin){
  writeFileSync(`${directory}/index.html`,routeHtml(html,origin,'/'));
- for(const path of ['/privacy','/privacidad','/admin','/baja']){
+ for(const path of ['/privacy','/privacidad','/admin','/admin/recuperar','/baja']){
   mkdirSync(directory+path,{recursive:true});writeFileSync(`${directory}${path}/index.html`,routeHtml(html,origin,path));
  }
 }

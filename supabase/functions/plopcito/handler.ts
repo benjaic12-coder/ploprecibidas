@@ -43,6 +43,7 @@ export function createHandler(env:Env,transport:typeof fetch=fetch){
     const previous=await telegram('getWebhookInfo');
     if(previous.url&&previous.url!==url)return reply({error:'Existe otro webhook; revisar antes de reemplazarlo'},409);
     const bot=await telegram('getMe');
+    if(bot.username!=='plopcito_recibidas_bot')return reply({error:'La clave no corresponde a @plopcito_recibidas_bot'},409);
     await telegram('setWebhook',{url,secret_token:secret,allowed_updates:['message','callback_query'],max_connections:10,drop_pending_updates:false});
     await telegram('setMyName',{name:'Plopcito · Plop Recibidas'});
     await telegram('setMyDescription',{description:'Soy Plopcito 🎓 Te ayudo con productos, precios, personalización, pagos y entregas de Plop Recibidas. Las reservas se confirman desde la web.'});

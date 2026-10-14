@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024" role="img" aria-labelledby="title desc">
+  <title id="title">Cartel con forma: ilustración de diseño Plop</title>
+  <desc id="desc">Cartel recortado con cinta aqua, rosa y lavanda. La silueta y el diseño se coordinan para cada pedido.</desc>
+  <rect width="1024" height="1024" fill="#faf7f1"/>
+  <circle cx="806" cy="231" r="83" fill="#edf5ed"/>
+  <circle cx="189" cy="758" r="98" fill="#fce7f1"/>
+  <path d="M288 387Q512 34 736 387" fill="none" stroke="#80c8bd" stroke-width="22"/>
+  <path d="M287 395Q512 55 737 395" fill="none" stroke="#b7e4dc" stroke-width="6"/>
+  <path d="M191 419Q173 359 236 349L356 330Q372 262 428 290L491 310Q533 250 579 310L648 296Q704 276 724 336L800 364Q852 384 827 440L814 487Q858 520 825 571L797 603Q820 662 760 679L636 699Q616 759 557 735L496 714Q451 766 402 720L347 705Q280 736 254 673L207 652Q158 632 179 579L202 525Q164 471 191 419Z" fill="#fff"/>
+  <path d="M203 422Q189 374 240 366L369 346Q385 282 430 307L498 330Q535 273 576 330L651 313Q699 298 711 349L794 380Q836 396 811 437L797 493Q840 522 811 562L779 606Q804 648 754 663L624 683Q606 740 560 718L493 697Q452 745 411 706L351 686Q292 719 270 660L218 637Q176 622 195 579L220 522Q181 477 203 422Z" fill="#d8c5ec"/>
+  <path d="M231 483Q513 395 795 474L783 593Q501 669 231 586Z" fill="#f2a6cc"/>
+  <g fill="#fff8e9"><path d="m305 394 8 23 25 1-20 15 7 25-20-15-21 15 8-25-20-15 25-1Z"/><path d="m718 601 8 23 25 1-20 15 7 25-20-15-21 15 8-25-20-15 25-1Z"/></g>
+  <g fill="#438d83"><circle cx="260" cy="571" r="6"/><circle cx="763" cy="473" r="6"/><circle cx="369" cy="663" r="5"/></g>
+  <path d="m427 376 83-34 86 34-86 35Z" fill="#8062a5"/><path d="M462 400v29q48 25 96 0v-29l-48 19Z" fill="#8062a5"/><path d="M591 378v53" stroke="#8062a5" stroke-width="7"/><circle cx="591" cy="436" r="8" fill="#f2a6cc"/>
+  <text x="512" y="550" text-anchor="middle" font-family="Arial Rounded MT Bold,Trebuchet MS,sans-serif" font-weight="900" font-size="72" fill="#fff8e9">¡ME RECIBÍ!</text>
+  <text x="512" y="615" text-anchor="middle" font-family="Trebuchet MS,sans-serif" font-size="28" font-weight="700" fill="#514268">Mi gran día</text>
+  <circle cx="298" cy="383" r="11" fill="#674d83"/><circle cx="728" cy="391" r="11" fill="#674d83"/>
+  <path d="M298 372v29M728 380v28" stroke="#b7e4dc" stroke-width="9" stroke-linecap="round"/>
+</svg>

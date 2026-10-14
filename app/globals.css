@@ -92,3 +92,12 @@ body:has(.plop-home) .top-strip{background:#b7e4dc;color:#284742;font-weight:700
 @media(max-width:650px){.plop-home .product-body .image-kind{font-size:11px;min-height:32px}.plop-home .product-cta{font-size:13px}.plop-home .deposit{font-size:12px}.plop-home .product-includes{font-size:13px;min-height:78px}}
 
 .notification-channels{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.notification-channels article{border:1px solid var(--line);border-radius:12px;padding:12px;min-width:0}.notification-channels h4{margin:0 0 6px}.notification-channels small{overflow-wrap:anywhere}@media(max-width:740px){.notification-channels{grid-template-columns:1fr}}
+
+/* Coordinated catalog artwork, with mutually exclusive Combo 3 choices. */
+.combo-options-artwork{position:relative;display:grid;grid-template-columns:1fr;grid-template-rows:1fr 1fr;width:100%;height:100%;padding:12px 16px;background:#faf7f1;gap:12px}
+.combo-options-artwork>div{min-height:0;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:center;border-radius:14px;background:#fffaf5;overflow:hidden;border:1px solid #eee2ea;padding:4px 10px 4px 4px}
+.plop-home .combo-options-artwork>div>img{width:100%;height:100%;min-height:0;object-fit:contain;padding:0}
+.combo-options-artwork>div>span{font-family:PlopText,sans-serif;font-size:12px;line-height:1.4;font-weight:700;color:#674d83;max-width:72px;text-align:center}
+.combo-options-or{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);background:#b7e4dc;color:#314c42;border:3px solid #faf7f1;border-radius:50%;width:28px;height:28px;display:grid;place-items:center;font-size:12px;font-weight:700}
+.personalize-photo>.combo-options-artwork{height:360px;border-radius:20px}
+@media(max-width:700px){.personalize-photo>.combo-options-artwork{height:auto;aspect-ratio:1/1;padding:5px;gap:8px}.personalize-photo>.combo-options-artwork>div{grid-template-columns:1fr;padding:2px}.personalize-photo>.combo-options-artwork>div>span{font-size:9px;max-width:none;padding-bottom:2px}.combo-options-or{width:22px;height:22px;font-size:10px}}

@@ -11,3 +11,8 @@
   X-Robots-Tag: noindex, nofollow
 /baja
   X-Robots-Tag: noindex, nofollow
+
+/
+  Cache-Control: no-cache, max-age=0, must-revalidate
+/index.html
+  Cache-Control: no-cache, max-age=0, must-revalidate

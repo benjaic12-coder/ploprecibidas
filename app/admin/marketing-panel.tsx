@@ -3,7 +3,7 @@ import {useState,useEffect} from 'react';
 import QRCode from 'qrcode';
 import {api} from '@/lib/api';
 import {money,localToday,type Product} from '@/lib/catalog';
-import {Download,Copy,ArrowUpRight} from 'lucide-react';
+import {Download,Copy} from 'lucide-react';
 export default function MarketingPanel({products}:{products:Product[]}){
  const [tab,setTab]=useState('KPIs'),[data,setData]=useState<any>(null),[error,setError]=useState(''),[message,setMessage]=useState(''),[busy,setBusy]=useState(false),[from,setFrom]=useState(''),[to,setTo]=useState(''),[source,setSource]=useState(''),[productFilter,setProductFilter]=useState(''),[career,setCareer]=useState(''),[locality,setLocality]=useState(''),[stage,setStage]=useState(''),[dateFilter,setDateFilter]=useState(''),[orderStatus,setOrderStatus]=useState(''),[onlyOptIn,setOnlyOptIn]=useState(true),[selectedContacts,setSelectedContacts]=useState<string[]>([]),[campaignId,setCampaignId]=useState(''),[subject,setSubject]=useState(''),[text,setText]=useState('Hola {nombre}, tenemos nuevas ideas para tu recibida. ¿Querés que te las mostremos?'),[ga4,setGa4]=useState(''),[pixel,setPixel]=useState('');
  async function load(){setBusy(true);setError('');try{const p=new URLSearchParams();if(from)p.set('from',from);if(to)p.set('to',to);if(source)p.set('source',source);if(productFilter)p.set('product',productFilter);const d=await api('/admin/marketing?'+p,{},true);setData(d);setGa4(d.tracking.ga4||'');setPixel(d.tracking.metaPixel||'')}catch(e){setError(e instanceof Error?e.message:'No pudimos cargar el panel.')}finally{setBusy(false)}}

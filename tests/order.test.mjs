@@ -18,3 +18,13 @@ test('La división de cuenta conserva el total con redondeo exacto',()=>{assert.
 test('Honeypot bloquea formularios automatizados llenos',()=>{const p=payload();p.website='spam';assert.throws(()=>calculateOrder(p,PRODUCTS,7,now))});
 
 test('El patrón HTML de teléfono compila con flag v y acepta formatos locales',()=>{const r=new RegExp('^(?:'+ARG_PHONE_INPUT_PATTERN+')$','v');assert.equal(r.test('+54 9 385 687-0303'),true);assert.equal(r.test('3856870303'),true);assert.equal(r.test('teléfono inválido'),false)});
+
+test('Rechaza hoy y mañana incluso con urgencia y anticipación configurada en cero',()=>{
+ const instant=new Date('2026-10-16T01:30:00Z'); // Todavía es 15/10 en Argentina.
+ for(const date of ['2026-10-15','2026-10-16']){
+  const p=payload();p.customer.date=date;p.customer.urgent=true;
+  assert.throws(()=>calculateOrder(p,PRODUCTS,0,instant),/No recibimos pedidos para hoy ni de un día para el otro/);
+ }
+ const p=payload();p.customer.date='2026-10-17';p.customer.urgent=true;
+ assert.equal(calculateOrder(p,PRODUCTS,7,instant).total,50000);
+});

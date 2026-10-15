@@ -28,3 +28,6 @@ export const emptyCustom=():Customization=>({names:'',career:'',colors:'Rosa + a
 export function unitPrice(p:Product,c:Customization){return p.price+(p.frameOption&&c.frame!=='Rectangular'?3000:0);}
 export function localToday(now=new Date()){return new Intl.DateTimeFormat('en-CA',{timeZone:'America/Argentina/Cordoba',year:'numeric',month:'2-digit',day:'2-digit'}).format(now);}
 export function earliestDate(days=7,now=new Date()){const date=new Date(`${localToday(now)}T12:00:00Z`);date.setUTCDate(date.getUTCDate()+days);return date.toISOString().slice(0,10);}
+
+// Calendar days in Argentina: same-day and next-day orders are not accepted.
+export const MIN_ORDER_LEAD_DAYS=2;

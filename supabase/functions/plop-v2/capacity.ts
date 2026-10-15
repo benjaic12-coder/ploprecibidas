@@ -1,9 +1,10 @@
 import {z} from 'zod';
+import {earliestDate,MIN_ORDER_LEAD_DAYS} from './catalog.ts';
 import {HttpError} from './errors.ts';
 type Rest=(path:string,options?:RequestInit)=>Promise<any>;
 export function validDay(value:unknown){const day=z.string().regex(/^\d{4}-\d{2}-\d{2}$/).parse(value);if(new Date(day+'T12:00:00Z').toISOString().slice(0,10)!==day)throw new HttpError(400,'Elegí una fecha válida.');return day;}
 export async function capacityRoute(req:Request,path:string,url:URL,rest:Rest,user:(req:Request,staff?:boolean)=>Promise<any>,read:(req:Request)=>Promise<any>){
- if(path==='/availability'&&req.method==='GET'){const day=validDay(url.searchParams.get('date'));return await rest('rpc/plop_day_availability',{method:'POST',body:JSON.stringify({p_day:day})});}
+ if(path==='/availability'&&req.method==='GET'){const day=validDay(url.searchParams.get('date'));if(day<earliestDate(MIN_ORDER_LEAD_DAYS))throw new HttpError(400,'No recibimos pedidos para hoy ni de un día para el otro. Elegí otra fecha.');return await rest('rpc/plop_day_availability',{method:'POST',body:JSON.stringify({p_day:day})});}
  if(path==='/admin/capacity'&&req.method==='POST'){
   const actor=await user(req,true);const body=z.object({id:z.string().uuid(),approve:z.boolean(),note:z.string().trim().min(3).max(500)}).parse(await read(req));
   await rest('rpc/plop_capacity_decision',{method:'POST',body:JSON.stringify({p_order:body.id,p_actor:actor.id,p_approve:body.approve,p_note:body.note})});return {ok:true};

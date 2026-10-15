@@ -9,3 +9,14 @@ test('Visitantes no pueden ver calendario ni autorizar cupos',async()=>{const {h
 test('Decisión usa la identidad autenticada e ignora un actor enviado por el cliente',async()=>{const {h,requests}=fixture();const r=await h(req('/admin/capacity',{method:'POST',body:JSON.stringify({id,approve:true,note:'Tenemos capacidad extra',actor:'forged'})}));assert.equal(r.status,200);const call=requests.find(x=>x.u.pathname.endsWith('/rpc/plop_capacity_decision'));assert.deepEqual(JSON.parse(call.opts.body),{p_order:id,p_actor:id,p_approve:true,p_note:'Tenemos capacidad extra'})});
 test('Disponibilidad pública solo devuelve cupo y rechaza fechas inexistentes',async()=>{const {h}=fixture();const r=await h(req('/availability?date=2026-11-12'));assert.equal(r.status,200);assert.deepEqual(await r.json(),{date:'2026-11-12',limit:10,accepted:10,requiresApproval:true});assert.equal((await h(req('/availability?date=2026-02-30'))).status,400)});
 test('Una decisión sin motivo no se guarda',async()=>{const {h,requests}=fixture();assert.equal((await h(req('/admin/capacity',{method:'POST',body:JSON.stringify({id,approve:false,note:''})}))).status,400);assert.ok(!requests.some(x=>x.u.pathname.endsWith('/rpc/plop_capacity_decision')))});
+
+test('Disponibilidad de hoy y mañana no consulta cupos ni sugiere que se aceptan pedidos',async()=>{
+ const {earliestDate}=await import('../lib/catalog.ts');
+ const {h,requests}=fixture();
+ for(const days of [0,1]){
+  const r=await h(req('/availability?date='+earliestDate(days)));
+  assert.equal(r.status,400);
+  assert.match((await r.json()).error,/de un día para el otro/);
+ }
+ assert.ok(!requests.some(x=>x.u.pathname.endsWith('/rpc/plop_day_availability')));
+});

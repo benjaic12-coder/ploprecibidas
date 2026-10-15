@@ -135,6 +135,6 @@ body:has(.plop-home) .header{background:#fff2f7;border-color:#f0dfe7}
 .plop-home .hero h1>.hero-brand-line{display:block}
 .plop-home .hero h1>.hero-brand-mint{color:#58b6a5}
 .plop-home .hero h1>.hero-brand-coral{color:#ee978f}
-.plop-home .hero h1>.hero-brand-final{color:#9287bd;font-size:.64em;line-height:1.22;white-space:nowrap;margin-top:.16em;letter-spacing:-.025em}
+.plop-home .hero h1>.hero-brand-final{color:#9287bd;font-size:1em;line-height:inherit;white-space:normal;margin-top:0;letter-spacing:inherit}
 .hero-logo-word{display:inline-block;width:2.18em;height:1.014em;vertical-align:-.12em;overflow:hidden}
 .hero-brand-period{color:#9287bd}

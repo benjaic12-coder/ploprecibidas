@@ -19,7 +19,7 @@ base('lona-mediana','Lona mediana','Lonas',25000,'Para el auto, la fiesta o tus 
 base('lona-grande','Lona grande','Lonas',30000,'Un fondo para una historia enorme.','140 × 60 cm','Lona impresa'),
 base('prop','Prop individual','Props',2000,'Tu meme, tu foto o esa frase que siempre decís.','Aproximadamente 15 × 21 cm','Papel impreso',{includes:'1 prop personalizado con palito, listo para usar'}),
 base('props','Pack de 8 props','Props',12000,'Ocho ideas para multiplicar los recuerdos.','Aproximadamente 15 × 21 cm cada uno','Papel impreso',{includes:'8 props personalizados con palitos'})
-].map(p=>({...p,image:p.id==='cartel-forma'?'/products/cartel-forma-original.jpg':p.id.startsWith('combo-')?`/products/${p.id}-coordinated.webp`:`/products/${p.id}-studio.webp`,imageKind:p.id==='cartel-forma'?'Foto original · diseño de referencia':p.id.startsWith('combo')?'Composición ilustrativa · diseño de referencia':'Imagen retocada · diseño de referencia'}));
+].map(p=>({...p,image:p.id==='cartel-forma'?'/products/cartel-forma-mejorado.webp':p.id.startsWith('combo-')?`/products/${p.id}-coordinated.webp`:`/products/${p.id}-studio.webp`,imageKind:p.id==='cartel-forma'?'Imagen retocada · diseño de referencia':p.id.startsWith('combo')?'Composición ilustrativa · diseño de referencia':'Imagen retocada · diseño de referencia'}));
 export const CATEGORIES=['Todo','Combos','Marcos','Bandas','Carteles','Lonas','Props'];
 export const money=(n:number)=>new Intl.NumberFormat('es-AR',{style:'currency',currency:'ARS',maximumFractionDigits:0}).format(n);
 export type Customization={names:string;career:string;colors:string;phrase:string;frame:string;choice:string;size:string};

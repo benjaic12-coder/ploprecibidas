@@ -1,7 +1,8 @@
 export async function proxy(request, env, transport = fetch) {
+  const securityHeaders={'Cache-Control':'no-store','X-Content-Type-Options':'nosniff','Referrer-Policy':'no-referrer','Permissions-Policy':'camera=(), microphone=(), geolocation=(), payment=(), usb=()','Content-Security-Policy':"default-src 'none'; frame-ancestors 'none'; base-uri 'none'; form-action 'none'",'X-Robots-Tag':'noindex, nofollow'};
   const endpoint = env.SUPABASE_URL;
   const key = env.SUPABASE_PUBLISHABLE_KEY;
-  if (!endpoint || !key) return Response.json({error:'La tienda necesita completar su configuración. Escribinos por WhatsApp.'},{status:503});
+  if (!endpoint || !key) return Response.json({error:'La tienda necesita completar su configuración. Escribinos por WhatsApp.'},{status:503,headers:securityHeaders});
   const url = new URL(request.url);
   const headers = new Headers({apikey:key});
   for (const field of ['authorization','content-type','x-order-token','origin']) {
@@ -16,12 +17,13 @@ export async function proxy(request, env, transport = fetch) {
       signal:AbortSignal.timeout(url.pathname==='/api/orders'?120000:28000), redirect:'manual'
     });
     return new Response(response.body,{status:response.status,headers:{
+      ...securityHeaders,
       'Content-Type':response.headers.get('content-type') || 'application/json',
       'Cache-Control':'no-store', 'X-Content-Type-Options':'nosniff',
       'Referrer-Policy':'no-referrer'
     }});
   } catch {
-    return Response.json({error:'No pudimos conectar. Revisá tu conexión e intentá nuevamente.'},{status:503});
+    return Response.json({error:'No pudimos conectar. Revisá tu conexión e intentá nuevamente.'},{status:503,headers:securityHeaders});
   }
 }
 export function onRequest({request,env}) { return proxy(request,env); }

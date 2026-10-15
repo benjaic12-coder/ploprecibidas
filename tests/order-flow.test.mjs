@@ -25,9 +25,16 @@ function fixture(){let saved=null,creates=0;
 test('Pedido a seguimiento: se guarda una vez, conserva total y excluye contacto y notas internas',async()=>{
  const f=fixture(),response=await f.send();assert.equal(response.status,201);const order=await response.json();assert.equal(order.total,53000);assert.equal(order.deposit,26500);
  const retry=await f.send();assert.equal((await retry.json()).uuid,order.uuid);assert.equal(f.count(),1);
- const tracked=await f.handler(new Request('https://backend.test/plop-v2/track?id='+code,{headers:{Authorization:'Bearer owner'}}));assert.equal(tracked.status,200);const publicOrder=await tracked.json();assert.equal(publicOrder.total,53000);assert.equal(publicOrder.paymentState,'Sin pago');assert.equal('contact' in publicOrder,false);assert.equal('internal_notes' in publicOrder,false);
+ const tracked=await f.handler(new Request('https://backend.test/plop-v2/track?id='+code,{headers:{Authorization:'Bearer owner','x-order-token':key}}));assert.equal(tracked.status,200);const publicOrder=await tracked.json();assert.equal(publicOrder.total,53000);assert.equal(publicOrder.paymentState,'Sin pago');assert.equal('contact' in publicOrder,false);assert.equal('internal_notes' in publicOrder,false);
 });
 test('Conocer el número no permite leer el pedido de otra sesión; el enlace privado sí',async()=>{
  const f=fixture();await f.send();const without=await f.handler(new Request('https://backend.test/plop-v2/track?id='+code,{headers:{Authorization:'Bearer foreign'}}));assert.equal(without.status,404);
  const withLink=await f.handler(new Request('https://backend.test/plop-v2/track?id='+code,{headers:{Authorization:'Bearer foreign','x-order-token':key}}));assert.equal(withLink.status,200);
+});
+
+test('Incluso la sesión propietaria necesita el token privado correcto',async()=>{
+ const f=fixture();await f.send();
+ for(const token of ['', '42e77eaa-9b34-43c1-bbd6-51d0f792341e']){
+  const r=await f.handler(new Request('https://backend.test/plop-v2/track?id='+code,{headers:{Authorization:'Bearer owner',...(token?{'x-order-token':token}:{})}}));assert.equal(r.status,404);
+ }
 });

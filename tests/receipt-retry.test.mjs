@@ -12,14 +12,14 @@ async function scenario({amount=25000,paymentOrder=orderId,orderStatus='nuevo'}=
   if(path.endsWith('/auth/v1/user'))return Response.json({id:'buyer'});
   if(path.includes('/rpc/plop_expire_qr_reservations'))return Response.json(0);
   if(path.includes('/rpc/plop_rate_limit'))return Response.json(true);
-  if(path.includes('/plop_orders?id='))return Response.json([{id:orderId,owner_id:'buyer',status:orderStatus,total:50000,deposit:25000,verified_paid:25000}]);
+  if(path.includes('/plop_orders?id='))return Response.json([{id:orderId,owner_id:'buyer',request_key:'42e77eaa-9b34-43c1-bbd6-51d0f792341f',status:orderStatus,total:50000,deposit:25000,verified_paid:25000}]);
   if(path.includes('/pagos?request_key='))return Response.json([]);
   if(path.includes('/pagos?archivo_sha256='))return Response.json([{id:paymentId}]);
   if(path.includes('/pagos?id='))return Response.json(paymentOrder===orderId?[previous]:[]);
   throw Error('Unexpected network request: '+path);
  });
  const form=new FormData();
- for(const [key,value] of Object.entries({orderId,requestKey:'42e77eaa-9b34-43c1-bbd6-51d0f792341f',retryId:paymentId,type:'saldo',amount:String(amount),operation:'QA-ONLY',date:'2026-01-01'}))form.set(key,value);
+ for(const [key,value] of Object.entries({orderId,token:'42e77eaa-9b34-43c1-bbd6-51d0f792341f',requestKey:'42e77eaa-9b34-43c1-bbd6-51d0f792341f',retryId:paymentId,type:'saldo',amount:String(amount),operation:'QA-ONLY',date:'2026-01-01'}))form.set(key,value);
  form.set('file',new File([bytes],'test.png',{type:'image/png'}));
  const response=await h(new Request('https://backend.test/plop-v2/receipt',{method:'POST',headers:{Authorization:'Bearer buyer-session'},body:form}));
  return {response,requests};

@@ -34,7 +34,7 @@ async function session(admin:boolean):Promise<Session>{
 }
 export async function api<T=any>(path:string,options:RequestInit={},admin=false):Promise<T>{
  const value=await session(admin),headers=new Headers(options.headers);headers.set('Authorization','Bearer '+value.access_token);
- try{return await jsonRequest(path,{...options,headers}) as T;}catch(error){if(error instanceof ApiError&&error.status===401)storage(admin).removeItem(key(admin));throw error;}
+ try{return await jsonRequest(path,{...options,headers}) as T;}catch(error){if(error instanceof ApiError&&(error.status===401||admin&&error.status===403))storage(admin).removeItem(key(admin));throw error;}
 }
 export async function login(email:string,password:string,register=false){
  const data=await jsonRequest(register?'/register':'/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,password})});

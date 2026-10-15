@@ -36,3 +36,7 @@ test('Un fallo temporal al renovar conserva la sesión y no crea otro comprador'
  globalThis.fetch=async path=>{if(path==='/api/refresh')return Response.json({error:'Problema temporal'},{status:503});if(path==='/api/session')newSessions++;return Response.json(fresh);};
  await assert.rejects(()=>api('/orders',{method:'POST'}),/Problema temporal/);assert.equal(newSessions,0);assert.equal(getSession().access_token,'old-test');
 });
+
+test('Una sesión administrativa rechazada por autorización se elimina',async()=>{
+ setSession(fresh,true);globalThis.fetch=async()=>Response.json({error:'Equipo no autorizado'},{status:403});await assert.rejects(()=>api('/admin/session',{},true),/Equipo no autorizado/);assert.equal(getSession(true),null);
+});

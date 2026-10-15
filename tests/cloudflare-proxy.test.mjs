@@ -21,3 +21,10 @@ test('La configuración ausente y los fallos temporales no exponen detalles inte
  const failed=await proxy(req,env,async()=>{throw Error('private detail');});
  assert.equal(failed.status,503);assert.equal((await failed.text()).includes('private detail'),false);
 });
+
+test('Cabeceras de seguridad también se aplican a errores de configuración y conexión',async()=>{
+ for(const env of [{},{SUPABASE_URL:'https://backend.test',SUPABASE_PUBLISHABLE_KEY:'public'}]){
+  const r=await proxy(new Request('https://shop.test/api/admin'),env,async()=>{throw Error('offline')});
+  assert.equal(r.status,503);assert.equal(r.headers.get('x-content-type-options'),'nosniff');assert.equal(r.headers.get('referrer-policy'),'no-referrer');assert.match(r.headers.get('content-security-policy'),/default-src 'none'/);assert.match(r.headers.get('permissions-policy'),/camera=\(\)/);assert.equal(r.headers.get('cache-control'),'no-store');
+ }
+});

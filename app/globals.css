@@ -127,3 +127,14 @@ body:has(.plop-home) .top-strip{background:#b7e4dc;color:#284742;font-weight:700
 .customization-summary .detail-pending dd{font-weight:700;color:#6a511a}
 @media(max-width:650px){.date-preview{grid-template-columns:1fr;gap:16px;padding-top:18px;padding-bottom:24px}.date-preview h2{font-size:28px}.plop-home .product-body{padding:14px 12px}.plop-home .product-body .product-includes{font-size:13px}.plop-home .product-body .image-kind{font-size:12px}.checkout-group{padding:12px}}
 @media(max-width:400px){.plop-home .product-grid{grid-template-columns:1fr}}
+
+/* Original logo lettering and a soft pink page background. */
+body:has(.plop-home){background:#fff2f7}
+body:has(.plop-home) .header{background:#fff2f7;border-color:#f0dfe7}
+.plop-home .hero h1:has(.hero-brand-line){text-transform:none}
+.plop-home .hero h1>.hero-brand-line{display:block}
+.plop-home .hero h1>.hero-brand-mint{color:#58b6a5}
+.plop-home .hero h1>.hero-brand-coral{color:#ee978f}
+.plop-home .hero h1>.hero-brand-final{color:#9287bd;font-size:.64em;line-height:1.22;white-space:nowrap;margin-top:.16em;letter-spacing:-.025em}
+.hero-logo-word{display:inline-block;width:2.18em;height:1.014em;vertical-align:-.12em;overflow:hidden}
+.hero-brand-period{color:#9287bd}

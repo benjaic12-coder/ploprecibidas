@@ -153,6 +153,6 @@ body:has(.plop-home) .combo-artwork-item>img{
  filter:var(--catalog-photo-grade);
  background-color:var(--catalog-photo-backdrop);
 }
-body:has(.plop-home) :is(.product-image,.personalize-photo,.cart-item)>img[src*="cartel-forma-mejorado.webp"]{
+body:has(.plop-home) :is(.product-image,.personalize-photo,.cart-item)>img[src*="cartel-forma-editado-v2.webp"]{
  filter:none;
 }

@@ -4,3 +4,5 @@ Disallow: /admin
 Disallow: /api/
 Disallow: /pedido/
 Disallow: /baja
+
+Sitemap: https://plop-recibidas.pages.dev/sitemap.xml

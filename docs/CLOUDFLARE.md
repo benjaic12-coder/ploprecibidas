@@ -20,7 +20,7 @@ La vinculación automática de GitHub no se completó: Cloudflare devuelve el er
 - Variables de producción y preview: `SUPABASE_URL`, `SUPABASE_PUBLISHABLE_KEY`.
 - `SITE_URL`: URL pública definitiva que Cloudflare asigne. Mientras no esté definida, el build usa `CF_PAGES_URL`.
 
-La función `functions/api/[[path]].js` transmite `/api/*` al backend actual. `_routes.json` limita las invocaciones a esas rutas; imágenes y archivos estáticos no consumen solicitudes de Functions. Sin un `404.html`, Pages conserva su comportamiento SPA para seguimiento, panel y privacidad.
+La función `functions/api/[[path]].js` transmite `/api/*` al backend actual. `_routes.json` limita las invocaciones a esas rutas; imágenes y archivos estáticos no consumen solicitudes de Functions. El build genera `404.html` para evitar el fallback de rutas desconocidas a la home. Seguimiento y campañas tienen Functions específicas que sirven sus shells; condiciones, privacidad y admin tienen HTML propio.
 
 ## Verificación antes de anunciar la URL
 

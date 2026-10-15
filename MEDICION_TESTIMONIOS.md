@@ -6,7 +6,7 @@ UTM source/medium/campaign/content se conservan durante la sesión como atribuci
 
 Admin → Marketing → KPIs muestra visitas de sesiones consentidas, solicitudes válidas, conversión de sesiones medidas a pedido y ventas por producto y origen. Los cobros solo incluyen pagos verificados. El cobrado por producto se prorratea según su peso en el subtotal. Se excluyen pedidos de prueba y cancelados.
 
-Editar public/testimonios.json con testimonios auténticos y fotos locales en public/clientes/. Para publicar una historia completa: placeholder=false, approved=true y consent=true. Los placeholders se muestran como espacios reservados; no se inventan reseñas. Se conservan las reseñas moderadas y el aviso de imágenes de referencia.
+Editar public/testimonios.json con testimonios auténticos y fotos locales en public/clientes/. Cada registro usa nombre, carrera, texto, foto y autorizacion. Solo se publica con autorizacion=true y todos los campos completos. Sin registros válidos se oculta toda la sección. Los bloques COMPLETAR nunca se publican. Se conservan las reseñas moderadas y el aviso de imágenes de referencia.
 
 ## Checklist del banner
 

@@ -1,22 +1,10 @@
 [
   {
     "id": "historia-1",
-    "placeholder": true,
-    "approved": false,
-    "consent": false,
-    "name": "COMPLETAR: nombre autorizado",
-    "text": "COMPLETAR: testimonio real del cliente",
-    "photo": "/clientes/COMPLETAR.jpg",
-    "alt": "COMPLETAR: descripción de la foto real"
-  },
-  {
-    "id": "historia-2",
-    "placeholder": true,
-    "approved": false,
-    "consent": false,
-    "name": "COMPLETAR: nombre autorizado",
-    "text": "COMPLETAR: testimonio real del cliente",
-    "photo": "/clientes/COMPLETAR.jpg",
-    "alt": "COMPLETAR: descripción de la foto real"
+    "nombre": "COMPLETAR",
+    "carrera": "COMPLETAR",
+    "texto": "COMPLETAR",
+    "foto": "/clientes/COMPLETAR.jpg",
+    "autorizacion": false
   }
 ]

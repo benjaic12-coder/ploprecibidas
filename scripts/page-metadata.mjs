@@ -11,7 +11,7 @@ export function routeHtml(html,_origin,path){
 }
 export function writeRoutePages(directory,html){
  writeFileSync(`${directory}/index.html`,routeHtml(html,SITE_URL,'/'));
- for(const path of ['/privacy','/privacidad','/admin','/admin/recuperar','/baja']){
+ for(const path of ['/condiciones','/privacy','/privacidad','/admin','/admin/recuperar','/baja']){
   mkdirSync(directory+path,{recursive:true});writeFileSync(`${directory}${path}/index.html`,routeHtml(html,SITE_URL,path));
  }
 }

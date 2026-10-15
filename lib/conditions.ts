@@ -1,5 +1,5 @@
 // Completar solo con condiciones comerciales confirmadas por Plop.
-export const SELLER={name:'COMPLETAR',cuit:'COMPLETAR',locality:'COMPLETAR',address:'COMPLETAR'};
+export const SELLER={name:'PLOPRECIBIDAS',cuit:'20-36045588-3',locality:'Santiago del Estero',address:'Santa Fe N° 2265, B° Tradición'};
 export const CONDITIONS=[
  {question:'¿Puedo cancelar el pedido o cambiar la fecha?',title:'Cancelación o cambio de fecha',text:'COMPLETAR: cómo solicitar la cancelación o el cambio de fecha, disponibilidad y qué pasa con la seña en cada caso según el avance del pedido.'},
  {question:'¿Cuánto demora la producción?',title:'Tiempos de producción',text:'COMPLETAR: plazo de producción, desde cuándo se cuenta y cómo se confirma la entrega. La anticipación para solicitar un pedido no equivale al plazo de producción.'},

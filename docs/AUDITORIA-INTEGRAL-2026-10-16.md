@@ -1,0 +1,78 @@
+# Auditoría integral de Plop Recibidas
+
+Revisión iniciada el 15/10/2026 (Argentina), 16/10 UTC. Repositorio existente, rama de producción `codex/plop-nuevo-2026-10-13`. No se fusionaron a ciegas los PR abiertos. Durante el trabajo otro colaborador integró el PR 5 y retiró el bloque de identidad del footer en 887deb0. Se revisó y preservó esa actualización, incluido el lockfile reducido. No se cambiaron precios, productos, combos o reglas comerciales.
+
+## Diagnóstico y causas comprobadas
+
+El sitio publicado en `675832e216b8b73e7bf65750323fda97779edb08` abrió correctamente en el navegador de revisión. API de catálogo: 200, 18 productos y checkoutEnabled=true. Ninguna imagen cargada estaba rota; no hubo desbordamiento horizontal a 1363 px. El único error de consola observado pertenecía a una extensión del navegador, no a Plop. El código desplegado de la función `plop-v2` versión 25 coincidía con el repositorio.
+
+Durante la verificación posterior se reprodujo la pantalla de carga incompleta. La evidencia concreta fue HTML de la versión anterior en el navegador que apuntaba a `/assets/index-DFzW-m5g.js`, mientras la versión publicada d8dae43 usaba `/assets/index-BYlze1Zd.js`. El archivo anterior devolvía HTTP 404: el despliegue había quitado recursos todavía referenciados por una página anterior. El texto de recarga permanecía porque el módulo de inicio no podía cargar. Esta es la causa comprobada del episodio reproducido; no se atribuyen otros episodios históricos sin evidencia. El historial también contenía una corrección parcial para almacenamiento bloqueado, `a7a2a05`.
+
+Sí se reprodujo un defecto vigente: `setSession` lanzaba SecurityError al denegar localStorage/sessionStorage. La protección previa no cubría sesiones, borradores y todos los accesos al carrito. También se identificaron cookies que podían lanzar durante la atribución y decodeURIComponent fuera del límite de recuperación de React. Un enlace con escapes inválidos podía detener el montaje de la ruta.
+
+## Correcciones
+
+- Se conservan los recursos con hash de las últimas 20 publicaciones. El build recupera los archivos anteriores con sus nombres originales y verifica SHA-256; una descarga faltante o alterada bloquea la publicación. Se recuperan también imports diferidos para panel, seguimiento y campañas. El primer despliegue recupera cuatro versiones exitosas identificadas por sus URLs inmutables. No se cambia el contenido de un recurso con el mismo nombre.
+- HTML y manifiesto usan no-store/no-cache; los recursos con hash conservan immutable. El smoke test verifica los módulos de inicio históricos, no solo los de la página actual.
+- Sesiones de cliente/equipo y borradores usan almacenamiento protegido, con memoria solo si falla la escritura persistente. Se evita que una copia vieja oculte cambios de almacenamiento entre pestañas.
+- El carrito usa el mismo lector protegido. Se mantiene la caducidad de borradores; si IndexedDB o el identificador persistente de la pestaña no están disponibles, la interfaz avisa que el borrador no se pudo guardar.
+- Cookies bloqueadas no interrumpen la atribución con consentimiento previo.
+- Las rutas malformadas muestran la pantalla de página no encontrada en vez de lanzar antes del montaje.
+- Salir llama al backend y revoca la sesión actual en Supabase (`scope=local`), limpia la sesión local aun ante errores y borra la ficha, productos y datos privados del panel. Se descartan cargas/renovaciones iniciadas antes del cierre.
+- Se mantiene la naturaleza estándar del cierre de Supabase: los JWT emitidos tienen su propia expiración; no se modificó su duración.
+- Se agregan lint y verificación HTTP posterior al workflow de publicación; se comprueba también que el commit publicado sea el comprobado por CI. Se excluyen compilados/dependencias vendorizadas y se retira la regla de navegación Next, incompatible con las rutas Vite/Pages. Los usos existentes de any y los avisos de setState en efectos se mantienen **visibles como advertencias**, no se afirma que se hayan corregido. Quedan 155 advertencias; CI falla si el número aumenta. Las restantes reglas de corrección y TypeScript siguen bloqueando.
+- Se agregan pruebas de regresión, una prueba SQL transaccional reutilizable y un smoke test HTTP para rutas y versiones.
+
+## Resultados ejecutados
+
+| Verificación | Resultado |
+|---|---|
+| pnpm install --frozen-lockfile | Aprobada; se preserva el lockfile de la limpieza integrada por el colaborador |
+| pnpm exec tsc --noEmit y pnpm check:unused | Aprobadas para el alcance de tsconfig existente |
+| pnpm test | 131 pruebas aprobadas, 0 fallos |
+| pnpm lint --max-warnings=155 | 0 errores, 155 advertencias explícitas |
+| pnpm run build:cloudflare | Aprobada |
+| git diff --check | Aprobada |
+| SQL docs/audit-transaction.sql | Aprobada con ROLLBACK; 0 filas residuales de auditoría |
+| PNG real de QR de fixture + lectura con zxing-cpp | Vínculo interno decodificado correctamente |
+| Navegador: dos Combo 1, marco redondo | Total $106.000, seña $53.000, saldo $53.000 |
+| Checkout público | Campos obligatorios y resumen comprobados; no se envió una solicitud real |
+| Panel público | Formulario de acceso visible; sin acceso a datos privados |
+
+`tsconfig.json` excluye Supabase Functions: la compilación de despliegue y las pruebas del handler complementan esa comprobación; no se presenta como un typecheck completo del backend Deno.
+
+Las pruebas nuevas de conservación verifican recursos anteriores, imports diferidos y rechazo de rutas o archivos alterados. El smoke test sigue los redireccionamientos canónicos y comprueba `/`, `/admin`, `/admin/recuperar`, `/condiciones`, `/privacidad`, `/pedido/PLOP-AABBCCDDEEFF`, 404 real de ruta inexistente y 401 de APIs administrativas. Comprueba noindex, HTML revalidable, assets immutable y el mismo X-Plop-Deploy en las páginas.
+
+## Backend, RLS y pagos
+
+Supabase sigue activo. Todas las tablas públicas inspeccionadas tienen RLS. Pedidos/pagos/historial están limitados al equipo por `plop_private.is_staff()`: consulta la identidad autenticada, confirma el correo, exige pertenecer al directorio interno y rechaza usuarios anónimos. Las funciones SECURITY DEFINER públicas inspeccionadas no admiten ejecución por anon/authenticated. Los buckets de comprobantes/reseñas privadas no son públicos; el bucket de comprobantes vigente limita a 5 MB y JPG/PNG/WebP/PDF. La API valida también firmas de archivo. No se modificaron tablas, políticas ni credenciales.
+
+La prueba SQL verificó creación sintética, cálculo de seña, rechazo de producción sin seña, comprobante no contado como dinero verificado, verificación de seña, aprobación de diseño, saldo, entrega e historial. Se ejecutó dentro de una transacción que terminó en ROLLBACK. Los consumidores externos no pueden ver las colas sin commit. No hubo compras, transferencias ni mensajes reales.
+
+Advisors conserva avisos: RLS sin políticas en tablas de servicio (denegación intencional), políticas authenticated que el analizador marca por soportar usuarios anónimos (el predicado is_staff los rechaza), y protección nativa de contraseñas filtradas desactivada. La aplicación ya implementa comprobación propia en registro/recuperación. Referencia: https://supabase.com/docs/guides/auth/password-security#password-strength-and-leaked-password-protection .
+
+## QR y límites de verificación
+
+Se conserva el QR existente por UUID: enlace `/admin?pedido=...`, PNG descargable y etiqueta de 80 × 110 mm; no expone nombre, teléfono ni token privado. Las pruebas verifican correspondencia de ficha, origen y modo de prueba, búsqueda de pedidos antiguos y exclusión de pruebas de los reportes.
+
+No se comprobó una impresora física ni la lectura con un segundo teléfono. La lectura del PNG se comprobó con un decodificador independiente. No hubo inicio/cierre con credenciales reales del equipo ni revisión visual de pedidos reales en el panel; se comprobaron backend, autorización y operaciones con fixtures. La sesión del navegador de revisión no tenía acceso administrativo. La vista móvil en un dispositivo físico tampoco se presenta como probada.
+
+## Pendientes del propietario
+
+Completar el momento de pago del saldo, los cambios posteriores a la aprobación y los cambios de fecha, que siguen marcados COMPLETAR. Falta precisar el caso de cancelación con el diseño todavía en proceso, distinto de los dos supuestos confirmados. No se inventaron plazos, montos ni condiciones. Confirmar en una cuenta autorizada el acceso al panel y la impresión en la impresora utilizada. No falta ninguna variable para cargar catálogo o habilitar checkout: las de Cloudflare estaban presentes y los datos bancarios estaban completos.
+
+## Publicación
+
+Los cambios se preparan en `fix/auditoria-integral-2026-10-16` y se publican mediante avance controlado de la rama existente, sujeto a las verificaciones descritas. El commit final, el resultado de Actions y la comprobación de Cloudflare se informan en la entrega. URLs: https://plop-recibidas.pages.dev/ y https://plop-recibidas.pages.dev/admin/ .
+
+## Actualización de preguntas frecuentes solicitada durante la revisión
+
+Se incorporaron retiro de 9 a 12 o de 17 a 21 hs, envíos a Santiago del Estero/La Banda por Uber Auto a cargo del cliente, producción de 24 a 48 horas desde la aprobación final, diseño previo pago de seña, los dos supuestos confirmados de cancelación y consulta para otras localidades. Se eliminaron preguntas duplicadas. El FAQ deja de ocupar espacio en el inicio: abre desde el menú en un diálogo y sus respuestas conservan el desplegable individual. Se mantiene la misma fuente de datos para FAQ y condiciones.
+
+Por indicación posterior de la propietaria, el rótulo visible «Imagen retocada» se reemplaza por «Imagen de referencia». Se conserva el aviso general del catálogo.
+
+## Verificación de publicación integrada
+
+Se publicó 202ec0d preservando la limpieza de 887deb0 y las correcciones de esta auditoría. Cloudflare confirmó éxito. La primera comprobación de CI detectó que el alias público aún servía 887deb0 tres segundos después de publicar; no se marcó esa ejecución como aprobada. La verificación independiente posterior aprobó las 10 rutas, los 18 productos, los recursos de inicio de cuatro versiones anteriores y el commit 202ec0d. Se agregó una espera limitada de hasta 55 segundos exclusivamente para la propagación del commit esperado antes de ejecutar todas las comprobaciones, sin omitirlas ni aceptar otro commit.
+
+En navegador se volvió a cargar la tienda sin bloqueo; el catálogo muestra «Imagen de referencia». Preguntas frecuentes abre un diálogo desde el menú y las respuestas comienzan cerradas.

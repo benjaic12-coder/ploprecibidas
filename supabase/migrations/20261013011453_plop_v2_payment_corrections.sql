@@ -1,0 +1,7 @@
+create or replace function plop_private.payment_history() returns trigger language plpgsql security definer set search_path='' as $$ declare paid bigint;o public.plop_orders%rowtype;begin
+ select * into o from public.plop_orders where id=new.pedido_id for update;
+ insert into public.historial_pagos(pago_id,anterior,nuevo,cambiado_por,monto) values(new.id,case when TG_OP='INSERT' then null else old.estado end,new.estado,coalesce(auth.uid(),new.quien_verifico,new.creado_por),new.monto_recibido);
+ select coalesce(sum(monto_recibido),0) into paid from public.pagos where pedido_id=new.pedido_id and estado='verificado';
+ update public.plop_orders set verified_paid=paid,last_actor=coalesce(auth.uid(),new.quien_verifico,new.creado_por),status=case when status='cancelado' then status when status='entregado' and paid<total and paid>=deposit then 'en_produccion' when paid<deposit and status in ('sena_recibida','en_produccion','entregado') then 'en_revision' when paid>=deposit and status in ('nuevo','en_revision') then 'sena_recibida' else status end where id=new.pedido_id;
+ if new.estado='comprobante_enviado' and (TG_OP='INSERT' or old.estado='rechazado') then insert into public.plop_notifications(pedido_id,event,dedupe_key,payload) values(new.pedido_id,'comprobante','comprobante:'||new.id||':'||new.updated_at,jsonb_build_object('pago_id',new.id)) on conflict do nothing;end if;
+ return new;end;$$;

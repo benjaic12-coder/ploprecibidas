@@ -27,3 +27,16 @@ test('La comprobación de sesión valida Auth y lista de equipo sin cargar pedid
 test('Admin y recuperación entregan meta robots incluso como HTML estático',()=>{
  for(const path of ['/admin','/admin/recuperar'])assert.match(routeHtml('<html><head><title>Plop</title></head><body></body></html>','https://shop.test',path),/<meta name="robots" content="noindex,nofollow">/);
 });
+
+test('Salir revoca únicamente la sesión local en Auth y rechaza visitantes',async()=>{
+ const calls=[];let staff=true;
+ const h=createHandler(env,async(raw,options={})=>{const u=new URL(raw);calls.push(u.pathname+u.search);
+  if(u.pathname==='/auth/v1/user')return Response.json({id:'fixture',email:'team@test.invalid',is_anonymous:!staff,email_confirmed_at:'2026-01-01'});
+  if(u.pathname.endsWith('/rpc/plop_staff_email'))return Response.json(true);
+  if(u.pathname==='/auth/v1/logout'){assert.equal(u.searchParams.get('scope'),'local');assert.equal(options.method,'POST');assert.equal(options.headers.Authorization,'Bearer fixture');return new Response(null,{status:204});}
+  throw Error('Unexpected '+u.pathname);
+ });
+ const send=()=>h(new Request('https://backend.test/plop-v2/logout',{method:'POST',headers:{Authorization:'Bearer fixture'}}));
+ assert.equal((await send()).status,200);assert.equal(calls.filter(p=>p.startsWith('/auth/v1/logout')).length,1);
+ staff=false;assert.equal((await send()).status,403);assert.equal(calls.filter(p=>p.startsWith('/auth/v1/logout')).length,1);
+});

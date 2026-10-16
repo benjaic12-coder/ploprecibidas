@@ -1,14 +1,16 @@
 'use client';
+import {readBrowserValue,writeBrowserValue,removeBrowserValue} from './browser-storage.ts';
 type Session={access_token:string;refresh_token:string;expires_at?:number;expires_in?:number;user?:{email?:string}};
 const key=(admin:boolean)=>admin?'plop-admin-session':'plop-customer-session';
-const storage=(admin:boolean)=>admin?sessionStorage:localStorage;
+const area=(admin:boolean)=>admin?'session' as const:'local' as const;
+let adminRevision=0;
 const pending=new Map<boolean,Promise<Session>>();
 export class ApiError extends Error{readonly status:number;constructor(message:string,status:number){super(message);this.name='ApiError';this.status=status;}}
 export function getSession(admin=false):Session|null{
- try{const value=JSON.parse(storage(admin).getItem(key(admin))||'null');return value&&typeof value.access_token==='string'&&value.access_token&&typeof value.refresh_token==='string'&&value.refresh_token?value:null;}catch{return null;}
+ try{const value=JSON.parse(readBrowserValue(area(admin),key(admin))||'null');return value&&typeof value.access_token==='string'&&value.access_token&&typeof value.refresh_token==='string'&&value.refresh_token?value:null;}catch{return null;}
 }
-export function setSession(value:Session,admin=false){storage(admin).setItem(key(admin),JSON.stringify({...value,expires_at:value.expires_at||Math.floor(Date.now()/1000)+(value.expires_in||3600)}));}
-export function clearAdmin(){sessionStorage.removeItem(key(true));}
+export function setSession(value:Session,admin=false){writeBrowserValue(area(admin),key(admin),JSON.stringify({...value,expires_at:value.expires_at||Math.floor(Date.now()/1000)+(value.expires_in||3600)}));}
+export function clearAdmin(){adminRevision++;removeBrowserValue('session',key(true));}
 async function jsonRequest(path:string,options:RequestInit={}){
  let response:Response;
  try{response=await fetch('/api'+path,{...options,signal:options.signal||AbortSignal.timeout(28000)});}catch{throw Error('No pudimos conectar. Revisá tu conexión e intentá nuevamente.');}
@@ -18,10 +20,11 @@ async function jsonRequest(path:string,options:RequestInit={}){
  return data;
 }
 async function obtainSession(admin:boolean):Promise<Session>{
+ const revision=adminRevision;
  let value=getSession(admin);
  if(value&&value.expires_at&&value.expires_at<Date.now()/1000+30){
-  try{value=await jsonRequest('/refresh',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({refresh_token:value.refresh_token})});setSession(value!,admin);}
-  catch(error){if(error instanceof ApiError&&[400,401,403].includes(error.status)){value=null;storage(admin).removeItem(key(admin));}else throw error;}
+  try{value=await jsonRequest('/refresh',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({refresh_token:value.refresh_token})});if(admin&&revision!==adminRevision)throw new ApiError('La sesión del panel se cerró.',401);setSession(value!,admin);}
+  catch(error){if(admin&&revision!==adminRevision)throw error;if(error instanceof ApiError&&[400,401,403].includes(error.status)){value=null;removeBrowserValue(area(admin),key(admin));}else throw error;}
  }
  if(!value&&!admin){value=await jsonRequest('/session',{method:'POST'});setSession(value!,false);}
  if(!value)throw Error('Ingresá para abrir el panel.');
@@ -34,7 +37,7 @@ async function session(admin:boolean):Promise<Session>{
 }
 export async function api<T=any>(path:string,options:RequestInit={},admin=false):Promise<T>{
  const value=await session(admin),headers=new Headers(options.headers);headers.set('Authorization','Bearer '+value.access_token);
- try{return await jsonRequest(path,{...options,headers}) as T;}catch(error){if(error instanceof ApiError&&(error.status===401||admin&&error.status===403))storage(admin).removeItem(key(admin));throw error;}
+ try{return await jsonRequest(path,{...options,headers}) as T;}catch(error){if(error instanceof ApiError&&(error.status===401||admin&&error.status===403))removeBrowserValue(area(admin),key(admin));throw error;}
 }
 export async function login(email:string,password:string,register=false){
  const data=await jsonRequest(register?'/register':'/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,password})});
@@ -43,7 +46,13 @@ export async function login(email:string,password:string,register=false){
 
 export async function uploadOrder(form:FormData,onProgress:(percent:number)=>void){
  const value=await session(false);
- return new Promise<any>((resolve,reject)=>{const xhr=new XMLHttpRequest();xhr.open('POST','/api/orders');xhr.setRequestHeader('Authorization','Bearer '+value.access_token);xhr.timeout=120000;xhr.upload.onprogress=e=>{if(e.lengthComputable)onProgress(Math.min(99,Math.round(e.loaded/e.total*100)))};xhr.onerror=()=>reject(Error('Se interrumpió la conexión. El borrador sigue guardado; reintentá para comprobar tu solicitud.'));xhr.ontimeout=()=>reject(Error('La carga está tardando. El borrador sigue guardado; reintentá sin cambiar el pedido para comprobar si llegó.'));xhr.onload=()=>{let data:any;try{data=JSON.parse(xhr.responseText)}catch{reject(Error('No pudimos confirmar la respuesta. Reintentá con el mismo pedido.'));return}if(xhr.status>=200&&xhr.status<300){onProgress(100);resolve(data)}else{if(xhr.status===401)localStorage.removeItem(key(false));reject(new ApiError(data?.error||'No pudimos guardar el pedido.',xhr.status))}};xhr.send(form)});
+ return new Promise<any>((resolve,reject)=>{const xhr=new XMLHttpRequest();xhr.open('POST','/api/orders');xhr.setRequestHeader('Authorization','Bearer '+value.access_token);xhr.timeout=120000;xhr.upload.onprogress=e=>{if(e.lengthComputable)onProgress(Math.min(99,Math.round(e.loaded/e.total*100)))};xhr.onerror=()=>reject(Error('Se interrumpió la conexión. El borrador sigue guardado; reintentá para comprobar tu solicitud.'));xhr.ontimeout=()=>reject(Error('La carga está tardando. El borrador sigue guardado; reintentá sin cambiar el pedido para comprobar si llegó.'));xhr.onload=()=>{let data:any;try{data=JSON.parse(xhr.responseText)}catch{reject(Error('No pudimos confirmar la respuesta. Reintentá con el mismo pedido.'));return}if(xhr.status>=200&&xhr.status<300){onProgress(100);resolve(data)}else{if(xhr.status===401)removeBrowserValue('local',key(false));reject(new ApiError(data?.error||'No pudimos guardar el pedido.',xhr.status))}};xhr.send(form)});
 }
 export async function requestPasswordReset(email:string){return jsonRequest('/recover',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email})})}
 export async function resetPassword(password:string){return api('/recover/password',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({password})},true)}
+
+export async function logoutAdmin(){
+ const value=getSession(true);
+ try{if(value)await jsonRequest('/logout',{method:'POST',headers:{Authorization:'Bearer '+value.access_token}});}
+ finally{clearAdmin();}
+}

@@ -156,3 +156,7 @@ body:has(.plop-home) .combo-artwork-item>img{
 body:has(.plop-home) :is(.product-image,.personalize-photo,.cart-item)>img[src*="cartel-forma-editado-v2.webp"]{
  filter:none;
 }
+
+/* FAQ is opened from navigation, without expanding the storefront on arrival. */
+.faq-dialog-content{padding:20px 6px 6px;gap:26px;margin:0;min-width:0}.faq-dialog-content h2{color:#8062a5;font-size:38px}.faq-dialog-content summary{font-weight:700;min-height:48px}.faq-dialog-content p{line-height:1.65;overflow-wrap:anywhere}.faq-dialog-content .faq-list{min-width:0}@media(max-width:740px){.faq-dialog-content{grid-template-columns:1fr;gap:15px;padding:15px 0 0}.faq-dialog-content h2{font-size:30px}.faq-dialog-content summary{font-size:14px}.faq-dialog-content p{font-size:14px}}
+@media(min-width:741px) and (max-width:1000px){.header nav{display:none}.mobile-toggle{display:grid}.mobile-nav{display:flex;flex-direction:column;padding:12px 26px 20px;gap:14px;border-top:1px solid var(--line);font-size:14px}.mobile-nav button{text-align:left;padding:0;min-height:36px}}

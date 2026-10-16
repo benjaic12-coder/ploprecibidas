@@ -17,6 +17,7 @@ test('No imprime contenido ejecutable, notas internas, claves privadas ni datos 
  const html=receiptHtml(receiptModel(order,'pago-1'));
  assert.doesNotMatch(html,/<script>|SECRETO|CLAVE-PRIVADA|CAE:/);
  assert.match(html,/&lt;script&gt;/);assert.match(html,/20-36045588-3/);assert.match(html,/Santa Fe/);
+ assert.match(html,/class="brand-logo"/);assert.match(html,/@page\{size:A5 portrait/);assert.throws(()=>receiptHtml(receiptModel(order,'pago-1'),'javascript:alert(1)'),/Logo inválido/);
  assert.match(html,/No válido como factura/);assert.match(html,/PRUEBA · SIN VALIDEZ/);
 });
 test('Sobrepago muestra excedente y saldos nunca negativos; importes inválidos no se imprimen',()=>{

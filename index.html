@@ -179,6 +179,27 @@ html,body{background:#FFFFFF;color:var(--ink)}
 }
 </style>
 
+<style id="plop-about-us-2026">
+.about-plop{width:min(1180px,calc(100% - 32px));margin:34px auto 26px;display:grid;grid-template-columns:1.02fr .98fr;gap:clamp(24px,5vw,58px);align-items:center}
+.about-copy{padding:12px 0}
+.about-copy h2{font-size:clamp(2.4rem,5.3vw,4.6rem);line-height:.93;letter-spacing:-.075em;margin:0 0 18px;color:#263238}
+.about-copy h2 span{color:#DE4F8A}
+.about-copy p:not(.eyebrow){color:#59666B;line-height:1.65;max-width:590px}
+.about-copy .about-lead{font-size:1.12rem;font-weight:700;color:#263238!important;line-height:1.5!important}
+.about-cta{display:inline-flex;align-items:center;gap:12px;margin-top:12px;padding:12px 17px;border-radius:999px;background:#F17BAA;color:#fff;text-decoration:none;font-weight:900;border:2px solid #F17BAA;transition:transform .2s,background .2s}
+.about-cta:hover{background:#DE4F8A;transform:translateY(-2px)}
+.about-cta:focus-visible{outline:3px solid #38B8AD;outline-offset:3px}
+.about-value{padding:clamp(20px,3vw,32px);border:1px solid #D7F0EE;border-radius:24px;background:linear-gradient(145deg,#E7F8F5,#fff 75%);box-shadow:0 8px 24px rgba(57,48,76,.06)}
+.about-value h3{font-size:clamp(1.5rem,3vw,2.2rem);letter-spacing:-.045em;line-height:1.05;margin:0 0 20px;color:#263238}
+.about-value ul{list-style:none;margin:0;padding:0;display:grid;gap:16px}
+.about-value li{display:grid;grid-template-columns:42px 1fr;gap:12px;align-items:start}
+.about-value li>span{display:grid;place-items:center;width:38px;height:38px;border-radius:50%;background:#F17BAA;color:#fff;font-weight:900;font-size:.8rem}
+.about-value li strong{display:block;color:#263238;margin:1px 0 4px}
+.about-value li p{margin:0;color:#59666B;font-size:.9rem;line-height:1.5}
+.about-note{margin:20px 0 0;padding-top:14px;border-top:1px solid #CDE9E5;color:#247E76;font-weight:700;line-height:1.5}
+@media(max-width:760px){.about-plop{width:calc(100% - 20px);grid-template-columns:1fr;gap:18px;margin:26px auto 20px}.about-copy h2{font-size:clamp(2.5rem,12vw,4rem)}.about-copy .about-lead{font-size:1.02rem}.about-value{padding:21px;border-radius:19px}.about-value li{grid-template-columns:36px 1fr;gap:10px}.about-value li>span{width:33px;height:33px}}
+</style>
+
 </head>
 <body>
 <a class="skip-link" href="#catalog">Ir al catálogo</a>
@@ -191,6 +212,7 @@ html,body{background:#FFFFFF;color:var(--ink)}
 <nav class="top-nav" aria-label="Menú principal">
 <a href="#home">Inicio</a>
 <a href="#catalog">Catálogo</a>
+<a href="#about-plop">Quiénes somos</a>
 <a class="menu-checkout" href="#catalog" id="menuCheckout">Continuar con mi pedido</a>
 <a class="menu-contact" href="mailto:plopsgo@gmail.com?subject=Consulta%20Plop%20Recibidas">Contacto</a>
 <a class="menu-whatsapp" href="https://wa.me/5493856870303?text=Hola%20Plop%2C%20quiero%20consultar%20por%20una%20recibida." target="_blank" rel="noopener" aria-label="Escribir por WhatsApp">WhatsApp</a>
@@ -212,6 +234,26 @@ html,body{background:#FFFFFF;color:var(--ink)}
 <img src="clean-product-assets/combo-4-clean.webp?v=50.0" alt="Imagen real del Combo Completo de Plop Recibidas" fetchpriority="high" decoding="async">
 </div>
 </section>
+<section class="about-plop page" id="about-plop" aria-labelledby="aboutPlopTitle">
+  <div class="about-copy">
+    <p class="eyebrow">Detrás de cada recibida</p>
+    <h2 id="aboutPlopTitle">Tu logro es único.<br><span>Tu festejo también.</span></h2>
+    <p class="about-lead">En Plop creamos decoración personalizada para que tu recibida tenga tu estilo, tu carrera y tu historia.</p>
+    <p>Queremos ayudarte a convertir una idea en detalles que se luzcan en las fotos y acompañen un momento que te costó mucho alcanzar. Por eso podés elegir productos, combinar opciones y contarnos cómo imaginás tu celebración.</p>
+    <a class="about-cta" href="#catalog">Encontrá tu idea en el catálogo <span aria-hidden="true">→</span></a>
+  </div>
+  <div class="about-value" aria-label="Nuestra propuesta de valor">
+    <p class="eyebrow">Nuestra propuesta de valor</p>
+    <h3>Personalizá. Combiná. Celebrá.</h3>
+    <ul>
+      <li><span aria-hidden="true">01</span><div><strong>Diseñado para vos</strong><p>Colores, carrera, nombre y frases que reflejan tu historia.</p></div></li>
+      <li><span aria-hidden="true">02</span><div><strong>Todo en una misma idea</strong><p>Marcos, bandas, lonas, carteles y props para armar un conjunto a tu medida.</p></div></li>
+      <li><span aria-hidden="true">03</span><div><strong>Acompañamiento claro</strong><p>Nos contás qué necesitás y coordinamos diseño, disponibilidad y entrega antes de producir.</p></div></li>
+    </ul>
+    <p class="about-note">Cada recibida tiene su historia. Ayudamos a que se note en cada detalle.</p>
+  </div>
+</section>
+
 <section class="catalog" id="catalog">
 <div class="catalog-header">
 <div>

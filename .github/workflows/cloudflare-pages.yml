@@ -34,7 +34,7 @@ jobs:
       - name: Install locked dependencies
         run: pnpm install --frozen-lockfile
       - name: Lint
-        run: pnpm lint --max-warnings=161
+        run: pnpm lint --max-warnings=155
       - name: Test
         run: pnpm test
       - name: Typecheck
@@ -58,6 +58,11 @@ jobs:
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
         run: node node_modules/wrangler/bin/wrangler.js pages deploy dist-cloudflare --project-name plop-recibidas --branch codex/plop-nuevo-2026-10-13
+      - name: Verify production routes and retained assets
+        if: steps.credential.outputs.ready == 'true'
+        env:
+          EXPECTED_DEPLOY_SHA: ${{ github.sha }}
+        run: node scripts/smoke-production.mjs
       - name: Summary
         env:
           CREDENTIAL_READY: ${{ steps.credential.outputs.ready }}

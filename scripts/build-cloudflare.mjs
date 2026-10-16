@@ -1,3 +1,4 @@
+import {retainReleaseAssets} from './release-assets.mjs';
 import {writeRoutePages} from './page-metadata.mjs';
 import {execFileSync} from 'node:child_process';
 import {readFileSync,writeFileSync,copyFileSync} from 'node:fs';
@@ -8,3 +9,6 @@ writeRoutePages('dist-cloudflare',readFileSync('dist-cloudflare/index.html','utf
 copyFileSync('cloudflare/_headers','dist-cloudflare/_headers');
 writeFileSync('dist-cloudflare/_headers',readFileSync('dist-cloudflare/_headers','utf8')+`\n/*\n  X-Plop-Deploy: ${deploy}\n`);
 writeFileSync('dist-cloudflare/_routes.json',JSON.stringify({version:1,include:['/api/*','/pedido/*','/campana/*'],exclude:[]}));
+
+const retained=await retainReleaseAssets({directory:'dist-cloudflare',commit:deploy});
+console.log(`Release resources: ${retained.releases} versions, ${retained.retained} retained chunks`);

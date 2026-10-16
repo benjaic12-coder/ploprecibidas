@@ -70,3 +70,9 @@ Los cambios se preparan en `fix/auditoria-integral-2026-10-16` y se publican med
 Se incorporaron retiro de 9 a 12 o de 17 a 21 hs, envíos a Santiago del Estero/La Banda por Uber Auto a cargo del cliente, producción de 24 a 48 horas desde la aprobación final, diseño previo pago de seña, los dos supuestos confirmados de cancelación y consulta para otras localidades. Se eliminaron preguntas duplicadas. El FAQ deja de ocupar espacio en el inicio: abre desde el menú en un diálogo y sus respuestas conservan el desplegable individual. Se mantiene la misma fuente de datos para FAQ y condiciones.
 
 Por indicación posterior de la propietaria, el rótulo visible «Imagen retocada» se reemplaza por «Imagen de referencia». Se conserva el aviso general del catálogo.
+
+## Verificación de publicación integrada
+
+Se publicó 202ec0d preservando la limpieza de 887deb0 y las correcciones de esta auditoría. Cloudflare confirmó éxito. La primera comprobación de CI detectó que el alias público aún servía 887deb0 tres segundos después de publicar; no se marcó esa ejecución como aprobada. La verificación independiente posterior aprobó las 10 rutas, los 18 productos, los recursos de inicio de cuatro versiones anteriores y el commit 202ec0d. Se agregó una espera limitada de hasta 55 segundos exclusivamente para la propagación del commit esperado antes de ejecutar todas las comprobaciones, sin omitirlas ni aceptar otro commit.
+
+En navegador se volvió a cargar la tienda sin bloqueo; el catálogo muestra «Imagen de referencia». Preguntas frecuentes abre un diálogo desde el menú y las respuestas comienzan cerradas.

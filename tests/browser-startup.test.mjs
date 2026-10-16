@@ -17,3 +17,11 @@ test('Sin randomUUID genera UUID v4 con aleatoriedad criptográfica disponible',
  try{Object.defineProperty(globalThis,'crypto',{configurable:true,value:{getRandomValues(bytes){calls++;return secure.getRandomValues(bytes)}}});const first=browserUuid(),second=browserUuid();assert.match(first,/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/);assert.notEqual(first,second);assert.equal(calls,2);}
  finally{Object.defineProperty(globalThis,'crypto',descriptor)}
 });
+
+
+test('El almacenamiento persistente se puede actualizar externamente sin leer una copia vieja de memoria',()=>{
+ const descriptor=Object.getOwnPropertyDescriptor(globalThis,'localStorage');const data=new Map();
+ try{Object.defineProperty(globalThis,'localStorage',{configurable:true,value:{getItem:k=>data.get(k)||null,setItem:(k,v)=>data.set(k,v),removeItem:k=>data.delete(k)}});
+ writeBrowserValue('local','external-update','first');data.set('external-update','second');assert.equal(readBrowserValue('local','external-update'),'second');removeBrowserValue('local','external-update');
+ }finally{if(descriptor)Object.defineProperty(globalThis,'localStorage',descriptor);else delete globalThis.localStorage}
+});

@@ -27,3 +27,9 @@ test('Personalizar: analítica sí, publicidad no; las UTM sobreviven a la naveg
 test('Seguimiento usa eventos propios sin URL privada, token ni eventos de proveedores',()=>{
  const b=browser();b.a.saveConsent(true,true);b.context.location.pathname='/pedido/privado';b.context.location.hash='#secreto';b.a.configureAnalytics({ga4:'G-ABCDEF12',metaPixel:'123456789'});b.a.track('subir_comprobante');assert.equal(b.scripts.length,0);assert.equal(b.requests.length,1);assert.doesNotMatch(JSON.stringify(b.requests),/privado|secreto/);assert.equal(b.commands.length,0);
 });
+
+test('Cookies bloqueadas no interrumpen la inicialización con consentimiento previo',()=>{
+ const b=browser();b.a.saveConsent(true,true);
+ Object.defineProperty(b.context.document,'cookie',{get(){throw new DOMException('Blocked','SecurityError')}});
+ assert.doesNotThrow(()=>b.a.getAttribution());assert.equal(b.a.getAttribution().fbp,undefined);
+});

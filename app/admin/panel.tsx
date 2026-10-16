@@ -8,7 +8,7 @@ import ReceiptPreview from './receipt-preview';
 import './receipts.css';
 import MessageTemplates from './message-templates';
 import {useState,useEffect,useRef} from 'react';
-import {RefreshCw,Download,ArrowUpRight,Check,LogOut,FileText} from 'lucide-react';
+import {RefreshCw,Download,Check,LogOut,FileText} from 'lucide-react';
 import {Logo,Modal} from '../store';
 import {money,localToday,earliestDate,type Product} from '@/lib/catalog';
 import {api,login,getSession,logoutAdmin} from '@/lib/api';

@@ -6,7 +6,7 @@ const json = (body, status = 200) => new Response(JSON.stringify(body), {
 });
 
 export default async (request) => {
-  if (!['GET','DELETE'].includes(request.method)) return json({ error: 'method_not_allowed' }, 405);
+  if (!['GET','PATCH'].includes(request.method)) return json({ error: 'method_not_allowed' }, 405);
   if (!await hasAdminSession(request)) return json({ error: 'unauthorized' }, 401);
 
   const supabaseUrl = Netlify.env.get('SUPABASE_URL');
@@ -34,18 +34,20 @@ export default async (request) => {
 
   const orderId = url.searchParams.get('id');
   if (!orderId || !/^[0-9a-f-]{36}$/i.test(orderId)) return json({ error: 'order_id_required' }, 400);
-  const response = await fetch(`${supabaseUrl}/rest/v1/orders?id=eq.${encodeURIComponent(orderId)}`, {
-    method: 'DELETE',
-    headers: { ...headers, Prefer: 'return=representation' },
+  const input = await request.json().catch(() => ({}));
+  const reason = String(input.reason || '').trim();
+  if (reason.length < 5 || reason.length > 500) return json({ error: 'reason_invalid' }, 400);
+  const response = await fetch(`${supabaseUrl}/rest/v1/rpc/admin_cancel_order`, {
+    method: 'POST', headers,
+    body: JSON.stringify({ p_order_id: orderId, p_reason: reason }),
   });
   const payload = await response.json().catch(() => null);
-  if (!response.ok) return json({ error: 'order_delete_failed', detail: payload }, 502);
-  if (!Array.isArray(payload) || payload.length === 0) return json({ error: 'order_not_found' }, 404);
-  return json({ deleted: payload[0].id, order_number: payload[0].order_number });
+  if (!response.ok) return json({ error: 'order_cancel_failed', detail: payload }, 502);
+  return json(payload);
 };
 
 export const config = {
   path: '/api/orders',
-  method: ['GET','DELETE'],
+  method: ['GET','PATCH'],
   rateLimit: { action: 'rate_limit', aggregateBy: 'ip', windowSize: 60, windowLimit: 60 },
 };

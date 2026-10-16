@@ -1,17 +1,13 @@
-// Completar solo con condiciones comerciales confirmadas por Plop.
+// Condiciones comerciales confirmadas por Plop; conservar pendientes explícitos.
 export const SELLER={name:'PLOPRECIBIDAS',cuit:'20-36045588-3',locality:'Santiago del Estero',address:'Santa Fe N° 2265, B° Tradición'};
 export const CONDITIONS=[
- {question:'¿Puedo cancelar el pedido o cambiar la fecha?',title:'Cancelación o cambio de fecha',text:'COMPLETAR: cómo solicitar la cancelación o el cambio de fecha, disponibilidad y qué pasa con la seña en cada caso según el avance del pedido.'},
- {question:'¿Cuánto demora la producción?',title:'Tiempos de producción',text:'COMPLETAR: plazo de producción, desde cuándo se cuenta y cómo se confirma la entrega. La anticipación para solicitar un pedido no equivale al plazo de producción.'},
+ {question:'¿Qué pasa si cancelo?',title:'Cancelación del pedido',text:'Si cancelás antes de que comencemos a realizar el diseño, te reintegramos la seña. Si el diseño ya está realizado y listo para producción, la seña no se reintegra, ya que cubre el trabajo de diseño y preparación del pedido.'},
+ {question:'¿Puedo cambiar la fecha de mi pedido?',title:'Cambio de fecha',text:'COMPLETAR: cómo solicitar el cambio de fecha, disponibilidad y tratamiento de la seña en ese caso.'},
+ {question:'¿Cuánto tarda?',title:'Tiempos de producción',text:'La producción demora entre 24 y 48 horas a partir de que aprobás el diseño final. Ese plazo no comienza cuando enviás la solicitud ni cuando abonás la seña: primero tenemos que preparar el diseño y recibir tu aprobación. Si demorás en revisarlo o pedís modificaciones, el inicio de la producción también se posterga. Coordinamos con vos la fecha de retiro o envío.'},
+ {question:'¿Puedo ver el diseño antes de pagar?',title:'Seña y realización del diseño',text:'Comenzamos a trabajar en tu diseño únicamente después de recibir el pago de la seña. No realizamos ni entregamos diseños sin ese pago previo. Una vez abonada la seña, preparamos la propuesta para que la revises y apruebes antes de pasar a producción.'},
  {question:'¿Cuándo pago el saldo?',title:'Pago del saldo',text:'COMPLETAR: cuándo se abona el saldo y cómo se coordina y confirma su pago.'},
  {question:'¿Puedo cambiar el diseño después de aprobarlo?',title:'Cambios después de aprobar el diseño',text:'COMPLETAR: qué cambios se pueden solicitar, en qué etapa y si requieren una nueva cotización o modificación de la fecha acordada.'},
- {question:'¿Cómo retiro mi pedido?',title:'Retiro',text:'COMPLETAR: lugar, días y horarios, coordinación y requisitos para que retire otra persona.'},
- {question:'¿Hacen envíos?',title:'Envío',text:'COMPLETAR: zonas, modalidades, cotización, quién abona el envío, tiempos y procedimiento ante inconvenientes con la entrega.'}
-];
-
-export const EXTRA_FAQ=[
- {question:'¿Cuánto tarda?',text:'COMPLETAR: plazo de producción y desde qué momento se cuenta.'},
- {question:'¿Puedo ver el diseño antes de pagar?',text:'COMPLETAR: cuándo se presenta el diseño y qué pagos corresponden antes de verlo o aprobarlo.'},
- {question:'¿Qué pasa si cancelo?',text:'COMPLETAR: condiciones de cancelación y tratamiento de la seña según el avance del pedido.'},
- {question:'¿Envían a otras localidades?',text:'COMPLETAR: localidades, modalidades, costos y coordinación del envío.'}
+ {question:'¿Cómo retiro mi pedido?',title:'Retiro',text:'Podés coordinar el retiro por nuestra dirección: Santa Fe N° 2265, B° Tradición, Santiago del Estero, de 9 a 12 hs o de 17 a 21 hs. Acordá previamente con el equipo de Plop el horario para retirar tu pedido.'},
+ {question:'¿Hacen envíos?',title:'Envíos a Santiago del Estero y La Banda',text:'Realizamos envíos dentro de Santiago del Estero y La Banda mediante Uber Auto. El costo del traslado está a cargo del cliente y se coordina aparte del valor del pedido.'},
+ {question:'¿Envían a otras localidades?',title:'Envíos a otras localidades',text:'Consultá con el equipo de Plop para conocer las opciones de envío a tu localidad.'}
 ];

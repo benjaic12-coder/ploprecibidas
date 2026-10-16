@@ -57,8 +57,14 @@ No se comprobó una impresora física ni la lectura con un segundo teléfono. La
 
 ## Pendientes del propietario
 
-Completar las condiciones comerciales que siguen marcadas COMPLETAR. No se inventaron plazos, montos ni condiciones. Confirmar en una cuenta autorizada el acceso al panel y la impresión en la impresora utilizada. No falta ninguna variable para cargar catálogo o habilitar checkout: las de Cloudflare estaban presentes y los datos bancarios estaban completos.
+Completar el momento de pago del saldo, los cambios posteriores a la aprobación y los cambios de fecha, que siguen marcados COMPLETAR. Falta precisar el caso de cancelación con el diseño todavía en proceso, distinto de los dos supuestos confirmados. No se inventaron plazos, montos ni condiciones. Confirmar en una cuenta autorizada el acceso al panel y la impresión en la impresora utilizada. No falta ninguna variable para cargar catálogo o habilitar checkout: las de Cloudflare estaban presentes y los datos bancarios estaban completos.
 
 ## Publicación
 
 Los cambios se preparan en `fix/auditoria-integral-2026-10-16` y se publican mediante avance controlado de la rama existente, sujeto a las verificaciones descritas. El commit final, el resultado de Actions y la comprobación de Cloudflare se informan en la entrega. URLs: https://plop-recibidas.pages.dev/ y https://plop-recibidas.pages.dev/admin/ .
+
+## Actualización de preguntas frecuentes solicitada durante la revisión
+
+Se incorporaron retiro de 9 a 12 o de 17 a 21 hs, envíos a Santiago del Estero/La Banda por Uber Auto a cargo del cliente, producción de 24 a 48 horas desde la aprobación final, diseño previo pago de seña, los dos supuestos confirmados de cancelación y consulta para otras localidades. Se eliminaron preguntas duplicadas. El FAQ deja de ocupar espacio en el inicio: abre desde el menú en un diálogo y sus respuestas conservan el desplegable individual. Se mantiene la misma fuente de datos para FAQ y condiciones.
+
+Por indicación posterior de la propietaria, el rótulo visible «Imagen retocada» se reemplaza por «Imagen de referencia». Se conserva el aviso general del catálogo.

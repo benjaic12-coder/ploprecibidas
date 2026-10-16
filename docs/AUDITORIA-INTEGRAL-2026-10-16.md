@@ -6,19 +6,21 @@ Revisión iniciada el 15/10/2026 (Argentina), 16/10 UTC. Repositorio existente, 
 
 El sitio publicado en `675832e216b8b73e7bf65750323fda97779edb08` abrió correctamente en el navegador de revisión. API de catálogo: 200, 18 productos y checkoutEnabled=true. Ninguna imagen cargada estaba rota; no hubo desbordamiento horizontal a 1363 px. El único error de consola observado pertenecía a una extensión del navegador, no a Plop. El código desplegado de la función `plop-v2` versión 25 coincidía con el repositorio.
 
-No se reprodujo el bloqueo de carga de la home y no se atribuye una causa histórica sin evidencia. El texto “Si la carga no termina” es el HTML inicial que permanece visible mientras JavaScript no monta la tienda; por sí solo no identifica la causa. El historial ya contiene una corrección parcial para almacenamiento bloqueado, `a7a2a05`.
+Durante la verificación posterior se reprodujo la pantalla de carga incompleta. La evidencia concreta fue HTML de la versión anterior en el navegador que apuntaba a `/assets/index-DFzW-m5g.js`, mientras la versión publicada d8dae43 usaba `/assets/index-BYlze1Zd.js`. El archivo anterior devolvía HTTP 404: el despliegue había quitado recursos todavía referenciados por una página anterior. El texto de recarga permanecía porque el módulo de inicio no podía cargar. Esta es la causa comprobada del episodio reproducido; no se atribuyen otros episodios históricos sin evidencia. El historial también contenía una corrección parcial para almacenamiento bloqueado, `a7a2a05`.
 
 Sí se reprodujo un defecto vigente: `setSession` lanzaba SecurityError al denegar localStorage/sessionStorage. La protección previa no cubría sesiones, borradores y todos los accesos al carrito. También se identificaron cookies que podían lanzar durante la atribución y decodeURIComponent fuera del límite de recuperación de React. Un enlace con escapes inválidos podía detener el montaje de la ruta.
 
 ## Correcciones
 
+- Se conservan los recursos con hash de las últimas 20 publicaciones. El build recupera los archivos anteriores con sus nombres originales y verifica SHA-256; una descarga faltante o alterada bloquea la publicación. Se recuperan también imports diferidos para panel, seguimiento y campañas. El primer despliegue recupera tres versiones exitosas identificadas por sus URLs inmutables. No se cambia el contenido de un recurso con el mismo nombre.
+- HTML y manifiesto usan no-store/no-cache; los recursos con hash conservan immutable. El smoke test verifica los módulos de inicio históricos, no solo los de la página actual.
 - Sesiones de cliente/equipo y borradores usan almacenamiento protegido, con memoria solo si falla la escritura persistente. Se evita que una copia vieja oculte cambios de almacenamiento entre pestañas.
 - El carrito usa el mismo lector protegido. Se mantiene la caducidad de borradores; si IndexedDB o el identificador persistente de la pestaña no están disponibles, la interfaz avisa que el borrador no se pudo guardar.
 - Cookies bloqueadas no interrumpen la atribución con consentimiento previo.
 - Las rutas malformadas muestran la pantalla de página no encontrada en vez de lanzar antes del montaje.
 - Salir llama al backend y revoca la sesión actual en Supabase (`scope=local`), limpia la sesión local aun ante errores y borra la ficha, productos y datos privados del panel. Se descartan cargas/renovaciones iniciadas antes del cierre.
 - Se mantiene la naturaleza estándar del cierre de Supabase: los JWT emitidos tienen su propia expiración; no se modificó su duración.
-- Se agrega lint al workflow de publicación. Se excluyen compilados/dependencias vendorizadas y se retira la regla de navegación Next, incompatible con las rutas Vite/Pages. Los usos existentes de any y los avisos de setState en efectos se mantienen **visibles como advertencias**, no se afirma que se hayan corregido. Quedan 161 advertencias; CI falla si el número aumenta. Las restantes reglas de corrección y TypeScript siguen bloqueando.
+- Se agregan lint y verificación HTTP posterior al workflow de publicación; se comprueba también que el commit publicado sea el comprobado por CI. Se excluyen compilados/dependencias vendorizadas y se retira la regla de navegación Next, incompatible con las rutas Vite/Pages. Los usos existentes de any y los avisos de setState en efectos se mantienen **visibles como advertencias**, no se afirma que se hayan corregido. Quedan 161 advertencias; CI falla si el número aumenta. Las restantes reglas de corrección y TypeScript siguen bloqueando.
 - Se agregan pruebas de regresión, una prueba SQL transaccional reutilizable y un smoke test HTTP para rutas y versiones.
 
 ## Resultados ejecutados
@@ -27,7 +29,7 @@ Sí se reprodujo un defecto vigente: `setSession` lanzaba SecurityError al deneg
 |---|---|
 | pnpm install --frozen-lockfile | Aprobada, sin cambiar el lockfile |
 | pnpm exec tsc --noEmit | Aprobada para el alcance de tsconfig existente |
-| pnpm test | 128 pruebas aprobadas, 0 fallos |
+| pnpm test | 131 pruebas aprobadas, 0 fallos |
 | pnpm lint --max-warnings=161 | 0 errores, 161 advertencias explícitas |
 | pnpm run build:cloudflare | Aprobada |
 | git diff --check | Aprobada |
@@ -39,7 +41,7 @@ Sí se reprodujo un defecto vigente: `setSession` lanzaba SecurityError al deneg
 
 `tsconfig.json` excluye Supabase Functions: la compilación de despliegue y las pruebas del handler complementan esa comprobación; no se presenta como un typecheck completo del backend Deno.
 
-El smoke test sigue los redireccionamientos canónicos y comprueba `/`, `/admin`, `/admin/recuperar`, `/condiciones`, `/privacidad`, `/pedido/PLOP-AABBCCDDEEFF`, 404 real de ruta inexistente y 401 de APIs administrativas. Comprueba noindex, HTML revalidable, assets immutable y el mismo X-Plop-Deploy en las páginas.
+Las pruebas nuevas de conservación verifican recursos anteriores, imports diferidos y rechazo de rutas o archivos alterados. El smoke test sigue los redireccionamientos canónicos y comprueba `/`, `/admin`, `/admin/recuperar`, `/condiciones`, `/privacidad`, `/pedido/PLOP-AABBCCDDEEFF`, 404 real de ruta inexistente y 401 de APIs administrativas. Comprueba noindex, HTML revalidable, assets immutable y el mismo X-Plop-Deploy en las páginas.
 
 ## Backend, RLS y pagos
 

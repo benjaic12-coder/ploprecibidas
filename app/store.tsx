@@ -3,7 +3,7 @@ import {CONDITIONS} from '@/lib/conditions';
 import {readBrowserValue,writeBrowserValue,browserUuid} from '@/lib/browser-storage';
 import {useState,useEffect,useRef,type ReactNode} from 'react';
 import {ArrowUpRight,ArrowRight,ShoppingBag,Search,X,Plus,Minus,Trash2,Check,Camera,Sparkles,Gift,Truck,Heart,ChevronDown,MessageCircle,SlidersHorizontal,Menu,Copy} from 'lucide-react';
-import {PRODUCTS,CATEGORIES,catalogProductArtwork,money,unitPrice,emptyCustom,earliestDate,MIN_ORDER_LEAD_DAYS,recommendedOrder,personalizedDimensions,personalizedIncludes,type Product,type CartItem,type Customization} from '@/lib/catalog';
+import {PRODUCTS,CATEGORIES,COMBO3_BAND_IMAGE,catalogProductArtwork,money,unitPrice,emptyCustom,earliestDate,MIN_ORDER_LEAD_DAYS,recommendedOrder,personalizedDimensions,personalizedIncludes,type Product,type CartItem,type Customization} from '@/lib/catalog';
 import {catalogStructuredData,serializeStructuredData} from '@/lib/seo';
 import {splitAmount,ARG_PHONE_INPUT_PATTERN} from '@/lib/order';
 import {readCheckoutDraft,saveCheckoutDraft,clearCheckoutDraft} from '@/lib/checkout-draft';
@@ -22,8 +22,8 @@ import {getAttribution,track,trackView} from '@/lib/analytics';
 export function Logo(){return <a href="/" className="logo" aria-label="Plop Recibidas, inicio"><img className="logo-img" src="/brand/logo-original.webp" alt="Plop Recibidas" width="108" height="70"/></a>}
 export function Modal({children,onClose,wide=false,label}:{children:ReactNode;onClose:()=>void;wide?:boolean;label:string}){const ref=useRef<HTMLDialogElement>(null);useEffect(()=>{ref.current?.showModal();const old=document.body.style.overflow;document.body.style.overflow='hidden';return()=>{document.body.style.overflow=old;}},[]);return <dialog ref={ref} className={`modal ${wide?'wide':''}`} aria-label={label} onCancel={e=>{e.preventDefault();onClose();}} onClick={e=>{if(e.target===ref.current)onClose();}}><button className="icon close" onClick={onClose} aria-label="Cerrar"><X size={20}/></button>{children}</dialog>}
 function ProductArtwork({product,choice,photoIndex=0}:{product:Product;choice?:string;photoIndex?:number}){
- if(product.id==='combo-3'&&!choice)return <div className="combo-options-artwork" aria-label="Combo 3: elegí lona con 8 props o lona con banda"><div><img src="/products/combo-3-catalog-v2.webp" alt="Lona mediana y ocho props, productos del catálogo" loading="lazy" width="1024" height="1024"/><span>Lona + 8 props</span></div><span className="combo-options-or">o</span><div><img src="/products/combo-3-banda-catalog-v2.webp" alt="Lona mediana y banda, productos del catálogo" loading="lazy" width="1024" height="1024"/><span>Lona + banda</span></div></div>;
- const src=product.id==='combo-3'&&choice==='Banda'?'/products/combo-3-banda-catalog-v2.webp':catalogPhoto(product.id,photoIndex)||product.image;
+ if(product.id==='combo-3'&&!choice)return <div className="combo-options-artwork" aria-label="Combo 3: elegí lona con 8 props o lona con banda"><div><img src={product.image} alt="Lona mediana y ocho props, productos del catálogo" loading="lazy" width="1024" height="1024"/><span>Lona + 8 props</span></div><span className="combo-options-or">o</span><div><img src={COMBO3_BAND_IMAGE} alt="Lona mediana y banda, productos del catálogo" loading="lazy" width="1024" height="1024"/><span>Lona + banda</span></div></div>;
+ const src=product.id==='combo-3'&&choice==='Banda'?COMBO3_BAND_IMAGE:catalogPhoto(product.id,photoIndex)||product.image;
  const alt=product.id==='combo-3'?`Diseño de referencia: lona mediana + ${choice==='Banda'?'banda':'8 props'}`:product.id.startsWith('combo')?`Composición ilustrativa de ${product.name}: ${product.includes}`:`Diseño de referencia de ${product.name.toLowerCase()}`;
  return <img src={src} alt={alt} loading="lazy" width="1024" height="1024"/>;
 }

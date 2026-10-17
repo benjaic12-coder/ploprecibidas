@@ -10,7 +10,7 @@ test('Cada composición muestra exactamente los incluidos de su combo, sin sumar
 });
 test('Las dos alternativas del Combo 3 conservan la misma lona odontológica y usan acompañamientos distintos',()=>{
  assert.equal(COMBO_LAYOUTS['combo-3'].parts[0].file,COMBO_LAYOUTS['combo-3-banda'].parts[0].file);
- assert.equal(COMBO_LAYOUTS['combo-3'].theme,'Odontología');assert(COMBO3_BAND_IMAGE.endsWith('combo-3-banda-tematico-v1.webp'));
+ assert.equal(COMBO_LAYOUTS['combo-3'].theme,'Odontología');assert(COMBO3_BAND_IMAGE.endsWith('combo-3-banda-uniforme-v2.webp'));
 });
 test('Los marcos con forma se identifican como opcionales en las imágenes de combos que permiten el cambio',()=>{
  for(const id of ['combo-2','combo-4']){assert(PRODUCTS.find(p=>p.id===id).frameOption);assert(COMBO_LAYOUTS[id].optionalFrame);assert.match(composeCombo(id),/marco con forma/);}

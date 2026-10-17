@@ -2,9 +2,9 @@ import {retainReleaseAssets} from './release-assets.mjs';
 import {writeRoutePages} from './page-metadata.mjs';
 import {execFileSync} from 'node:child_process';
 import {readFileSync,writeFileSync,copyFileSync,mkdirSync} from 'node:fs';
-const photoDirectory='public/products/real-20261017';
+const photoDirectory='public/products/professional-20261017';
 mkdirSync(photoDirectory,{recursive:true});
-for(const [name,data] of Object.entries(JSON.parse(readFileSync('build/catalog-photos-20261017.json','utf8')))){
+for(const [name,data] of Object.entries(JSON.parse(readFileSync('build/catalog-photos-professional-20261017.json','utf8')))){
  if(!/^\d+\.jpg$/.test(name)||typeof data!=='string')throw Error('Invalid product photo');
  writeFileSync(`${photoDirectory}/${name}`,Buffer.from(data,'base64'));
 }

@@ -18,7 +18,7 @@ const realPhotos:Record<string,{file:string;label:string}[]>={
   {file:'1000553621',label:'Sistemas en lila'},
  ],
 };
-const photoPath=(file:string)=>`/products/real-20261017/${file}.jpg`;
+const photoPath=(file:string)=>`/products/professional-20261017/${file}.jpg`;
 export function catalogPhoto(productId:string){const first=realPhotos[productId]?.[0];return first?photoPath(first.file):undefined;}
 export default function ProductPhotoGallery({productId,children}:{productId:string;children:ReactNode}){
  const [index,setIndex]=useState(0),photos=realPhotos[productId];

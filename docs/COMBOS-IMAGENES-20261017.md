@@ -1,3 +1,9 @@
+# Imágenes de combos restauradas
+
+A pedido de la usuaria, los combos vuelven a las imágenes `public/products/combo-*-catalog-v2.webp`, anteriores al cambio de diseños de esta conversación. La alternativa con banda del Combo 3 vuelve a `public/products/combo-3-banda-catalog-v2.webp`. Se conservan las dos alternativas, los precios, la clasificación de los marcos y los demás cambios del sitio.
+
+## Registro de la composición posterior, ahora reemplazada
+
 # Composiciones con fotos de productos Plop
 
 Los combos usan archivos originales existentes, incrustados en SVG. La composición solo ubica y escala fotografías; conserva sus bytes, sus frases y sus diseños. Los ocho props negros corresponden al pack fotografiado en `public/products/props.webp`. No se generan props por carrera.

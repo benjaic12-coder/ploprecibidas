@@ -214,3 +214,12 @@ body:has(.plop-home) :is(.product-image,.personalize-photo,.cart-item)>img[src*=
 .plop-home .category-tabs button{min-height:44px;scroll-snap-align:center}
 .product-photo-thumbs button:focus-visible,.catalog-photo-controls button:focus-visible{outline:3px solid #d93481;outline-offset:1px}
 @media(max-width:650px){.menu-info-content .brand-story{grid-template-columns:1fr}.menu-info-content .story-photo{display:none}.menu-info-content .story-copy h2{font-size:29px}.plop-home .product-body h3{font-size:clamp(17px,4.7vw,21px);min-height:44px}.plop-home .product-dimensions{font-size:10px;padding:6px}.catalog-photo-open{font-size:9px;padding:5px 7px;right:6px;bottom:6px}.catalog-photo-controls{font-size:10px;gap:6px}.plop-home .category-tabs{width:100%;max-width:100%}.personalize-photo:has(.product-photo-gallery){display:block}.product-photo-stage{max-height:390px}}
+
+/* Client photos fill their frame without screenshot-like white contours. */
+.client-album .album-photo img{filter:none}
+.client-album .album-card{padding:0;border:0;background:transparent}
+.client-album .album-card>span{padding:12px 2px}
+.client-album .album-featured{padding:0;background:transparent;box-shadow:none}
+.client-album .album-featured-label{padding:12px 0}
+.client-album .album-peek{padding:0;background:transparent;box-shadow:none}
+.client-album .album-stage .album-photo{border-radius:0}

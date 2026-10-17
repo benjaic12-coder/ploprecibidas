@@ -1,5 +1,5 @@
 'use client';
-// Static Pages displays original client images without an optimization server.
+// Static Pages displays retouched client photographs without an optimization server.
 /* eslint-disable @next/next/no-img-element */
 import {useEffect,useRef,useState,type CSSProperties} from 'react';
 type Photo={id:string;foto:string;categoria:string;alt:string;ancho:number;alto:number;inicio:number;fin:number};

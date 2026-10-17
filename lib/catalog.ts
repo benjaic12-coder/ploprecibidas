@@ -47,3 +47,9 @@ export function earliestDate(days=7,now=new Date()){const date=new Date(`${local
 
 // Calendar days in Argentina: same-day and next-day orders are not accepted.
 export const MIN_ORDER_LEAD_DAYS=2;
+
+// Artwork is curated with the storefront; API prices and availability stay live.
+export function catalogProductArtwork(product:Product):Product{
+ const artwork=PRODUCTS.find(item=>item.id===product.id);
+ return artwork?{...product,image:artwork.image,imageKind:artwork.imageKind}:product;
+}

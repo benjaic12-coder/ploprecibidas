@@ -19,15 +19,16 @@ const realPhotos:Record<string,{file:string;label:string}[]>={
  ],
 };
 const photoPath=(file:string)=>`/products/professional-20261017/${file}.jpg`;
-export function catalogPhoto(productId:string){const first=realPhotos[productId]?.[0];return first?photoPath(first.file):undefined;}
-export default function ProductPhotoGallery({productId,children}:{productId:string;children:ReactNode}){
- const [index,setIndex]=useState(0),photos=realPhotos[productId];
+export function catalogPhoto(productId:string,index=0){const photo=realPhotos[productId]?.[index];return photo?photoPath(photo.file):undefined;}
+export function catalogPhotoCount(productId:string){return realPhotos[productId]?.length||0;}
+export default function ProductPhotoGallery({productId,children,initialIndex=0}:{productId:string;children:ReactNode;initialIndex?:number}){
+ const [index,setIndex]=useState(initialIndex),[zoomed,setZoomed]=useState(false),photos=realPhotos[productId];
  if(!photos?.length)return children;
- const photo=photos[index];
+ const photo=photos[index]||photos[0];
  return <div className="product-photo-gallery" role="group" aria-label="Fotos reales de este producto">
-  <img className="product-real-photo" src={photoPath(photo.file)} alt={`Foto real de marco personalizado: ${photo.label}`} width="1024" height="1024"/>
+  <button type="button" className={`product-photo-stage ${zoomed?'is-zoomed':''}`} onClick={()=>setZoomed(v=>!v)} aria-label={zoomed?'Reducir foto':'Ampliar foto'} aria-pressed={zoomed}><img className="product-real-photo" src={photoPath(photo.file)} alt={`Foto real de marco personalizado: ${photo.label}`} width="1024" height="1024"/></button><small>{zoomed?'Tocá para reducir':'Tocá la foto para ampliarla'}</small>
   <p aria-live="polite">{index+1} de {photos.length} · {photo.label}</p>
-  <div className="product-photo-thumbs">{photos.map((item,i)=><button key={item.file} type="button" aria-label={`Ver ${item.label}`} aria-pressed={index===i} onClick={()=>setIndex(i)}><img src={photoPath(item.file)} alt="" loading="lazy" width="64" height="70"/></button>)}</div>
+  <div className="product-photo-thumbs">{photos.map((item,i)=><button key={item.file} type="button" aria-label={`Ver ${item.label}`} aria-pressed={index===i} onClick={()=>{setIndex(i);setZoomed(false)}}><img src={photoPath(item.file)} alt="" loading="lazy" width="64" height="70"/></button>)}</div>
   <small>Cada foto muestra un diseño de referencia. Personalizamos el tuyo con tu nombre, carrera y colores.</small>
  </div>;
 }

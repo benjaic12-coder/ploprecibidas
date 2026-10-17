@@ -1,4 +1,7 @@
 'use client';
+/* These static product photos are also served by the Vite storefront, which
+   has no Next image optimizer. Explicit dimensions keep their layout stable. */
+/* eslint-disable @next/next/no-img-element */
 import {useState,type ReactNode} from 'react';
 const realPhotos:Record<string,{file:string;label:string}[]>={
  'marco-selfie':[

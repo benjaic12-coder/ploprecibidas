@@ -1,24 +1,26 @@
-# Imágenes de combos restauradas
+# Combos temáticos · 17/10/2026
 
-A pedido de la usuaria, los combos vuelven a las imágenes `public/products/combo-*-catalog-v2.webp`, anteriores al cambio de diseños de esta conversación. La alternativa con banda del Combo 3 vuelve a `public/products/combo-3-banda-catalog-v2.webp`. Se conservan las dos alternativas, los precios, la clasificación de los marcos y los demás cambios del sitio.
+| Combo | Temática | Incluidos de la imagen |
+|---|---|---|
+| 1 | Medicina | Marco original de Dra. Gel, cartel chico médico de referencia y los 8 props originales neutros |
+| 2 | Nutrición | Marco original de Nutrición, banda temática de referencia y los 8 props originales neutros |
+| 3, props | Odontología | Lona de Cioccolani, limpia a partir de su foto original, y los 8 props originales neutros |
+| 3, banda | Odontología | La misma lona de Cioccolani y banda temática de referencia |
+| 4 | Abogacía | Marco original de Dr. Quaglia, banda de referencia, lona de Dr. Guerrero Jiménez Facundo limpia desde su foto y pack fotografiado de 8 props de Abogacía |
+| 5 | Kinesiología | Cartel SOY KINE y lona KINESIÓLOGA del catálogo existente |
 
-## Registro de la composición posterior, ahora reemplazada
+Las imágenes son composiciones de referencia, no fotografías de un único pedido real. Las carreras coinciden dentro de cada combo. Los nombres y diseños particulares pertenecen a referencias diferentes y se personalizan al pedir. No se cambian precios, cantidades, medidas ni opciones.
 
-# Composiciones con fotos de productos Plop
+Los combos 2 y 4 muestran marcos con forma originales. La imagen aclara que esa opción suma $3.000, de acuerdo con la opción ya existente. El precio base sigue incluyendo marco rectangular.
 
-Los combos usan archivos originales existentes, incrustados en SVG. La composición solo ubica y escala fotografías; conserva sus bytes, sus frases y sus diseños. Los ocho props negros corresponden al pack fotografiado en `public/products/props.webp`. No se generan props por carrera.
+## Props originales
 
-| Combo | Fotografías incluidas |
-|---|---|
-| 1 | Marco de Periodismo violeta, cartel chico y pack original de ocho props |
-| 2 | Marco de Medicina lila, banda fotografiada y pack original de ocho props |
-| 3, props | Lona rosa de Odontología y pack original de ocho props |
-| 3, banda | La misma lona rosa de Odontología y banda fotografiada |
-| 4 | Marco de Periodismo azul y amarillo, banda, pack original de ocho props y lona verde de Ingeniería Forestal |
-| 5 | Cartel grande fotografiado y lona verde de Ingeniería Forestal |
+Los props no pasan por generación de imágenes. Se reutilizan las fotos `props.webp` y `props-rosa-editado-v1.webp`. Las copias PNG conservan sus píxeles: se verificó igualdad al decodificarlas. El fondo de la foto de props neutros se oculta con un recorte SVG; las frases, los dibujos y los palitos siguen siendo los fotografiados.
 
-La banda y las lonas se muestran con recortes de sus fotos para dar protagonismo al producto. Los recortes no redibujan el contenido. Las combinaciones muestran diseños de referencia; no representan un único pedido coordinado. Los precios, cantidades, dimensiones y opciones del pedido siguen definidos en el catálogo.
+## Fuentes y edición
 
-Los archivos son `public/products/combo-*-originales-v1.svg`. `scripts/compose-original-combos.mjs` permite reproducirlos con Node a partir de sus fuentes. Los marcos se materializan mediante el flujo existente `build:cloudflare`; luego puede ejecutarse el compositor. Cada imagen incrustada incluye `data-original-source` para verificar su identidad. Se compararon los 16 archivos incrustados con sus fuentes byte por byte.
+`imagegen` integrada se utilizó solo para limpiar las lonas odontológica y de abogado a partir de sus fotografías y para presentar personalizaciones de bandas y cartel médico. Los prompts pidieron conservar textos y diseños de las lonas, eliminar personas y contornos de captura, usar fondo de estudio y no agregar props ni productos extra. Las bandas se personalizaron con NUTRICIONISTA, ODONTÓLOGA y ABOGADO; el cartel chico con SOY MÉDICA.
 
-Fotos nuevas: dos imágenes de clientes se suman al álbum (Odontología e Ingeniería Industrial); Habemus Conta se incorpora a Marco con forma, y Obstetricia a Cartel con forma. Las fotografías duplicadas de Medicina, Odontología y Obstetricia no se añaden dos veces.
+`public/products/thematic-components/` conserva esas referencias y las copias compatibles de las fotos. Los finales son `public/products/combo-1-tematico-v1.webp`, `combo-2-tematico-v1.webp`, `combo-3-tematico-v1.webp`, `combo-3-banda-tematico-v1.webp`, `combo-4-tematico-v1.webp` y `combo-5-tematico-v1.webp`.
+
+`scripts/compose-themed-combos.mjs` reproduce las composiciones desde sus capas. La composición y los recortes se realizan en SVG; la salida se codifica en WebP. Los originales generados se conservan en el espacio de la conversación. Las pruebas comprueban incluidos, alternativa del Combo 3, identificación de marcos opcionales y archivos de imagen distintos.

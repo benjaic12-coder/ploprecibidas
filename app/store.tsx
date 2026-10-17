@@ -24,7 +24,7 @@ export function Modal({children,onClose,wide=false,label}:{children:ReactNode;on
 function ProductArtwork({product,choice,photoIndex=0}:{product:Product;choice?:string;photoIndex?:number}){
  if(product.id==='combo-3'&&!choice)return <div className="combo-options-artwork" aria-label="Combo 3: elegí lona con 8 props o lona con banda"><div><img src={product.image} alt="Lona mediana y ocho props, productos del catálogo" loading="lazy" width="1024" height="1024"/><span>Lona + 8 props</span></div><span className="combo-options-or">o</span><div><img src={COMBO3_BAND_IMAGE} alt="Lona mediana y banda, productos del catálogo" loading="lazy" width="1024" height="1024"/><span>Lona + banda</span></div></div>;
  const src=product.id==='combo-3'&&choice==='Banda'?COMBO3_BAND_IMAGE:catalogPhoto(product.id,photoIndex)||product.image;
- const alt=product.id==='combo-3'?`Diseño de referencia: lona mediana + ${choice==='Banda'?'banda':'8 props'}`:product.id.startsWith('combo')?`Composición ilustrativa de ${product.name}: ${product.includes}`:`Diseño de referencia de ${product.name.toLowerCase()}`;
+ const alt=product.id==='combo-3'?`Diseño de referencia: lona mediana + ${choice==='Banda'?'banda':'8 props'}`:product.id.startsWith('combo')?`Composición con fotos originales de ${product.name}: ${product.includes}`:`Diseño de referencia de ${product.name.toLowerCase()}`;
  return <img src={src} alt={alt} loading="lazy" width="1024" height="1024"/>;
 }
 function CatalogCardPhoto({product,onOpen}:{product:Product;onOpen:(index:number)=>void}){

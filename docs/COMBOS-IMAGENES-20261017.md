@@ -1,20 +1,18 @@
-# Revisión de imágenes de combos · 17/10/2026
+# Composiciones con fotos de productos Plop
 
-Se revisaron las composiciones visualmente. Los archivos previos eran distintos, pero reutilizaban el mismo marco violeta en los combos 1, 2 y 4, la misma lona rosa en los combos 4 y 5 y los mismos props de abogacía para carreras diferentes.
+Los combos usan archivos originales existentes, incrustados en SVG. La composición solo ubica y escala fotografías; conserva sus bytes, sus frases y sus diseños. Los ocho props negros corresponden al pack fotografiado en `public/products/props.webp`. No se generan props por carrera.
 
-| Combo | Diseño final | Incluidos representados | Archivo |
-|---|---|---|---|
-| 1 | Docencia, violeta y aqua | Marco rectangular, cartel chico y 8 props | public/products/combo-1-catalog-v3.webp |
-| 2 | Medicina, lila floral | Marco rectangular, banda y 8 props | public/products/combo-2-catalog-v3.webp |
-| 3, opción props | Administración, rosa y lila | Lona mediana y 8 props | public/products/combo-3-catalog-v3.webp |
-| 3, opción banda | Administración, rosa y lila | Lona mediana y banda | public/products/combo-3-banda-catalog-v3.webp |
-| 4 | Periodismo, azul y amarillo | Marco rectangular, banda, 8 props y lona grande | public/products/combo-4-catalog-v3.webp |
-| 5 | Kinesiología, rosa | Cartel grande y lona grande | public/products/combo-5-catalog-v2.webp |
+| Combo | Fotografías incluidas |
+|---|---|
+| 1 | Marco de Periodismo violeta, cartel chico y pack original de ocho props |
+| 2 | Marco de Medicina lila, banda fotografiada y pack original de ocho props |
+| 3, props | Lona rosa de Odontología y pack original de ocho props |
+| 3, banda | La misma lona rosa de Odontología y banda fotografiada |
+| 4 | Marco de Periodismo azul y amarillo, banda, pack original de ocho props y lona verde de Ingeniería Forestal |
+| 5 | Cartel grande fotografiado y lona verde de Ingeniería Forestal |
 
-La lona se conserva entre las dos alternativas del Combo 3 porque es el mismo combo: cambia únicamente el acompañamiento que el cliente elige. Las composiciones se presentan como referencias ilustrativas, no como fotos de un único pedido real. Se mantienen precios, incluidos y opciones.
+La banda y las lonas se muestran con recortes de sus fotos para dar protagonismo al producto. Los recortes no redibujan el contenido. Las combinaciones muestran diseños de referencia; no representan un único pedido coordinado. Los precios, cantidades, dimensiones y opciones del pedido siguen definidos en el catálogo.
 
-## Edición
+Los archivos son `public/products/combo-*-originales-v1.svg`. `scripts/compose-original-combos.mjs` permite reproducirlos con Node a partir de sus fuentes. Los marcos se materializan mediante el flujo existente `build:cloudflare`; luego puede ejecutarse el compositor. Cada imagen incrustada incluye `data-original-source` para verificar su identidad. Se compararon los 16 archivos incrustados con sus fuentes byte por byte.
 
-Herramienta: imagegen integrada. Se editaron las composiciones existentes usando el marco real de medicina `1000553495.jpg` y el de periodismo `1000553619.jpg` como referencias de producto. Los PNG originales generados se conservan; los archivos web son conversiones WebP.
-
-Instrucciones aplicadas a cada imagen: fondo blanco cálido, luz de estudio, bordes limpios, productos completos, sin precios ni rótulos añadidos, cantidad exacta de incluidos. Combo 1: conservar el marco Teacher Pauli y coordinar cartel y ocho props de docencia. Combo 2: sustituir el marco por el marco real de medicina, con banda y ocho props médicos en lila. Combo 3: conservar la lona de Administración y coordinar ocho props, o una banda que diga LICENCIADA, en imágenes separadas. Combo 4: usar el marco real de periodismo y coordinar lona, banda y ocho props en azul y amarillo.
+Fotos nuevas: dos imágenes de clientes se suman al álbum (Odontología e Ingeniería Industrial); Habemus Conta se incorpora a Marco con forma, y Obstetricia a Cartel con forma. Las fotografías duplicadas de Medicina, Odontología y Obstetricia no se añaden dos veces.

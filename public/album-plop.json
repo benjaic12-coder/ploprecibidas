@@ -158,5 +158,25 @@
     "alto": 1448,
     "inicio": 0,
     "fin": 1
+  },
+  {
+    "id": "odontologia-nueva",
+    "foto": "/clientes/retocadas-20261017/odontologia-nueva.webp",
+    "categoria": "Lonas",
+    "alt": "Lona rosa de Odontología en una recibida con amigos",
+    "ancho": 1086,
+    "alto": 1448,
+    "inicio": 0,
+    "fin": 1
+  },
+  {
+    "id": "industrial-nueva",
+    "foto": "/clientes/retocadas-20261017/industrial-nueva.webp",
+    "categoria": "Marcos",
+    "alt": "Recibida de Ingeniería Industrial con marco personalizado",
+    "ancho": 1086,
+    "alto": 1448,
+    "inicio": 0,
+    "fin": 1
   }
 ]

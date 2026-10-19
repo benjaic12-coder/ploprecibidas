@@ -18,9 +18,9 @@ function fixture(){let saved=null,creates=0;
   if(path.endsWith('/pagos')||path.endsWith('/historial_estados'))return Response.json([]);
   throw Error('Unexpected mock request '+path);
  });
- const payload={requestKey:key,expectedTotal:53000,customer:{name:'Fixture',phone:'+5493851234567',email:'',locality:'Fixture',date:earliestDate(30),delivery:'Retiro',payment:'A coordinar',notes:'',urgent:false,consent:true,marketingConsent:false},items:[{productId:'combo-1',quantity:1,custom:{...emptyCustom(),frame:'Redondo',size:'90 cm'}}]};
+ const payload={requestKey:key,expectedTotal:53000,customer:{name:'Fixture',phone:'+5493851234567',email:'',locality:'Fixture',date:earliestDate(30),delivery:'Retiro',payment:'A coordinar',notes:'',urgent:false,consent:true,marketingConsent:false},items:[{productId:'combo-1',quantity:1,custom:{...emptyCustom(),names:'Sofi',career:'Administración',colors:'Rosa',phrase:'Al fin',frame:'Redondo',size:'90 cm'}}]};
  const send=()=>handler(new Request('https://backend.test/plop-v2/orders',{method:'POST',headers:{Authorization:'Bearer owner','Content-Type':'application/json'},body:JSON.stringify(payload)}));
- return {handler,send,count:()=>creates};
+ return {handler,send,payload,count:()=>creates};
 }
 test('Pedido a seguimiento: se guarda una vez, conserva total y excluye contacto y notas internas',async()=>{
  const f=fixture(),response=await f.send();assert.equal(response.status,201);const order=await response.json();assert.equal(order.total,53000);assert.equal(order.deposit,26500);
@@ -36,5 +36,12 @@ test('Incluso la sesión propietaria necesita el token privado correcto',async()
  const f=fixture();await f.send();
  for(const token of ['', '42e77eaa-9b34-43c1-bbd6-51d0f792341e']){
   const r=await f.handler(new Request('https://backend.test/plop-v2/track?id='+code,{headers:{Authorization:'Bearer owner',...(token?{'x-order-token':token}:{})}}));assert.equal(r.status,404);
+ }
+});
+
+test('Un formulario incompleto no crea pedidos ni manda avisos, incluso por API directa',async()=>{
+ for(const field of ['names','career','colors','phrase']){
+  const f=fixture();f.payload.items[0].custom[field]='   ';
+  const response=await f.send();assert.equal(response.status,400);assert.equal(f.count(),0);
  }
 });

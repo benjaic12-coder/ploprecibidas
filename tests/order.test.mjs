@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {calculateOrder,splitAmount,ARG_PHONE_INPUT_PATTERN} from '../lib/order.ts';
 import {PRODUCTS,emptyCustom,earliestDate,localToday} from '../lib/catalog.ts';
 const now=new Date('2026-10-13T00:00:00Z');
-const payload=()=>({requestKey:'877c0507-03a3-409d-bde0-9b1c974a809f',customer:{name:'Prueba de validación',phone:'+5493851234567',email:'',locality:'Santiago del Estero',date:'2026-11-01',delivery:'Retiro',payment:'Transferencia',notes:'',urgent:false,consent:true},items:[{productId:'combo-1',quantity:1,custom:emptyCustom()}]});
+const payload=()=>({requestKey:'877c0507-03a3-409d-bde0-9b1c974a809f',customer:{name:'Prueba de validación',phone:'+5493851234567',email:'',locality:'Santiago del Estero',date:'2026-11-01',delivery:'Retiro',payment:'Transferencia',notes:'',urgent:false,consent:true},items:[{productId:'combo-1',quantity:1,custom:{...emptyCustom(),names:'Sofi',career:'Administración',colors:'Rosa',phrase:'Al fin'}}]});
 test('Los 18 productos del catálogo tienen identificadores únicos',()=>assert.equal(new Set(PRODUCTS.map(p=>p.id)).size,18));
 test('El servidor calcula total y seña; ignora importes del cliente',()=>{const p=payload();p.total=1;p.items[0].price=1;const r=calculateOrder(p,PRODUCTS,7,now);assert.equal(r.total,50000);assert.equal(r.deposit,25000)});
 test('El cambio de marco suma $3000 por combo',()=>{const p=payload();p.items[0].quantity=2;p.items[0].custom.frame='Redondo';assert.equal(calculateOrder(p,PRODUCTS,7,now).total,106000)});
@@ -27,4 +27,12 @@ test('Rechaza hoy y mañana incluso con urgencia y anticipación configurada en 
  }
  const p=payload();p.customer.date='2026-10-17';p.customer.urgent=true;
  assert.equal(calculateOrder(p,PRODUCTS,7,instant).total,50000);
+});
+
+for(const field of ['names','career','colors','phrase'])test(`No permite enviar con ${field} vacío o solo espacios`,()=>{
+ for(const value of ['', '   ', '\n\t']){const p=payload();p.items[0].custom[field]=value;assert.throws(()=>calculateOrder(p,PRODUCTS,7,now),/Completá/);}
+});
+test('La validación limpia espacios sin perder texto válido',()=>{
+ const p=payload();p.items[0].custom.names='  Sofi  ';p.items[0].custom.phrase='Sin frase';
+ assert.equal(calculateOrder(p,PRODUCTS,7,now).items[0].custom.names,'Sofi');
 });

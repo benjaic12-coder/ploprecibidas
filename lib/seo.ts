@@ -1,6 +1,6 @@
 import {PRODUCTS,type Product} from './catalog.ts';
 
-export const SITE_URL='https://plop-recibidas.pages.dev';
+export const SITE_URL='https://ploprecibidas.com.ar';
 export const SITE_DESCRIPTION='Combos, marcos, bandas, lonas, carteles y props personalizados en Santiago del Estero. Elegí tus colores y armá tu pedido.';
 export const SOCIAL_IMAGE=`${SITE_URL}/products/combo-4-coordinated.webp`;
 export function catalogStructuredData(products:Product[]=PRODUCTS){

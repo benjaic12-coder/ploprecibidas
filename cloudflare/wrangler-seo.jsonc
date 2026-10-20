@@ -1,0 +1,21 @@
+{
+  "name": "plop-seo-domain",
+  "main": "seo-domain.mjs",
+  "account_id": "050d03453800b9195278522d68c479ff",
+  "compatibility_date": "2026-10-20",
+  "workers_dev": false,
+  "observability": {
+    "enabled": true,
+    "head_sampling_rate": 0.1
+  },
+  "routes": [
+    {
+      "pattern": "ploprecibidas.com.ar/*",
+      "zone_id": "1c071a7f1d889d21b79da7c41807c9d8"
+    },
+    {
+      "pattern": "www.ploprecibidas.com.ar/*",
+      "zone_id": "1c071a7f1d889d21b79da7c41807c9d8"
+    }
+  ]
+}

@@ -1,0 +1,50 @@
+{
+  "publishedDate": "2026-10-22",
+  "url": "https://ploprecibidas.com.ar/admin/",
+  "wwwUrl": "https://www.ploprecibidas.com.ar/admin/",
+  "worker": "plop-admin-orders",
+  "deploymentId": "7e19c7319d204b11bb0d2ec73307536b",
+  "sourceCommit": "84deb18d35bce0f10756e67b82fe427daf5b1484",
+  "bundle": {
+    "assetPath": "/assets/plop-admin-orders-e4b1e40cd5d812a5.js",
+    "sha256": "e4b1e40cd5d812a512bfa47e88c03af7a937370f7db332098148d289a0f6a63b",
+    "bytes": 269969
+  },
+  "preservedPagesDeployment": "20d1ff40-30b6-44c4-aa6e-4fa0e26a35e3",
+  "preservedPagesCommit": "9dd2915a82fa4d7f2dfd863da1a6ecd8bfe8f48c",
+  "preservedSeoWorkerModifiedOn": "2026-10-20T13:23:15.404626Z",
+  "routes": [
+    {
+      "id": "2ec59f4e77a4411cb27efc5c608407b5",
+      "pattern": "ploprecibidas.com.ar/assets/plop-admin-orders-*"
+    },
+    {
+      "id": "423e50dbba1144bfa6a0418df75c2c68",
+      "pattern": "www.ploprecibidas.com.ar/assets/plop-admin-orders-*"
+    },
+    {
+      "id": "69f6bf1753dc40bd90cfe5b495a1e2f1",
+      "pattern": "ploprecibidas.com.ar/admin*"
+    },
+    {
+      "id": "862e6b8742b24fcf91dec5be92868c16",
+      "pattern": "www.ploprecibidas.com.ar/admin*"
+    }
+  ],
+  "checks": {
+    "unitTests": 156,
+    "typecheck": true,
+    "newFilesLint": true,
+    "build": true,
+    "browserUsingPublishedHtmlAndBundle": true,
+    "mobileViewportWidth": 390,
+    "retryIdenticalPayload": true,
+    "anonymousButtonHidden": true,
+    "logoutRemovesButton": true,
+    "bundleHashVerified": true,
+    "adminBothDomainsStatus": 200,
+    "adminUnauthorizedStatus": 401,
+    "publicStoreUnchanged": true,
+    "realOrdersCreatedDuringTests": 0
+  }
+}

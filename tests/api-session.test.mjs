@@ -74,3 +74,39 @@ test('Una renovación en curso no restaura el acceso después de salir',async()=
  const request=api('/admin/session',{},true);await began;clearAdmin();release();
  await assert.rejects(request,/sesión del panel se cerró/);assert.equal(getSession(true),null);
 });
+
+test('El equipo vuelve en una pestaña nueva sin ingresar otra vez y migra la sesión anterior',()=>{
+ sessionStorage.setItem('plop-admin-session',JSON.stringify(fresh));
+ assert.equal(getSession(true).access_token,fresh.access_token);
+ assert.equal(sessionStorage.getItem('plop-admin-session'),null);
+ globalThis.sessionStorage=memory();assert.equal(getSession(true).access_token,fresh.access_token);
+ clearAdmin();assert.equal(localStorage.getItem('plop-admin-session'),null);assert.equal(getSession(true),null);
+});
+test('Una copia antigua en la pestaña no revive la sesión persistente después de salir',()=>{
+ setSession(fresh,true);sessionStorage.setItem('plop-admin-session',JSON.stringify({...fresh,access_token:'legacy'}));
+ assert.equal(getSession(true).access_token,fresh.access_token);localStorage.removeItem('plop-admin-session');
+ assert.equal(getSession(true),null);
+});
+test('Un 401 de lectura renueva una vez y reintenta con el token actualizado',async()=>{
+ setSession(fresh,true);let refreshes=0,reads=0;
+ globalThis.fetch=async(path,options)=>{if(path==='/api/refresh'){refreshes++;return Response.json({...fresh,access_token:'renewed'})}reads++;return new Headers(options.headers).get('Authorization')==='Bearer renewed'?Response.json({ok:true}):Response.json({error:'Expired'},{status:401})};
+ await api('/admin',{},true);assert.equal(reads,2);assert.equal(refreshes,1);assert.equal(getSession(true).access_token,'renewed');
+});
+test('Una falla temporal de lectura conserva el acceso y permite recuperar los datos',async()=>{
+ setSession(fresh,true);let calls=0;
+ globalThis.fetch=async()=>++calls===1?Response.json({error:'Temporal'},{status:503}):Response.json({ok:true});
+ assert.deepEqual(await api('/admin',{},true),{ok:true});assert.equal(calls,2);assert.equal(getSession(true).access_token,fresh.access_token);
+});
+test('Los cambios no se reenvían automáticamente ante errores temporales',async()=>{
+ setSession(fresh,true);let calls=0;globalThis.fetch=async()=>{calls++;return Response.json({error:'Temporal'},{status:503})};
+ await assert.rejects(()=>api('/admin/payment',{method:'POST'},true),/Temporal/);assert.equal(calls,1);assert.equal(getSession(true).access_token,fresh.access_token);
+});
+test('Una sesión renovada en otra pestaña se relee dentro del bloqueo sin volver a usar el refresh anterior',async()=>{
+ const descriptor=Object.getOwnPropertyDescriptor(globalThis,'navigator');let refreshes=0;
+ try{
+  setSession({...fresh,expires_at:1},true);
+  Object.defineProperty(globalThis,'navigator',{configurable:true,value:{locks:{async request(name,run){assert.equal(name,'plop-session-admin');setSession({...fresh,access_token:'other-tab'},true);return run()}}}});
+  globalThis.fetch=async(path,options)=>{if(path==='/api/refresh')refreshes++;return Response.json({token:new Headers(options.headers).get('Authorization')})};
+  assert.equal((await api('/admin',{},true)).token,'Bearer other-tab');assert.equal(refreshes,0);
+ }finally{if(descriptor)Object.defineProperty(globalThis,'navigator',descriptor);else delete globalThis.navigator}
+});

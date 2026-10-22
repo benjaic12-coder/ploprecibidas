@@ -15,6 +15,7 @@
     "test": "node --test tests/*.test.mjs",
     "build:cloudflare": "node scripts/build-cloudflare.mjs",
     "build:admin-orders": "node scripts/build-admin-orders.mjs",
+    "build:admin-runtime": "node scripts/build-admin-orders.mjs --runtime",
     "check:unused": "tsc --noEmit --noUnusedLocals --noUnusedParameters"
   },
   "dependencies": {

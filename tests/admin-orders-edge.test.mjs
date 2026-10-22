@@ -27,3 +27,16 @@ test('Errores de origen no se transforman y hosts ajenos pasan intactos',async()
  const failed=new Response('unavailable',{status:503});assert.equal(await handleAdminRequest(new Request('https://ploprecibidas.com.ar/admin'),options,async()=>failed),failed);
  assert.equal(await (await handleAdminRequest(new Request('https://other.test/admin'),options,async()=>new Response('other'))).text(),'other');
 });
+test('El panel usa un único dominio para no crear dos sesiones según el enlace',async()=>{
+ const response=await handleAdminRequest(new Request('https://www.ploprecibidas.com.ar/admin/?pedido=fixture'),{...options,replaceEntry:true},async()=>{throw Error('No upstream request')});
+ assert.equal(response.status,308);assert.equal(response.headers.get('location'),'https://ploprecibidas.com.ar/admin/?pedido=fixture');assert.equal(response.headers.get('cache-control'),'private, no-store');
+});
+test('La versión independiente reemplaza únicamente el entry del administrador y agrega su CSS',async()=>{
+ const touched=[];
+ class RuntimeRewriter{
+  on(selector,handler){touched.push(selector);if(selector==='script[src]'){let removed=false;handler.element({getAttribute:()=>'/assets/index-original.js',remove(){removed=true}});assert.equal(removed,true);let recoveryRemoved=false;handler.element({getAttribute:()=>'/other.js',remove(){recoveryRemoved=true}});assert.equal(recoveryRemoved,false)}else handler.element({append(value){assert.match(value,selector==='head'?/\.css/:/\.js/)}});return this}
+  transform(response){return response}
+ }
+ const response=await handleAdminRequest(new Request('https://ploprecibidas.com.ar/admin'),{...options,stylePath:'/assets/plop-admin-orders-test.css',css:'body{}',replaceEntry:true},async()=>new Response('<body>Current shell</body>',{headers:{'content-type':'text/html'}}),RuntimeRewriter);
+ assert.deepEqual(touched,['script[src]','head','body']);assert.equal(await response.text(),'<body>Current shell</body>');
+});

@@ -57,6 +57,8 @@ next-env.d.ts
 
 /dist-netlify/
 /dist-cloudflare/
+/dist-admin-orders/
+/dist-manual-order/
 *.tsbuildinfo
 
 /supabase/.temp/

@@ -14,6 +14,7 @@
     "build:netlify": "node scripts/build-netlify.mjs",
     "test": "node --test tests/*.test.mjs",
     "build:cloudflare": "node scripts/build-cloudflare.mjs",
+    "build:admin-orders": "node scripts/build-admin-orders.mjs",
     "check:unused": "tsc --noEmit --noUnusedLocals --noUnusedParameters"
   },
   "dependencies": {

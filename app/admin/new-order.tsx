@@ -2,7 +2,7 @@
 import {useRef,useState} from 'react';
 import {Plus,Trash2} from 'lucide-react';
 import {ZodError} from 'zod';
-import {Modal} from '../store';
+import Modal from './new-order-modal';
 import {api,ApiError} from '@/lib/api';
 import {emptyCustom,earliestDate,MIN_ORDER_LEAD_DAYS,money,unitPrice,type Product,type Customization} from '@/lib/catalog';
 import {prepareManualOrder,type ManualOrderDraft} from '@/lib/manual-order';
@@ -27,7 +27,7 @@ export default function NewOrder({products,leadDays,onClose,onCreated}:{products
   }catch(error){
    // A lost response may follow a successful insert. Keep both key and payload
    // frozen until a retry confirms it; validation failures are safe to edit.
-   if(!created&&error instanceof ApiError&&[400,409,413,429].includes(error.status)){attempt.current=null;setPending(false);}
+   if(!created&&error instanceof ApiError&&[400,401,403,409,413,429].includes(error.status)){attempt.current=null;setPending(false);}
    setError(error instanceof ZodError?'Revisá los datos del cliente y completá la personalización de cada producto.':error instanceof Error?error.message:'No pudimos guardar el pedido. Volvé a intentar.');
   }finally{setBusy(false);lock.current=false;}
  }
@@ -42,7 +42,7 @@ export default function NewOrder({products,leadDays,onClose,onCreated}:{products
  <label>Entrega<select value={customer.delivery} onChange={e=>setCustomer({...customer,delivery:e.target.value as typeof customer.delivery})}><option>Retiro</option><option>Entrega a coordinar</option></select></label>
  <label>Forma de pago<select value={customer.payment} onChange={e=>setCustomer({...customer,payment:e.target.value as typeof customer.payment})}><option>A coordinar</option><option>Efectivo</option><option>Transferencia</option></select></label>
  </div>
- {customer.date<earliestDate(leadDays)&&<label className="checkbox"><input required type="checkbox" checked={customer.urgent} onChange={e=>setCustomer({...customer,urgent:e.target.checked})}/>Es una consulta urgente; la fecha queda a coordinar.</label>}
+ {customer.date<earliestDate(leadDays)&&<label className="checkbox" style={{flexDirection:'row',alignItems:'center'}}><input required type="checkbox" checked={customer.urgent} onChange={e=>setCustomer({...customer,urgent:e.target.checked})}/>Es una consulta urgente; la fecha queda a coordinar.</label>}
  <h3>Productos</h3>{items.map((item,index)=>{const product=products.find(p=>p.id===item.productId);return <section className="payment-card" key={item.key}>
  <label>Producto {index+1}<select required value={item.productId} onChange={e=>changeItem(item.key,{productId:e.target.value})}><option value="">Elegí un producto</option>{available.map(p=><option key={p.id} value={p.id}>{p.name} · {money(p.price)}</option>)}</select></label>
  <label>Cantidad<input required type="number" min={1} max={20} step={1} value={item.quantity} onChange={e=>changeItem(item.key,{quantity:Number(e.target.value)})}/></label>
@@ -55,7 +55,7 @@ export default function NewOrder({products,leadDays,onClose,onCreated}:{products
  </section>})}
  <button type="button" className="btn outline" disabled={items.length>=30||!available.length} onClick={()=>setItems([...items,{key:crypto.randomUUID(),productId:'',quantity:1,custom:emptyCustom()}])}><Plus size={16}/>Sumar producto</button>
  <label>Detalles para coordinar con el cliente<textarea maxLength={500} rows={3} value={customer.notes} onChange={e=>setCustomer({...customer,notes:e.target.value})}/></label>
- <label className="checkbox"><input required type="checkbox" checked={customer.consent} onChange={e=>setCustomer({...customer,consent:e.target.checked})}/>Confirmo que el cliente autorizó el uso de sus datos para gestionar este pedido.</label>
+ <label className="checkbox" style={{flexDirection:'row',alignItems:'center'}}><input required type="checkbox" checked={customer.consent} onChange={e=>setCustomer({...customer,consent:e.target.checked})}/>Confirmo que el cliente autorizó el uso de sus datos para gestionar este pedido.</label>
  </fieldset>
  <div className="cart-summary"><p><span>Total</span><strong>{money(total)}</strong></p><p><span>Seña esperada (50 %)</span><strong>{money(Math.ceil(total/2))}</strong></p><small>Los pagos se registran después, desde «Ver y gestionar». El cupo y la reserva siguen las condiciones habituales.</small></div>
  {error&&<p className="error" role="alert">{error}</p>}{pending&&!created&&error&&<p role="status">Reintentá para confirmar el mismo pedido sin duplicarlo.</p>}{created&&error&&<p role="status">El pedido {created.id} ya se guardó. Reintentá para abrirlo.</p>}

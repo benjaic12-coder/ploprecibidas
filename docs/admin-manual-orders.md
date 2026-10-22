@@ -1,5 +1,7 @@
 # Pedidos manuales — 22/10/2026
 
+La incorporación inicial descrita aquí fue reemplazada por la versión del administrador con sesión persistente. Ver el estado actual y su construcción en [admin-session-stability.md](admin-session-stability.md).
+
 El botón **Agregar pedido** permite cargar pedidos recibidos por WhatsApp o en el local. Usa el catálogo vigente, calcula total y seña, conserva las validaciones y el cupo existentes y abre el pedido guardado para continuar la gestión de pagos.
 
 ## Publicación que conserva la versión actual

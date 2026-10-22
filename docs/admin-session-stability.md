@@ -34,3 +34,5 @@ Si el navegador ya había eliminado la sesión antigua, se necesita un primer in
 ## Reversión
 
 Conservar la publicación anterior del Worker y la fuente de `plop-v2` 29 como puntos de reversión. La versión anterior de la incorporación manual figura en `docs/admin-manual-orders-release.json`. No fusionar a la rama que publica toda la tienda hasta recuperar también su fuente completa.
+
+La copia completa de los doce archivos del servidor anterior, su entrada, mapa de imports y configuración de JWT queda en `supabase/releases/plop-v2-v29.json.gz`. Permite volver a desplegar exactamente la versión previa sin depender de archivos temporales.

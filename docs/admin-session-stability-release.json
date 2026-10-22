@@ -1,0 +1,45 @@
+{
+  "date": "2026-10-22",
+  "url": "https://ploprecibidas.com.ar/admin/",
+  "sourceCommit": "cdd22d8f119a14ddbeeaec87af8599b84ebb5d34",
+  "worker": "plop-admin-orders",
+  "workerDeploymentId": "61b5d579e9ef4daea2297f7b3c2f79b3",
+  "supabase": {
+    "project": "lzbohzakmntypeejgquf",
+    "function": "plop-v2",
+    "previousVersion": 29,
+    "version": 30,
+    "verifyJwtUnchanged": false,
+    "rollback": "supabase/releases/plop-v2-v29.json.gz"
+  },
+  "bundle": {
+    "assetPath": "/assets/plop-admin-orders-5f0ae3ea0e0b3d67.js",
+    "stylePath": "/assets/plop-admin-orders-7d23e3cb32e770ad.css",
+    "replaceEntry": true,
+    "sha256": "5f0ae3ea0e0b3d67f51c904e26c9e1b7910980b23779f75c16b688df4ea90219",
+    "bytes": 382776
+  },
+  "pagesPreserved": "9dd2915a82fa4d7f2dfd863da1a6ecd8bfe8f48c",
+  "checks": {
+    "unitTests": 169,
+    "typecheck": true,
+    "lintErrors": 0,
+    "build": true,
+    "publishedResourcesHash": true,
+    "adminStatus": 200,
+    "wwwRedirectStatus": 308,
+    "anonymousApiStatus": 401,
+    "publicCatalogProducts": 18,
+    "recoveryStatus": 200,
+    "chromiumWithPublishedHtmlAndJs": true,
+    "apiResponsesSimulated": true,
+    "browserProcessRestartKeepsSession": true,
+    "temporaryOutageKeepsSessionAndOrders": true,
+    "refreshAndRetryWithoutLogin": true,
+    "logoutSynchronizesTabs": true,
+    "manualOrderRetrySamePayload": true,
+    "deleteConfirmationPreserved": true,
+    "mobileNoOverflow": true,
+    "realOrdersAndPaymentsCreated": 0
+  }
+}

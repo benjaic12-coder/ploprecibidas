@@ -2,10 +2,13 @@
 
 ## Estado
 
-Implementación preparada en `fix/conversion-pending-design-20261027`.
-Frontend, servidor de pedidos y Worker del panel **todavía no publicados**.
-La revisión automática bloqueó la publicación de la vista previa; requiere autorización explícita antes de continuar.
-La migración compatible `20261028004429_plop_conversion_events` sí está aplicada. Amplía eventos y agrega metadatos enumerados; no cambia pedidos, pagos, usuarios, políticas de acceso ni fechas bloqueadas. RLS sigue habilitado.
+Publicado y comprobado en https://www.ploprecibidas.com.ar/.
+
+- Pages: despliegue de producción `7211b2c8-86ea-4463-b48f-70b1b5c02e9f`, código `696e1299b16382cb6f33de9a05de66b2c82b533e`.
+- Función de pedidos `plop-v2`: versión 32. Se comparó con la versión activa 31 y se conservaron 9 de 12 archivos byte por byte; solo cambian validación del pedido, comprobación de fecha y medición del formulario. `verify_jwt` y autenticación interna se conservan.
+- Worker del panel `plop-admin-orders`: deployment `6bb9ae239abb415c9aecbad26b74918c`; runtime `/assets/plop-admin-orders-0833f4522ecbe846.js`.
+- Migración compatible `20261028004429_plop_conversion_events` aplicada. RLS sigue habilitado.
+- Rama de código guardada mediante la conexión de GitHub: `fix/conversion-pending-design-20261027`.
 
 ## Verificado antes de modificar
 
@@ -35,12 +38,14 @@ La migración compatible `20261028004429_plop_conversion_events` sí está aplic
 - TypeScript: `node node_modules/typescript/bin/tsc --noEmit`.
 - ESLint: sin errores; 155 advertencias permitidas por el umbral actual del repositorio.
 - Compilación del sitio y del panel, con conservación de recursos de versiones anteriores.
-- NO VERIFICADO visualmente: 360, 390 y 430 px, teclado virtual de teléfono, Safari/iOS, almacenamiento real tras recargar y la confirmación final en un navegador. El navegador remoto no accede al servidor local; la publicación de la vista previa quedó bloqueada.
+- Navegador: recorrido con diseño pendiente y formulario en 360 y 430 px sin desbordamiento del diálogo; portada final en 390 px sin desbordamiento. Confirmación simulada a 390 px, error de WhatsApp, fecha bloqueada, conservación de carrito y recuperación de nombre y fecha después de recargar a 430 px. Una pérdida de respuesta simulada conservó datos y el reintento mostró la confirmación.
+- Dominio público: se comprobó el nuevo botón, carrito con diseño pendiente y formulario simplificado, sin enviar solicitudes reales. La API de la vista previa devolvió los 18 productos.
+- NO VERIFICADO: teclado virtual y Safari en un iPhone físico; envío final contra producción; vista privada de KPIs con una sesión de personal autenticada.
 - No se crearon pedidos reales ni se enviaron pagos o notificaciones durante las pruebas.
 
-## Publicación pendiente
+## Procedimiento de publicación y repetición de pruebas
 
-1. Autorizar la vista previa y la publicación de este paquete en Cloudflare y Supabase.
+1. Autorización explícita recibida en esta conversación. La vista previa final usada fue https://ad907d4c.plop-recibidas.pages.dev/qa/.
 2. Publicar primero la función `plop-v2`, conservando `verify_jwt: false` tal como está hoy y la autenticación interna existente. Verificar disponibilidad y solicitudes en entorno aislado con datos ficticios.
 3. Publicar vista previa del frontend y revisar el flujo móvil. La carpeta `dist-conversion-preview` contiene mocks de prueba y **no debe usarse como despliegue de producción**.
 4. Publicar `dist-cloudflare` en el proyecto existente `plop-recibidas` y actualizar `plop-admin-orders` con el runtime compilado para que el panel activo use las mejoras. Conservar rutas, dominios y el Worker SEO existentes.

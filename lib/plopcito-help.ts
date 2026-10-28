@@ -13,7 +13,7 @@ export function plopcitoHelp(text:string,products:Product[]){
   if(matches.length)add(matches.map(p=>p.name+': '+money(p.price)+'. Incluye '+p.includes+'.').join('\n'));
   else add('No veo esa opción disponible en el catálogo actual. El equipo puede ayudarte a encontrar otra.');
  }
- if(/personal|color|frase|elegir/.test(q))add('¡Lo hacemos a tu estilo! 💗 Agregá un producto al pedido y editá nombres, carrera, colores y frases en “Mi pedido”. También podés adjuntar imágenes o links de referencia.');
+ if(/personal|color|frase|elegir/.test(q))add('¡Lo hacemos a tu estilo! 💗 Elegí los productos y sus variantes, revisá tu selección y continuá por WhatsApp. El diseño puede quedar pendiente: coordinamos con vos nombres, carrera, colores, frases y referencias por ese medio.');
  if(/diseno|antes de pagar|ver.*antes/.test(q))condition('Seña y realización del diseño');
  if(/cambi.*diseno|diseno.*aproba/.test(q))condition('Cambios después de aprobar el diseño');
  if(/produccion|cuanto tarda|demora/.test(q))condition('Tiempos de producción');
@@ -21,10 +21,10 @@ export function plopcitoHelp(text:string,products:Product[]){
  if(/envio|envian|uber|otra localidad/.test(q)){condition('Envíos a Santiago del Estero y La Banda');condition('Envíos a otras localidades');}
  if(/cancel|reintegr|devolucion/.test(q)){condition('Cancelación del pedido');add('Si el diseño todavía está en proceso, consultá con el equipo para que revise tu caso.');}
  if(/cambi.*fecha|reprogram/.test(q))condition('Cambio de fecha');
- else if(/fecha|entrega|urgente/.test(q))add('Consultá la disponibilidad en el selector de fecha. Para retirar en menos de 7 días, hablá con el equipo por WhatsApp o Telegram antes de enviar el pedido. La reserva se confirma cuando Plop verifica la seña.');
- if(/pago|sena|transfer|comprobante/.test(q))add('La seña es del 50%. Al enviar la solicitud vas a ver los datos bancarios vigentes y tu enlace privado. Subí el comprobante desde ese seguimiento: subirlo no confirma el pago; el equipo debe verificarlo.');
+ else if(/fecha|entrega|urgente/.test(q))add('Consultá la disponibilidad en el selector de fecha. Para retirar en menos de 7 días, hablá con el equipo por WhatsApp o Telegram después de consultar el calendario. La reserva se confirma cuando Plop confirma el pedido y verifica la seña.');
+ if(/pago|sena|transfer|comprobante/.test(q))add('La seña es del 50%. Primero continuá por WhatsApp con tu selección: el equipo confirma disponibilidad y coordina con vos los datos de pago vigentes. Enviar un comprobante no confirma el pago; Plop debe verificarlo. No transfieras antes de coordinar.');
  if(/saldo/.test(q))condition('Pago del saldo');
- if(/seguimiento|mi pedido|estado.*pedido/.test(q))add('Abrí el enlace privado que recibiste al enviar la solicitud o usá “Seguir mi pedido”. No compartas ese enlace ni su clave en un chat público. Si lo perdiste, el equipo puede ayudarte.');
- if(/descuento|\bqr\b|cupon/.test(q))add('Escaneá el QR de la campaña y revisá el beneficio y sus condiciones. El descuento y su disponibilidad se validan en la web antes de enviar tu solicitud.');
+ if(/seguimiento|mi pedido|estado.*pedido/.test(q))add('Si ya tenés un pedido registrado, usá “Seguir mi pedido” o el enlace privado que te haya facilitado el equipo. Abrir WhatsApp desde tu selección no crea ese seguimiento automáticamente. No compartas ese enlace ni su clave en un chat público. Si lo perdiste, el equipo puede ayudarte.');
+ if(/descuento|\bqr\b|cupon/.test(q))add('Escaneá el QR de la campaña y revisá el beneficio y sus condiciones. El descuento y su disponibilidad se validan en la web para tu selección actual antes de continuar por WhatsApp.');
  return answers.length?answers.join('\n\n'):'¡Te ayudo! 💗 Contame un poquito más. Para confirmar una condición particular, una reserva o un reclamo, podés hablar con el equipo por WhatsApp.';
 }

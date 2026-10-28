@@ -7,7 +7,7 @@ test('Plopcito responde varias condiciones con las reglas confirmadas',()=>{
  assert.match(answer,/9 a 12 hs/);assert.match(answer,/17 a 21 hs/);assert.match(answer,/Uber Auto/);assert.match(answer,/24 y 48 horas a partir de que aprobás/);
 });
 test('No inventa saldo, cambios ni cancelaciones durante el diseño',()=>{
- assert.match(plopcitoHelp('cuándo pago el saldo y puedo cambiar la fecha',PRODUCTS),/necesita confirmación/);
+ assert.match(plopcitoHelp('cuándo pago el saldo y puedo cambiar la fecha',PRODUCTS),/sujeta a confirmación/);
  assert.doesNotMatch(plopcitoHelp('saldo',PRODUCTS),/COMPLETAR|antes del retiro/);
  assert.match(plopcitoHelp('cancelar',PRODUCTS),/antes de que comencemos/);
  assert.match(plopcitoHelp('cancelar',PRODUCTS),/todavía está en proceso/);

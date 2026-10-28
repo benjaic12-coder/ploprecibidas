@@ -248,3 +248,13 @@ body:has(.plop-home) :is(.product-image,.personalize-photo,.cart-item)>img[src*=
 @media(max-width:600px){.contact-band{overflow:hidden}.contact-star{right:0}.top-strip span{margin-left:8px;margin-right:8px}}
 
 @media(max-width:600px){.plop-home{overflow-x:clip;width:100%;max-width:100%}}
+
+/* Keep the primary variant action visible within the scrolling dialog. */
+@media(max-width:740px){
+ .personalize-form .product-action-footer{position:sticky;bottom:-22px;background:var(--cream);padding:12px 0 calc(12px + env(safe-area-inset-bottom));z-index:3;border-top:1px solid var(--line)}
+ .personalize .personalize-photo{max-height:155px;overflow:auto}
+ .personalize .personalize-photo .product-photo-gallery{max-height:155px}
+ .modal .quantity button{min-width:44px;min-height:44px}
+ .coupon-entry input{min-width:0;width:100%}
+}
+.coupon-entry button[aria-disabled="true"]{opacity:.6;cursor:wait}

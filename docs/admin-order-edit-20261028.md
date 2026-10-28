@@ -1,0 +1,17 @@
+# Edición manual de productos y fecha · 28/10/2026
+
+Acceso: Panel → Pedidos → Ver y gestionar → Editar productos y fecha → Revisar cambios → Guardar cambios del pedido.
+
+Permite agregar, quitar o reemplazar productos, cambiar cantidades y variantes, editar detalles opcionales del diseño y reprogramar la fecha. El resumen compara importes, seña, pagos verificados y saldo o importe a favor. El motivo del cambio es obligatorio. Los precios históricos se conservan para productos y variantes existentes; las nuevas selecciones toman el catálogo vigente. El descuento original se conserva en pesos; se rechaza una selección cuyo subtotal quede totalmente cubierto por ese descuento.
+
+El backend autentica al staff y ejecuta una transacción con bloqueo del pedido y los cupos. Los cambios de fecha respetan cierres y el mínimo de dos días; una fecha llena se rechaza sin perder el cupo anterior. La fecha original de un pedido antiguo puede conservarse. Los pagos, el identificador, el enlace de seguimiento, las referencias y los datos de contacto permanecen. Las ediciones no cobran, devuelven dinero ni envían mensajes. Cambiar productos invalida la aprobación del diseño; un pedido en producción o entregado vuelve a revisión, y también lo hace uno con estado Seña recibida si ya no alcanza la seña. Cambiar solamente la fecha conserva aprobación y estado. No se editan pedidos cancelados ni archivados.
+
+Se registra actor, fecha, motivo y snapshots anteriores/posteriores en una tabla privada. Una clave de idempotencia y la versión actualizada del pedido impiden duplicaciones y sobreescrituras de cambios ajenos. El frontend conserva congelado el envío ante una respuesta perdida. Cambiar un total no genera una conversión publicitaria ficticia.
+
+Verificación: 186 pruebas Node aprobadas; TypeScript sin errores; ESLint sin errores (158 advertencias existentes y nuevas dentro del umbral). Prueba SQL transaccional aprobada con productos ficticios: fecha, productos, variantes, precios, diseño pendiente, pagos conservados, historial, cupos, versión desactualizada, reintento y permisos. Todos los datos de prueba fueron revertidos; comprobación posterior: cero pedidos ficticios persistentes. Navegador aislado: fecha bloqueada, precio por variante, cantidad, revisión, respuesta perdida y un solo registro después del reintento; editor sin desbordamiento en 360/390/430 px. No se modificó un pedido real para comprobar la interfaz autenticada.
+
+Base de datos: migración `20261028141130_plop_admin_order_edit`; función `plop-v2` versión 33 activa. Se conservan once módulos publicados sin cambios; solo se agregó el módulo de edición y su despacho/mapa de errores en backend.ts. La tienda pública y su despliegue Pages no se reemplazan.
+
+Reversión: devolver el Worker `plop-admin-orders` a la versión `6bb9ae23-9abb-415c-9aec-bad26b74918c` y redeplegar `supabase/releases/plop-v2-v32-source.json` con verify_jwt=false (autenticación interna existente). Se pueden conservar la tabla privada y los RPC sin usarlos para no perder auditoría. Si fuera necesario restaurar los triggers, usar las definiciones de `supabase/releases/before-admin-edit-triggers.sql` mediante una nueva migración, nunca borrar pedidos/pagos/historial.
+
+La revisión de asesores mantiene avisos previos de Auth y políticas existentes. La nueva tabla privada tiene RLS sin políticas para clientes y permisos únicamente del servidor, de forma intencional.

@@ -15,6 +15,7 @@ const eslintConfig = defineConfig([
     "dist-conversion-preview/**",
     "dist-conversion-fresh/**",
     "dist-admin-orders/**",
+    "dist-edit-preview/**",
     "dist-netlify/**",
     "dist/**",
     "vendor/**",

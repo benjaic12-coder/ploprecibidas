@@ -40,7 +40,7 @@ export async function retainReleaseAssets({directory,commit,origin='https://plop
   }
  }else throw Error('Cannot read release manifest; publication stopped to preserve previous resources');
  for(const release of releases){
-  if(!/^[a-f0-9]{40}$/.test(release.commit)||!Array.isArray(release.assets)||release.assets.length>100)throw Error('Invalid release metadata');
+  if(!/^[a-f0-9]{40}$/.test(release.commit)||!Array.isArray(release.assets)||release.assets.length>300)throw Error('Invalid release metadata');
   for(const asset of release.assets)if(!validAsset(asset.path)||!/^[a-f0-9]{64}$/.test(asset.sha256))throw Error('Invalid release asset');
  }
  const previous=releases.filter(r=>r.commit!==commit).slice(-19);

@@ -29,8 +29,8 @@ test('Rechaza hoy y mañana incluso con urgencia y anticipación configurada en 
  assert.equal(calculateOrder(p,PRODUCTS,7,instant).total,50000);
 });
 
-for(const field of ['names','career','colors','phrase'])test(`No permite enviar con ${field} vacío o solo espacios`,()=>{
- for(const value of ['', '   ', '\n\t']){const p=payload();p.items[0].custom[field]=value;assert.throws(()=>calculateOrder(p,PRODUCTS,7,now),/Completá/);}
+for(const field of ['names','career','colors','phrase'])test(`Permite solicitar con ${field} pendiente sin valores inventados`,()=>{
+ for(const value of ['', '   ', '\n\t']){const p=payload();p.items[0].custom[field]=value;assert.equal(calculateOrder(p,PRODUCTS,7,now).items[0].customizationStatus,'pending');}
 });
 test('La validación limpia espacios sin perder texto válido',()=>{
  const p=payload();p.items[0].custom.names='  Sofi  ';p.items[0].custom.phrase='Sin frase';

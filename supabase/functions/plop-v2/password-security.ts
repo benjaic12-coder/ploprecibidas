@@ -6,3 +6,4 @@ export async function checkNewPassword(password:string,transport:typeof fetch=fe
  if(!r.ok)throw new HttpError(503,'No pudimos comprobar la seguridad de la contraseña. Intentá nuevamente.');
  if((await r.text()).split(/\r?\n/).some(line=>{const [suffix,count]=line.trim().split(':');return suffix===hash.slice(5)&&Number(count)>0}))throw new HttpError(400,'Esta contraseña apareció en una filtración. Elegí otra diferente.');
 }
+

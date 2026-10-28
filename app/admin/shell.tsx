@@ -1,0 +1,1 @@
+export function Logo(){return <a href="/" className="logo" aria-label="Plop Recibidas, inicio"><img className="logo-img" src="/brand/logo-original.webp" alt="Plop Recibidas" width="108" height="70"/></a>}

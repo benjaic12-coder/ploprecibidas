@@ -2,9 +2,10 @@ import {test} from 'node:test';import assert from 'node:assert/strict';
 import {createHandler} from '../supabase/functions/plop-v2/backend.ts';
 import {PRODUCTS,emptyCustom,earliestDate} from '../lib/catalog.ts';
 const uuid='34b0c872-ee68-4be6-83ff-ba9fccb3ce99',code='PLOP-AABBCCDDEEFF',key='42e77eaa-9b34-43c1-bbd6-51d0f792341f';
-function fixture(){let saved=null,creates=0;
+function fixture({blocked=false}={}){let saved=null,creates=0;
  const handler=createHandler({SUPABASE_URL:'https://backend.test',SUPABASE_ANON_KEY:'public',SUPABASE_SERVICE_ROLE_KEY:'server'},async(raw,opts={})=>{
   const url=new URL(raw),path=url.pathname;
+  if(path.endsWith('/rpc/plop_day_availability'))return Response.json({requiresApproval:blocked,blocked});
   if(path==='/auth/v1/user')return Response.json({id:opts.headers.Authorization==='Bearer owner'?'owner':'foreign',is_anonymous:true});
   if(path.includes('/rpc/plop_expire_qr_reservations'))return Response.json(0);
   if(path.endsWith('/rpc/plop_rate_limit'))return Response.json(true);
@@ -20,7 +21,7 @@ function fixture(){let saved=null,creates=0;
  });
  const payload={requestKey:key,expectedTotal:53000,customer:{name:'Fixture',phone:'+5493851234567',email:'',locality:'Fixture',date:earliestDate(30),delivery:'Retiro',payment:'A coordinar',notes:'',urgent:false,consent:true,marketingConsent:false},items:[{productId:'combo-1',quantity:1,custom:{...emptyCustom(),names:'Sofi',career:'Administración',colors:'Rosa',phrase:'Al fin',frame:'Redondo',size:'90 cm'}}]};
  const send=()=>handler(new Request('https://backend.test/plop-v2/orders',{method:'POST',headers:{Authorization:'Bearer owner','Content-Type':'application/json'},body:JSON.stringify(payload)}));
- return {handler,send,payload,count:()=>creates};
+ return {handler,send,payload,count:()=>creates,get saved(){return saved}};
 }
 test('Pedido a seguimiento: se guarda una vez, conserva total y excluye contacto y notas internas',async()=>{
  const f=fixture(),response=await f.send();assert.equal(response.status,201);const order=await response.json();assert.equal(order.total,53000);assert.equal(order.deposit,26500);
@@ -39,9 +40,24 @@ test('Incluso la sesión propietaria necesita el token privado correcto',async()
  }
 });
 
-test('Un formulario incompleto no crea pedidos ni manda avisos, incluso por API directa',async()=>{
+test('Un diseño pendiente se acepta por API sin inventar su personalización',async()=>{
  for(const field of ['names','career','colors','phrase']){
   const f=fixture();f.payload.items[0].custom[field]='   ';
-  const response=await f.send();assert.equal(response.status,400);assert.equal(f.count(),0);
+  const response=await f.send();assert.equal(response.status,201);assert.equal(f.count(),1);const result=await response.json();assert.equal(result.items[0].customizationStatus,'pending');assert.equal(result.items[0].custom[field],'');
  }
 });
+
+ test('Diseño totalmente pendiente, varios productos y retiro sin localidad conservan precios y seña',async()=>{
+ const f=fixture();f.payload.items[0].custom=emptyCustom();f.payload.items.push({productId:'banda',quantity:2,custom:emptyCustom()});f.payload.customer.locality='';f.payload.expectedTotal=74000;
+ const response=await f.send();assert.equal(response.status,201);const d=await response.json();assert.equal(d.total,74000);assert.equal(d.deposit,37000);assert.ok(d.items.every(i=>i.customizationStatus==='pending'));assert.equal(f.saved.contact.locality,'');assert.equal(f.saved.items[0].custom.colors,'');
+ });
+ test('Una fecha bloqueada no registra pedidos y un teléfono inválido se rechaza',async()=>{
+ const f=fixture({blocked:true});assert.equal((await f.send()).status,409);assert.equal(f.count(),0);
+ const bad=fixture();bad.payload.customer.phone='123';assert.equal((await bad.send()).status,400);assert.equal(bad.count(),0);bad.payload.customer.phone='+5493851234567';assert.equal((await bad.send()).status,201);
+ });
+ test('La composición de Combo 3 y las variantes con precio siguen requiriendo opciones válidas',async()=>{
+ const f=fixture();f.payload.items[0].productId='combo-3';f.payload.items[0].custom={...emptyCustom(),choice:''};f.payload.expectedTotal=34000;assert.equal((await f.send()).status,400);assert.equal(f.count(),0);f.payload.items[0].custom.choice='Banda';const d=await (await f.send()).json();assert.equal(d.total,34000);
+ });
+ test('Reintentar después de perder la respuesta no duplica el pedido pendiente ni aplica el precio dos veces',async()=>{
+ const f=fixture();f.payload.items[0].custom={...emptyCustom(),frame:'Tipo nube'};await f.send();const r=await f.send();assert.equal(r.status,201);assert.equal(f.count(),1);assert.equal((await r.json()).total,53000);
+ });

@@ -33,3 +33,5 @@ test('Cookies bloqueadas no interrumpen la inicialización con consentimiento pr
  Object.defineProperty(b.context.document,'cookie',{get(){throw new DOMException('Blocked','SecurityError')}});
  assert.doesNotThrow(()=>b.a.getAttribution());assert.equal(b.a.getAttribution().fbp,undefined);
 });
+
+test('El inicio del formulario se emite una vez por sesión y exige consentimiento',()=>{const b=browser();b.a.trackCheckout(50000);assert.equal(b.requests.length,0);b.a.saveConsent(true,false);b.a.trackCheckout(50000);b.a.trackCheckout(50000);assert.equal(b.requests.length,1);assert.equal(b.requests[0].event,'checkout_started');});

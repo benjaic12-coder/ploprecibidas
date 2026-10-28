@@ -60,3 +60,7 @@ next-env.d.ts
 *.tsbuildinfo
 
 /supabase/.temp/
+
+/dist-conversion-preview/
+/dist-admin-orders/
+/public/products/professional-20261017/

@@ -5,3 +5,4 @@ export async function notificationHealth(rest:(path:string,options?:RequestInit)
  const [email,whatsapp,tg]=await Promise.all([summary('plop_notifications','email'),summary('plop_notifications','whatsapp'),summary('plop_telegram_notifications','telegram')]);
  return {email:{configured:emailReady,...email},whatsapp:{configured:whatsappReady,...whatsapp},telegram:{configured:!!(telegram?.chatId&&telegram?.botUsername),...tg}};
 }
+

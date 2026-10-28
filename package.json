@@ -14,7 +14,9 @@
     "build:netlify": "node scripts/build-netlify.mjs",
     "test": "node --test tests/*.test.mjs",
     "build:cloudflare": "node scripts/build-cloudflare.mjs",
-    "check:unused": "tsc --noEmit --noUnusedLocals --noUnusedParameters"
+    "check:unused": "tsc --noEmit --noUnusedLocals --noUnusedParameters",
+    "build:admin-orders": "node scripts/build-admin-orders.mjs",
+    "build:admin-runtime": "node scripts/build-admin-orders.mjs --runtime"
   },
   "dependencies": {
     "drizzle-orm": "0.45.2",

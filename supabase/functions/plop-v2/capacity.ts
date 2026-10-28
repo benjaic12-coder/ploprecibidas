@@ -12,8 +12,9 @@ export async function capacityRoute(req:Request,path:string,url:URL,rest:Rest,us
  if(path==='/admin/calendar'&&req.method==='GET'){
   await user(req,true);const month=z.string().regex(/^\d{4}-(0[1-9]|1[0-2])$/).parse(url.searchParams.get('month'));
   const start=validDay(month+'-01'),end=new Date(start+'T12:00:00Z');end.setUTCMonth(end.getUTCMonth()+1);const until=end.toISOString().slice(0,10);
-  const rows:any[]=[];for(let offset=0;;offset+=500){const page=await rest(`plop_orders?is_test=eq.false&contact->>date=gte.${start}&contact->>date=lt.${until}&select=id,code,contact,status,total,verified_paid,reserved_at,capacity_status,capacity_approved_at&order=contact->>date.asc,created_at.asc,id.asc&limit=500&offset=${offset}`);rows.push(...page);if(rows.length>10000)throw new HttpError(503,'Hay demasiados pedidos para este mes. No mostramos un calendario incompleto.');if(page.length<500)break;}
-  return {month,limit:10,orders:rows.map(o=>({uuid:o.id,id:o.code,date:o.contact.date,name:o.contact.name,locality:o.contact.locality,status:o.status,total:Number(o.total),paid:Number(o.verified_paid),reserved:!!o.reserved_at,capacityStatus:o.capacity_status||'accepted',approvedAt:o.capacity_approved_at}))};
+  const rows:any[]=[];for(let offset=0;;offset+=500){const page=await rest(`plop_orders?archived_at=is.null&is_test=eq.false&contact->>date=gte.${start}&contact->>date=lt.${until}&select=id,code,contact,status,total,verified_paid,reserved_at,capacity_status,capacity_approved_at&order=contact->>date.asc,created_at.asc,id.asc&limit=500&offset=${offset}`);rows.push(...page);if(rows.length>10000)throw new HttpError(503,'Hay demasiados pedidos para este mes. No mostramos un calendario incompleto.');if(page.length<500)break;}
+  const closures=await rest('plop_settings?key=eq.calendar_closures&select=value');const blockedDates=(closures[0]?.value?.dates||[]).filter((day:string)=>day>=start&&day<until);return {month,limit:10,blockedDates,orders:rows.map(o=>({uuid:o.id,id:o.code,date:o.contact.date,name:o.contact.name,locality:o.contact.locality,status:o.status,total:Number(o.total),paid:Number(o.verified_paid),reserved:!!o.reserved_at,capacityStatus:o.capacity_status||'accepted',approvedAt:o.capacity_approved_at}))};
  }
  return null;
 }
+

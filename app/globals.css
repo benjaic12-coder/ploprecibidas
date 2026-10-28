@@ -223,3 +223,24 @@ body:has(.plop-home) :is(.product-image,.personalize-photo,.cart-item)>img[src*=
 .client-album .album-featured-label{padding:12px 0}
 .client-album .album-peek{padding:0;background:transparent;box-shadow:none}
 .client-album .album-stage .album-photo{border-radius:0}
+
+/* Short request flow: pending design is a valid state. */
+.design-pending{padding:9px 12px;background:#fff4d8;color:#604c25;border-radius:10px;font-size:13px;font-weight:600;overflow-wrap:anywhere}
+.early-date{padding:14px;background:#f0f8f5;border-radius:14px;margin:16px 0}
+.checkout-promise{padding:14px;background:#eef8f5;border-radius:12px}
+.checkout-product-details summary{cursor:pointer;font-size:13px;padding:10px 0;min-height:44px}
+.receipt-items{text-align:left;padding-left:22px}
+.checkout-form :is(input,select,textarea)[aria-invalid=true]{border-color:#a52a36}
+.checkout-form,.personalize-form,.checkout-aside,.cart-item>div{min-width:0;overflow-wrap:anywhere}
+.checkout-form .error{display:block}
+@media(max-width:600px){
+ .modal{max-width:calc(100vw - 16px);max-height:calc(100dvh - 16px);padding:22px 16px;box-sizing:border-box;overscroll-behavior:contain}
+ .modal.wide{width:calc(100vw - 16px)}
+ .checkout-layout{display:flex;flex-direction:column;min-width:0}
+ .checkout-aside{position:static;width:100%;box-sizing:border-box}
+ .modal input,.modal select,.modal textarea{font-size:16px;max-width:100%;box-sizing:border-box}
+ .modal .form-grid{grid-template-columns:minmax(0,1fr)}
+ .modal button,.modal summary{min-height:44px}
+ .modal .checkout-product{padding:12px 0}
+ .modal :is(.btn,.checkout-group){max-width:100%;box-sizing:border-box}
+}

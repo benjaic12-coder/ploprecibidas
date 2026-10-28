@@ -1,0 +1,15 @@
+{
+  "name": "plop-admin-orders",
+  "main": "../dist-admin-orders/worker.mjs",
+  "account_id": "050d03453800b9195278522d68c479ff",
+  "compatibility_date": "2026-10-22",
+  "workers_dev": false,
+  "rules": [{"type": "Text", "globs": ["**/*.txt"], "fallthrough": true}],
+  "observability": {"enabled": true, "head_sampling_rate": 0.1, "redact_query_string": true},
+  "routes": [
+    {"pattern": "ploprecibidas.com.ar/admin*", "zone_name": "ploprecibidas.com.ar"},
+    {"pattern": "www.ploprecibidas.com.ar/admin*", "zone_name": "ploprecibidas.com.ar"},
+    {"pattern": "ploprecibidas.com.ar/assets/plop-admin-orders-*", "zone_name": "ploprecibidas.com.ar"},
+    {"pattern": "www.ploprecibidas.com.ar/assets/plop-admin-orders-*", "zone_name": "ploprecibidas.com.ar"}
+  ]
+}

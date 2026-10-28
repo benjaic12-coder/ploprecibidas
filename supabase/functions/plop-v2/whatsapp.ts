@@ -32,3 +32,4 @@ export async function processOrderWhatsApp(rest:(path:string,options?:RequestIni
  }
  return {whatsappAccepted:accepted,whatsappPendingConfiguration:false};
 }
+

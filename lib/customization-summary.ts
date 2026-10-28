@@ -2,7 +2,7 @@ import {personalizedDimensions,personalizedIncludes,type Product,type Customizat
 
 export function customizationSummary(product:Product,custom:Customization){
  return [
-  {label:'Nombre o nombres',value:custom.names.trim()||'A definir con Plop'},
+  {label:'Nombre que llevará el diseño',value:custom.names.trim()||'A definir con Plop'},
   {label:'Carrera',value:custom.career.trim()||'A definir con Plop'},
   {label:'Colores',value:custom.colors.trim()||'A definir con Plop'},
   {label:'Frase o ideas',value:custom.phrase.trim()||'A definir con Plop'},

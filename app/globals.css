@@ -244,3 +244,5 @@ body:has(.plop-home) :is(.product-image,.personalize-photo,.cart-item)>img[src*=
  .modal .checkout-product{padding:12px 0}
  .modal :is(.btn,.checkout-group){max-width:100%;box-sizing:border-box}
 }
+
+@media(max-width:600px){.contact-band{overflow:hidden}.contact-star{right:0}.top-strip span{margin-left:8px;margin-right:8px}}

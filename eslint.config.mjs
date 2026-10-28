@@ -13,6 +13,7 @@ const eslintConfig = defineConfig([
     "build/**",
     "dist-cloudflare/**",
     "dist-conversion-preview/**",
+    "dist-conversion-fresh/**",
     "dist-admin-orders/**",
     "dist-netlify/**",
     "dist/**",

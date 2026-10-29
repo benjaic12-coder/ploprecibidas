@@ -258,3 +258,10 @@ body:has(.plop-home) :is(.product-image,.personalize-photo,.cart-item)>img[src*=
  .coupon-entry input{min-width:0;width:100%}
 }
 .coupon-entry button[aria-disabled="true"]{opacity:.6;cursor:wait}
+
+/* Contact decoration must never cover the message or WhatsApp action. */
+.contact-band{isolation:isolate}
+.contact-band>div,.contact-band>a{position:relative;z-index:1}
+.contact-star{pointer-events:none;z-index:0;line-height:1}
+.contact-star svg{display:block}
+@media(max-width:700px){.contact-star{display:none}}

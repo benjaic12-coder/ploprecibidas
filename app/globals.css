@@ -259,9 +259,41 @@ body:has(.plop-home) :is(.product-image,.personalize-photo,.cart-item)>img[src*=
 }
 .coupon-entry button[aria-disabled="true"]{opacity:.6;cursor:wait}
 
-/* Preserve Plop's palette with readable text contrast on the blush background. */
-.plop-home .hero h1>.hero-brand-mint{color:#358b7c}
-.plop-home .hero h1>.hero-brand-coral{color:#ba5f58}
-:where(button,a,input,select,textarea,summary):focus-visible{outline:3px solid #296f65;outline-offset:3px}
+/* Contact decoration must never cover the message or WhatsApp action. */
+.contact-band{isolation:isolate}
+.contact-band>div,.contact-band>a{position:relative;z-index:1}
+.contact-star{pointer-events:none;z-index:0;line-height:1}
+.contact-star svg{display:block}
+@media(max-width:700px){.contact-star{display:none}}
 
+/* Mobile audit: readable controls, reachable menus, and clear web checkout. */
+.checkout-fields{border:0;padding:0;margin:0;min-width:0}
+@media(max-width:1000px){
+ .mobile-nav{max-height:calc(100dvh - 120px);overflow-y:auto;overscroll-behavior:contain}
+ .mobile-nav :is(a,button){min-height:44px;display:flex;align-items:center}
+ .mobile-toggle{min-width:44px;min-height:44px}
+}
+@media(max-width:740px){
+ .search input,.sort select,.plopcito-box input{font-size:16px;min-height:44px}
+ .sort select{width:164px}
+ .catalog-meta{flex-wrap:wrap;gap:10px}
+ .footer :is(a,button){min-height:44px;display:flex;align-items:center}
+ .consent-actions button,.privacy-preferences,.album-filters button{min-height:44px;font-size:12px}
+ .album-arrow{min-width:44px;min-height:44px}
+ .plopcito-widget{bottom:calc(88px + env(safe-area-inset-bottom))}
+ .privacy-preferences{bottom:env(safe-area-inset-bottom)}
+}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+/* Darker brand tones keep headings readable on the existing pink backgrounds. */
+.plop-home .hero-brand-mint{color:#2e8778!important}
+.plop-home .hero-brand-coral{color:#b14e5f!important}
+.plop-home .contact-band h2 em{color:#513b6b}
+@media(max-width:740px){.bag,.product-cta{min-height:44px}.catalog-meta .muted{font-size:12px}.catalog-footnote{font-size:12px}}
+@media(max-width:1000px){.consent-banner{max-height:min(60dvh,360px);overflow-y:auto;overscroll-behavior:contain}}
+@media(max-width:740px){
+ .modal .close{min-width:44px;min-height:44px}
+ body:has(.floating-cart) .privacy-preferences{bottom:calc(80px + env(safe-area-inset-bottom))}
+}
+
+:where(button,a,input,select,textarea,summary):focus-visible{outline:3px solid #296f65;outline-offset:3px}
 .selection-reference{font-size:12px;overflow-wrap:anywhere;margin:12px 0}.selection-reference small{font-size:11px}

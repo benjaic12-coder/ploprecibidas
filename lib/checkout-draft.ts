@@ -21,5 +21,5 @@ async function operation<T>(mode:IDBTransactionMode,action:(store:IDBObjectStore
 let writes:Promise<unknown>=Promise.resolve();
 function write(action:()=>Promise<unknown>){const next=writes.then(action,action);writes=next.catch(()=>{});return next;}
 export async function readCheckoutDraft():Promise<CheckoutDraft|null>{await writes;const draft=await operation<CheckoutDraft|undefined>('readonly',(s,id)=>s.get(id));if(!draft)return null;if(Date.now()-draft.updated>86400000&&!draft.requestKey){await clearCheckoutDraft();return null}return draft}
-export function saveCheckoutDraft(draft:CheckoutDraft){const snapshot=structuredClone(draft);return write(()=>operation('readwrite',(s,id)=>s.put(snapshot,id)))}
+export async function saveCheckoutDraft(draft:CheckoutDraft){const snapshot=structuredClone(draft);return write(()=>operation('readwrite',(s,id)=>s.put(snapshot,id)))}
 export function clearCheckoutDraft(){return write(()=>operation('readwrite',(s,id)=>s.delete(id)))}

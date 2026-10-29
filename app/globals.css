@@ -297,3 +297,7 @@ body:has(.plop-home) :is(.product-image,.personalize-photo,.cart-item)>img[src*=
 
 :where(button,a,input,select,textarea,summary):focus-visible{outline:3px solid #296f65;outline-offset:3px}
 .selection-reference{font-size:12px;overflow-wrap:anywhere;margin:12px 0}.selection-reference small{font-size:11px}
+
+/* The framework container width must leave room for tablet margins. */
+@media(max-width:1000px){.plop-home .catalog{width:auto}}
+.catalog-photo-card{touch-action:pan-y}

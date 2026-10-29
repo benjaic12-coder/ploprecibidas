@@ -16,7 +16,7 @@ function fixture({blocked=false,staff=false}={}){let saved=null,creates=0;
   if(path.endsWith('/plop_settings'))return Response.json([{value:{leadDays:7}}]);
   if(path.endsWith('/plop_orders')){
    if(opts.method==='POST'){creates++;const body=JSON.parse(opts.body);saved={...body,id:uuid,code,deposit:Math.ceil(body.total/2),verified_paid:0,status:'nuevo',internal_notes:'Nota privada de ejemplo',created_at:new Date().toISOString()};return Response.json([saved]);}
-   return Response.json(saved?[saved]:[]);
+   return Response.json(saved&&(!url.searchParams.has('request_key')||url.searchParams.get('request_key')==='eq.'+saved.request_key)?[saved]:[]);
   }
   if(path.endsWith('/pagos')||path.endsWith('/historial_estados'))return Response.json([]);
   throw Error('Unexpected mock request '+path);
@@ -68,3 +68,21 @@ test('La referencia de selección requiere equipo autorizado y conserva atribuci
  const denied=fixture();denied.payload.selectionReference='SEL-'+key;assert.equal((await denied.send()).status,403);assert.equal(denied.count(),0);
  const f=fixture({staff:true});f.payload.selectionReference='SEL-'+key;assert.equal((await f.send()).status,201);assert.equal(f.saved.selection_ref,key);assert.equal(f.saved.session_id,key);assert.equal(f.saved.attribution.adsConsent,false);assert.equal((await f.send()).status,201);assert.equal(f.count(),1);
 });
+
+ test('El mismo intento se recupera tras cambiar la sesión anónima sin volver a insertar',async()=>{
+ const f=fixture();const original=await (await f.send()).json();
+ const response=await f.handler(new Request('https://backend.test/plop-v2/orders',{method:'POST',headers:{Authorization:'Bearer foreign','Content-Type':'application/json'},body:JSON.stringify(f.payload)}));
+ const recovered=await response.json();assert.equal(response.status,201);assert.equal(recovered.uuid,original.uuid);assert.equal(recovered.matchesRequest,true);assert.equal(f.count(),1);
+ });
+ test('Cambiar datos, cantidades, diseño o cupón no presenta el pedido previo como coincidente',async()=>{
+ for(const mutate of [p=>p.customer.name='Otra persona',p=>p.items[0].quantity=2,p=>p.items[0].custom.colors='Otro color',p=>p.coupon='OTRO']){
+ const f=fixture();await f.send();mutate(f.payload);const r=await f.send();const d=await r.json();assert.equal(r.status,201);assert.equal(d.matchesRequest,false);assert.equal(d.total,53000);assert.equal(f.count(),1);
+ }
+ });
+ test('Recuperar con clave privada no crea pedidos ni expone contacto o notas; clave incorrecta no encuentra nada',async()=>{
+ const f=fixture();const recover=key=>f.handler(new Request('https://backend.test/plop-v2/orders/recover',{method:'POST',headers:{Authorization:'Bearer foreign','Content-Type':'application/json'},body:JSON.stringify({requestKey:key})}));
+ assert.deepEqual(await (await recover(key)).json(),{found:false});assert.equal(f.count(),0);await f.send();
+ const result=await (await recover(key)).json();assert.equal(result.found,true);assert.equal(result.receipt.id,code);assert.equal('contact' in result.receipt,false);assert.equal('internal_notes' in result.receipt,false);assert.equal(f.count(),1);
+ assert.deepEqual(await (await recover('42e77eaa-9b34-43c1-bbd6-51d0f792341e')).json(),{found:false});assert.equal((await recover('wrong')).status,400);
+ const denied=await f.handler(new Request('https://backend.test/plop-v2/orders/recover',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({requestKey:key})}));assert.equal(denied.status,401);
+ });

@@ -11,7 +11,7 @@ const originalGet=Storage.prototype.getItem,originalSet=Storage.prototype.setIte
 Storage.prototype.getItem=function(k){return originalGet.call(this,'qa-'+width+':'+k)};
 Storage.prototype.setItem=function(k,v){return originalSet.call(this,'qa-'+width+':'+k,v)};
 Storage.prototype.removeItem=function(k){return originalRemove.call(this,'qa-'+width+':'+k)};
-let loseResponse=false;const orders=new Map();
+let loseResponse=false;const orders=new Map(JSON.parse(sessionStorage.getItem('qa-orders')||'[]'));
 addEventListener('message',e=>{if(e.origin===location.origin&&e.data==='lose-response')loseResponse=true});
 const nativeFetch=window.fetch.bind(window);
 window.fetch=async function(input,options){const url=new URL(typeof input==='string'?input:input.url,location.origin);
@@ -26,10 +26,11 @@ window.fetch=async function(input,options){const url=new URL(typeof input==='str
  const products=${JSON.stringify(PRODUCTS)};const subtotal=body.items.reduce((sum,i)=>sum+(products.find(p=>p.id===i.productId).price+(i.custom.frame&&i.custom.frame!=='Rectangular'&&products.find(p=>p.id===i.productId).frameOption?3000:0))*i.quantity,0);const discount=Math.floor(subtotal/10);return Response.json({code:body.code,subtotal,discount,total:subtotal-discount});
  }
  if(url.pathname==='/api/session')return Response.json({access_token:'qa-synthetic-access',refresh_token:'qa-synthetic-refresh',expires_in:3600});
+ if(url.pathname==='/api/orders/recover'){const key=JSON.parse(options.body).requestKey;return Response.json(orders.has(key)?{found:true,receipt:orders.get(key)}:{found:false})}
  if(url.pathname==='/api/events')return Response.json({ok:true});
  throw Error('This preview does not send API requests: '+url.pathname);
 };
-window.XMLHttpRequest=class {upload={};headers={};status=0;responseText='';open(method,url){if(method!=='POST'||url!=='/api/orders')throw Error('QA request blocked')};setRequestHeader(k,v){this.headers[k]=v};send(form){const payload=JSON.parse(form.get('payload'));let order=orders.get(payload.requestKey);if(!order){const products=${JSON.stringify(PRODUCTS)};const items=payload.items.map(i=>{const p=products.find(p=>p.id===i.productId);return {...i,name:p.name,price:p.price+(p.frameOption&&i.custom.frame!=='Rectangular'?3000:0)}});const subtotal=items.reduce((n,i)=>n+i.price*i.quantity,0),discount=payload.coupon==='ANTICIPATE10'?Math.floor(subtotal/10):0,total=subtotal-discount;order={id:'PLOP-AABBCCDDEEFF',uuid:'aaaaaaaa-bbbb-4ccc-8ddd-eeeeeeeeeeee',token:payload.requestKey,total,subtotal,discount,deposit:Math.ceil(total/2),date:payload.customer.date,items,capacityStatus:'accepted',bank:{}};orders.set(payload.requestKey,order)}setTimeout(()=>{if(loseResponse){loseResponse=false;this.onerror?.();return}this.status=201;this.responseText=JSON.stringify(order);this.onload?.()},150)} };
+window.XMLHttpRequest=class {upload={};headers={};status=0;responseText='';open(method,url){if(method!=='POST'||url!=='/api/orders')throw Error('QA request blocked')};setRequestHeader(k,v){this.headers[k]=v};send(form){const payload=JSON.parse(form.get('payload'));let order=orders.get(payload.requestKey);if(!order){const products=${JSON.stringify(PRODUCTS)};const items=payload.items.map(i=>{const p=products.find(p=>p.id===i.productId);return {...i,name:p.name,price:p.price+(p.frameOption&&i.custom.frame!=='Rectangular'?3000:0)}});const subtotal=items.reduce((n,i)=>n+i.price*i.quantity,0),discount=payload.coupon==='ANTICIPATE10'?Math.floor(subtotal/10):0,total=subtotal-discount;order={id:'PLOP-AABBCCDDEEFF',uuid:'aaaaaaaa-bbbb-4ccc-8ddd-eeeeeeeeeeee',token:payload.requestKey,total,subtotal,discount,deposit:Math.ceil(total/2),date:payload.customer.date,items,capacityStatus:'accepted',bank:{}};orders.set(payload.requestKey,order);sessionStorage.setItem('qa-orders',JSON.stringify([...orders]))}setTimeout(()=>{if(loseResponse){loseResponse=false;this.onerror?.();return}this.status=201;this.responseText=JSON.stringify(order);this.onload?.()},150)} };
 history.replaceState(null,'',new URLSearchParams(location.search).get('route')||(location.pathname.startsWith('/qa/')?'/':location.pathname));
 `;
 writeFileSync('dist-conversion-preview/qa/mock.js',mocked);

@@ -13,6 +13,6 @@ test('Las medidas e incluidos representan el marco y diámetro elegidos',()=>{
 test('Combo 3 muestra solo la alternativa elegida',()=>assert.equal(personalizedIncludes(PRODUCTS.find(p=>p.id==='combo-3'),{...emptyCustom(),choice:'Banda'}),'Lona mediana + banda para graduados'));
 test('Privacidad tiene su canonical; gestión no incluye canonical público',()=>{
  const html='<head><title>Inicio</title><meta name="description" content="Inicio"><link rel="canonical" href="https://example.test/"></head>';
- const privacy=routeHtml(html,'https://example.test','/privacy');assert.match(privacy,/https:\/\/plop-recibidas.pages.dev\/privacy/);assert.match(privacy,/<title>Privacidad/);
+ const privacy=routeHtml(html,'https://example.test','/privacy');assert.match(privacy,/https:\/\/ploprecibidas.com.ar\/privacy/);assert.match(privacy,/<title>Privacidad/);
  const admin=routeHtml(html,'https://example.test','/admin');assert.match(admin,/noindex,nofollow/);assert.doesNotMatch(admin,/rel="canonical"/);
 });

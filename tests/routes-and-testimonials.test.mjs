@@ -10,7 +10,7 @@ test('Condiciones tiene HTML propio, canonical y contenidos; 404 no redirige a l
  const dir=mkdtempSync(join(tmpdir(),'plop-routes-'));
  try{writeRoutePages(dir,'<html><head><title>Plop</title><meta name="description" content="Inicio"><script type="module" src="/assets/app-hash.js"></script></head><body><div id="root"><h1>Estamos abriendo Plop</h1></div></body></html>');
  const home=readFileSync(join(dir,'index.html'),'utf8'),conditions=readFileSync(join(dir,'condiciones/index.html'),'utf8'),missing=readFileSync(join(dir,'404.html'),'utf8');
- assert.notEqual(home,conditions);assert.match(home,/Lo hacés con Plop/);assert.match(conditions,/<h1>Condiciones del pedido<\/h1>/);assert.match(conditions,/canonical" href="https:\/\/plop-recibidas.pages.dev\/condiciones/);assert.match(conditions,/COMPLETAR/);assert.match(conditions,/\/assets\/app-hash.js/);assert.doesNotMatch(missing,/http-equiv="refresh"/);assert.match(missing,/href="\/"/);
+ assert.notEqual(home,conditions);assert.match(home,/Lo hacés con Plop/);assert.match(conditions,/<h1>Condiciones del pedido<\/h1>/);assert.match(conditions,/canonical" href="https:\/\/ploprecibidas.com.ar\/condiciones/);assert.doesNotMatch(conditions,/COMPLETAR/);assert.match(conditions,/\/assets\/app-hash.js/);assert.doesNotMatch(missing,/http-equiv="refresh"/);assert.match(missing,/href="\/"/);
  }finally{rmSync(dir,{recursive:true,force:true})}
 });
 test('Solo se publican testimonios completos y autorizados; los placeholders quedan ocultos',()=>{

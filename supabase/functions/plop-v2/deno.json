@@ -1,2 +1,2 @@
-{"imports":{"zod":"npm:zod@3.25.76"},"compilerOptions":{"lib":["deno.window","dom"]}}
+{"imports":{"zod":"npm:zod@4.6.6"},"compilerOptions":{"lib":["deno.window","dom"]}}
 

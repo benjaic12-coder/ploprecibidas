@@ -8,6 +8,7 @@ import {emptyCustom,earliestDate,MIN_ORDER_LEAD_DAYS,money,unitPrice,type Produc
 import {prepareManualOrder,type ManualOrderDraft} from '@/lib/manual-order';
 
 export default function NewOrder({products,leadDays,onClose,onCreated}:{products:Product[];leadDays:number;onClose:()=>void;onCreated:(result:{uuid:string;id:string;capacityStatus?:string})=>Promise<void>}){
+ const [selectionReference,setSelectionReference]=useState('');
  const [customer,setCustomer]=useState({name:'',phone:'',email:'',locality:'Santiago del Estero',date:earliestDate(Math.max(leadDays,MIN_ORDER_LEAD_DAYS)),delivery:'Retiro' as 'Retiro'|'Entrega a coordinar',payment:'A coordinar' as 'A coordinar'|'Efectivo'|'Transferencia',notes:'',urgent:false,consent:false});
  const [items,setItems]=useState<ManualOrderDraft['items']>([{key:crypto.randomUUID(),productId:'',quantity:1,custom:emptyCustom()}]);
  const [busy,setBusy]=useState(false),[error,setError]=useState(''),[pending,setPending]=useState(false),[created,setCreated]=useState<{uuid:string;id:string;capacityStatus?:string}|null>(null);
@@ -20,7 +21,7 @@ export default function NewOrder({products,leadDays,onClose,onCreated}:{products
   event.preventDefault();if(lock.current)return;lock.current=true;setBusy(true);setError('');
   try{
    if(created){await onCreated(created);return;}
-   if(!attempt.current)attempt.current=prepareManualOrder({customer,items},products,leadDays,crypto.randomUUID());
+   if(!attempt.current)attempt.current=prepareManualOrder({customer,items,selectionReference},products,leadDays,crypto.randomUUID());
    setPending(true);
    const result=await api('/orders',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(attempt.current)},true);
    setCreated(result);await onCreated(result);
@@ -28,12 +29,12 @@ export default function NewOrder({products,leadDays,onClose,onCreated}:{products
    // A lost response may follow a successful insert. Keep both key and payload
    // frozen until a retry confirms it; validation failures are safe to edit.
    if(!created&&error instanceof ApiError&&[400,401,403,409,413,429].includes(error.status)){attempt.current=null;setPending(false);}
-   setError(error instanceof ZodError?'Revisá los datos del cliente y completá la personalización de cada producto.':error instanceof Error?error.message:'No pudimos guardar el pedido. Volvé a intentar.');
+   setError(error instanceof ZodError?'Revisá los datos del cliente y las variantes de cada producto; el diseño puede quedar pendiente.':error instanceof Error?error.message:'No pudimos guardar el pedido. Volvé a intentar.');
   }finally{setBusy(false);lock.current=false;}
  }
  return <Modal wide label="Agregar pedido" onClose={()=>{if(!busy&&(!pending||created))onClose()}}><span className="eyebrow">CARGA MANUAL</span><h2>Agregar pedido</h2><p>Cargá acá los pedidos que recibís por WhatsApp o en el local.</p><form className="admin-form" onSubmit={submit}>
  <fieldset disabled={busy||pending} style={{border:0,padding:0,margin:0,minWidth:0}}>
- <h3>Datos del cliente</h3><div className="checkout-layout">
+ <label>Referencia de selección (opcional)<input maxLength={45} placeholder="SEL-… · copiá la referencia del mensaje de WhatsApp" value={selectionReference} onChange={e=>setSelectionReference(e.target.value)}/><small>Conserva esta consulta en el pedido. La atribución web solo se completa si hay un evento con consentimiento. No es el enlace privado del cliente.</small></label><h3>Datos del cliente</h3><div className="checkout-layout">
  <label>Nombre y apellido<input required minLength={2} maxLength={100} autoComplete="name" value={customer.name} onChange={e=>setCustomer({...customer,name:e.target.value})}/></label>
  <label>WhatsApp<input required type="tel" minLength={8} maxLength={30} placeholder="Ej.: 385 1234567" value={customer.phone} onChange={e=>setCustomer({...customer,phone:e.target.value})}/></label>
  <label>Correo (opcional)<input type="email" maxLength={160} value={customer.email} onChange={e=>setCustomer({...customer,email:e.target.value})}/></label>
@@ -46,7 +47,7 @@ export default function NewOrder({products,leadDays,onClose,onCreated}:{products
  <h3>Productos</h3>{items.map((item,index)=>{const product=products.find(p=>p.id===item.productId);return <section className="payment-card" key={item.key}>
  <label>Producto {index+1}<select required value={item.productId} onChange={e=>changeItem(item.key,{productId:e.target.value})}><option value="">Elegí un producto</option>{available.map(p=><option key={p.id} value={p.id}>{p.name} · {money(p.price)}</option>)}</select></label>
  <label>Cantidad<input required type="number" min={1} max={20} step={1} value={item.quantity} onChange={e=>changeItem(item.key,{quantity:Number(e.target.value)})}/></label>
- {product&&<><div className="checkout-layout">{([['names','Nombre para el diseño',100],['career','Carrera',120],['colors','Colores',120],['phrase','Frase, ideas o detalles',500]] as const).map(([field,label,max])=><label key={field}>{label}<input required maxLength={max} value={item.custom[field]} onChange={e=>customize(item.key,item.custom,field,e.target.value)}/></label>)}</div>
+ {product&&<><div className="checkout-layout">{([['names','Nombre para el diseño',100],['career','Carrera',120],['colors','Colores',120],['phrase','Frase, ideas o detalles',500]] as const).map(([field,label,max])=><label key={field}>{label}<input maxLength={max} value={item.custom[field]} onChange={e=>customize(item.key,item.custom,field,e.target.value)}/></label>)}</div>
  {product.frameOption&&<label>Forma del marco<select value={item.custom.frame} onChange={e=>customize(item.key,item.custom,'frame',e.target.value)}>{['Rectangular','Redondo','Tipo nube','Con forma'].map(value=><option key={value}>{value}</option>)}</select></label>}
  {(product.id==='marco-redondo'||product.frameOption&&item.custom.frame==='Redondo')&&<label>Diámetro<select value={item.custom.size} onChange={e=>customize(item.key,item.custom,'size',e.target.value)}>{['70 cm','80 cm','90 cm'].map(value=><option key={value}>{value}</option>)}</select></label>}
  {product.choiceOption&&<label>Opción del combo<select value={item.custom.choice} onChange={e=>customize(item.key,item.custom,'choice',e.target.value)}><option>8 props</option><option>Banda</option></select></label>}

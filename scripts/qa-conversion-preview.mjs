@@ -1,9 +1,10 @@
 // Generates a separate preview directory. Never included in the production build.
 import {cpSync,mkdirSync,readFileSync,writeFileSync} from 'node:fs';
 import {PRODUCTS} from '../lib/catalog.ts';
-cpSync('dist-cloudflare','dist-conversion-preview',{recursive:true});
+const source=process.env.PLOP_QA_SOURCE||'dist-cloudflare';
+cpSync(source,'dist-conversion-preview',{recursive:true});
 mkdirSync('dist-conversion-preview/qa',{recursive:true});
-const html=readFileSync('dist-cloudflare/index.html','utf8');
+const html=readFileSync(source+'/index.html','utf8');
 const mocked=`
 const width=new URLSearchParams(location.search).get('width')||'390';
 const originalGet=Storage.prototype.getItem,originalSet=Storage.prototype.setItem,originalRemove=Storage.prototype.removeItem;
@@ -29,7 +30,7 @@ window.fetch=async function(input,options){const url=new URL(typeof input==='str
  throw Error('This preview does not send API requests: '+url.pathname);
 };
 window.XMLHttpRequest=class {upload={};headers={};status=0;responseText='';open(method,url){if(method!=='POST'||url!=='/api/orders')throw Error('QA request blocked')};setRequestHeader(k,v){this.headers[k]=v};send(form){const payload=JSON.parse(form.get('payload'));let order=orders.get(payload.requestKey);if(!order){order={id:'PRUEBA-SIN-PEDIDO-REAL',uuid:crypto.randomUUID(),token:payload.requestKey,total:payload.expectedTotal,subtotal:payload.expectedTotal,discount:0,deposit:Math.ceil(payload.expectedTotal/2),date:payload.customer.date,items:payload.items.map(i=>({...i,name:${JSON.stringify(PRODUCTS.map(({id,name})=>({id,name})))}.find(p=>p.id===i.productId).name})),capacityStatus:'accepted',bank:{}};orders.set(payload.requestKey,order)}setTimeout(()=>{if(loseResponse){loseResponse=false;this.onerror?.();return}this.status=201;this.responseText=JSON.stringify(order);this.onload?.()},150)} };
-history.replaceState(null,'','/');
+history.replaceState(null,'',new URLSearchParams(location.search).get('route')||(location.pathname.startsWith('/qa/')?'/':location.pathname));
 `;
 writeFileSync('dist-conversion-preview/qa/mock.js',mocked);
 writeFileSync('dist-conversion-preview/qa/frame.html',html.replace('<head>','<head><script src="/qa/mock.js"></script><meta name="robots" content="noindex,nofollow">'));
@@ -37,3 +38,6 @@ writeFileSync('dist-conversion-preview/qa/index.html',`<!doctype html><html lang
 writeFileSync('dist-conversion-preview/qa/controls.js',`const frame=document.getElementById('phone-preview');for(const button of document.querySelectorAll('[data-width]'))button.onclick=()=>{const width=button.dataset.width;frame.width=width;frame.title='Plop a '+width+' píxeles';frame.src='/qa/frame.html?width='+width};document.getElementById('network').onclick=()=>frame.contentWindow.postMessage('lose-response',location.origin);`);
 writeFileSync('dist-conversion-preview/_headers',readFileSync('dist-conversion-preview/_headers','utf8')+`\n/qa/*\n  ! Content-Security-Policy\n  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://*.supabase.co; connect-src 'self'; frame-src 'self'; frame-ancestors 'self'; object-src 'none'\n  X-Robots-Tag: noindex, nofollow\n`);
 console.log('Prepared isolated mobile preview at /qa/index.html');
+
+// Exercise the domain query that previously caused a second bootstrap evaluation.
+for(const name of ['qa/frame.html','condiciones/index.html','privacy/index.html','privacidad/index.html']){const file='dist-conversion-preview/'+name;let page=readFileSync(file,'utf8');if(!page.includes('/qa/mock.js'))page=page.replace('<head>','<head><script src="/qa/mock.js"></script>');page=page.replace(/src="(\/assets\/index-[^"]+\.js)"/g,'src="$1?qa-domain-query=1"');writeFileSync(file,page);}

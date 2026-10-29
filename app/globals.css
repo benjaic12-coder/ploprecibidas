@@ -258,3 +258,10 @@ body:has(.plop-home) :is(.product-image,.personalize-photo,.cart-item)>img[src*=
  .coupon-entry input{min-width:0;width:100%}
 }
 .coupon-entry button[aria-disabled="true"]{opacity:.6;cursor:wait}
+
+/* Preserve Plop's palette with readable text contrast on the blush background. */
+.plop-home .hero h1>.hero-brand-mint{color:#358b7c}
+.plop-home .hero h1>.hero-brand-coral{color:#ba5f58}
+:where(button,a,input,select,textarea,summary):focus-visible{outline:3px solid #296f65;outline-offset:3px}
+
+.selection-reference{font-size:12px;overflow-wrap:anywhere;margin:12px 0}.selection-reference small{font-size:11px}

@@ -2,11 +2,13 @@ import {test} from 'node:test';import assert from 'node:assert/strict';
 import {createHandler} from '../supabase/functions/plop-v2/backend.ts';
 import {PRODUCTS,emptyCustom,earliestDate} from '../lib/catalog.ts';
 const uuid='34b0c872-ee68-4be6-83ff-ba9fccb3ce99',code='PLOP-AABBCCDDEEFF',key='42e77eaa-9b34-43c1-bbd6-51d0f792341f';
-function fixture({blocked=false}={}){let saved=null,creates=0;
+function fixture({blocked=false,staff=false}={}){let saved=null,creates=0;
  const handler=createHandler({SUPABASE_URL:'https://backend.test',SUPABASE_ANON_KEY:'public',SUPABASE_SERVICE_ROLE_KEY:'server'},async(raw,opts={})=>{
   const url=new URL(raw),path=url.pathname;
+  if(path.endsWith('/rpc/plop_staff_email'))return Response.json(staff);
+  if(path.endsWith('/plop_events'))return Response.json([{session_id:key,source:'instagram',campaign:'qa',device:'mobile'}]);
   if(path.endsWith('/rpc/plop_day_availability'))return Response.json({requiresApproval:blocked,blocked});
-  if(path==='/auth/v1/user')return Response.json({id:opts.headers.Authorization==='Bearer owner'?'owner':'foreign',is_anonymous:true});
+  if(path==='/auth/v1/user')return Response.json({id:opts.headers.Authorization==='Bearer owner'?'owner':'foreign',is_anonymous:!staff,email:'staff@example.test',email_confirmed_at:staff?'2026-10-01':null});
   if(path.includes('/rpc/plop_expire_qr_reservations'))return Response.json(0);
   if(path.endsWith('/rpc/plop_rate_limit'))return Response.json(true);
   if(path.endsWith('/plop_catalog'))return Response.json(PRODUCTS.map(p=>({id:p.id,data:p,price:p.price,available:true})));
@@ -61,3 +63,8 @@ test('Un diseño pendiente se acepta por API sin inventar su personalización',a
  test('Reintentar después de perder la respuesta no duplica el pedido pendiente ni aplica el precio dos veces',async()=>{
  const f=fixture();f.payload.items[0].custom={...emptyCustom(),frame:'Tipo nube'};await f.send();const r=await f.send();assert.equal(r.status,201);assert.equal(f.count(),1);assert.equal((await r.json()).total,53000);
  });
+
+test('La referencia de selección requiere equipo autorizado y conserva atribución consentida sin duplicar pedidos',async()=>{
+ const denied=fixture();denied.payload.selectionReference='SEL-'+key;assert.equal((await denied.send()).status,403);assert.equal(denied.count(),0);
+ const f=fixture({staff:true});f.payload.selectionReference='SEL-'+key;assert.equal((await f.send()).status,201);assert.equal(f.saved.selection_ref,key);assert.equal(f.saved.session_id,key);assert.equal(f.saved.attribution.adsConsent,false);assert.equal((await f.send()).status,201);assert.equal(f.count(),1);
+});

@@ -1,8 +1,9 @@
+import {selectionReferenceLabel} from './selection-reference.ts';
 import {money,unitPrice,personalizedDimensions,personalizedIncludes,type Product,type CartItem} from './catalog.ts';
 
 export const hasProductVariants=(product:Product)=>!!(product.frameOption||product.choiceOption);
 
-export function whatsappSelection(items:CartItem[],products:Product[],coupon?:{code:string;discount:number}|null){
+export function whatsappSelection(items:CartItem[],products:Product[],coupon?:{code:string;discount:number}|null,selectionRef?:string|null){
  if(!items.length||items.length>30)throw Error('Revisá los productos de tu selección.');
  const lines:string[]=[];let subtotal=0;
  for(const item of items){
@@ -16,6 +17,6 @@ export function whatsappSelection(items:CartItem[],products:Product[],coupon?:{c
  const discount=coupon?.discount||0;
  if(!Number.isInteger(discount)||discount<0||discount>=subtotal||coupon&&!/^[A-Z0-9_-]{3,24}$/.test(coupon.code))throw Error('Revisá el cupón de tu selección.');
  const total=subtotal-discount,deposit=Math.ceil(total/2);
- const message=['Hola Plop, quiero consultar por esta selección:','',...lines,`Subtotal: ${money(subtotal)}`,...(coupon?[`Cupón ${coupon.code}: −${money(discount)} (a confirmar por Plop)`]:[]),`Total de productos: ${money(total)}`,`Seña del 50% a coordinar: ${money(deposit)}`,'El envío, si corresponde, se cotiza aparte.','','Quiero coordinar disponibilidad, diseño y entrega. La selección todavía no es un pedido confirmado.'].join('\n');
+ const message=['Hola Plop, quiero consultar por esta selección:',...(selectionRef?[`Referencia: ${selectionReferenceLabel(selectionRef)}`]:[]),'',...lines,`Subtotal: ${money(subtotal)}`,...(coupon?[`Cupón ${coupon.code}: −${money(discount)} (a confirmar por Plop)`]:[]),`Total de productos: ${money(total)}`,`Seña del 50% a coordinar: ${money(deposit)}`,'El envío, si corresponde, se cotiza aparte.','','Quiero coordinar disponibilidad, diseño y entrega. La selección todavía no es un pedido confirmado.'].join('\n');
  return {url:'https://wa.me/5493856870303?text='+encodeURIComponent(message),message,subtotal,total,deposit};
 }

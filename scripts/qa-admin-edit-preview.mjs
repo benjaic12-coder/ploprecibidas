@@ -3,9 +3,9 @@
 import {mkdirSync,readFileSync,writeFileSync,copyFileSync} from 'node:fs';
 import {PRODUCTS,emptyCustom} from '../lib/catalog.ts';
 const dir='dist-edit-preview';mkdirSync(dir+'/assets',{recursive:true});mkdirSync(dir+'/qa',{recursive:true});
-const source=readFileSync('dist-cloudflare/index.html','utf8');
+const source=readFileSync((process.env.PLOP_QA_SOURCE||'dist-cloudflare')+'/index.html','utf8');
 const styles=[...source.matchAll(/<link[^>]+href="([^"]+\.css)"[^>]*>/g)].map(m=>m[0]);
-for(const style of styles){const path=style.match(/href="([^"]+)"/)[1];copyFileSync('dist-cloudflare'+path,dir+path);}
+for(const style of styles){const path=style.match(/href="([^"]+)"/)[1];copyFileSync((process.env.PLOP_QA_SOURCE||'dist-cloudflare')+path,dir+path);}
 copyFileSync('dist-admin-orders/client.js',dir+'/assets/admin.js');copyFileSync('dist-admin-orders/client.css',dir+'/assets/admin.css');
 const order={uuid:'34b0c872-ee68-4be6-83ff-ba9fccb3ce99',id:'PLOP-DEMO-EDICION',updated_at:'2026-10-28T12:00:00.123456+00:00',created_at:'2026-10-20T12:00:00Z',is_test:true,customer:{name:'Cliente de prueba',phone:'+5493850000099',email:'',locality:'Santiago del Estero',date:'2026-11-18',delivery:'Retiro',payment:'A coordinar',notes:'Datos ficticios. No producir.',urgent:false},items:[{productId:'combo-1',name:'Combo 1',price:42000,quantity:1,custom:emptyCustom()}],total:42000,subtotal:42000,discount:0,deposit:21000,paid:42000,status:'en_produccion',design_approved:true,reserved_at:'2026-10-20T12:00:00Z',notes:'',payments:[],history:[],capacity_status:'accepted',paymentStage:'pagado',paymentState:'Pagado'};
 writeFileSync(dir+'/qa/mock.js',`

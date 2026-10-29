@@ -299,5 +299,5 @@ body:has(.plop-home) :is(.product-image,.personalize-photo,.cart-item)>img[src*=
 .selection-reference{font-size:12px;overflow-wrap:anywhere;margin:12px 0}.selection-reference small{font-size:11px}
 
 /* The framework container width must leave room for tablet margins. */
-@media(max-width:1000px){.plop-home .catalog{width:auto}}
+@media(max-width:1000px){.plop-home .catalog{width:auto}.plop-home{overflow-x:clip}}
 .catalog-photo-card{touch-action:pan-y}

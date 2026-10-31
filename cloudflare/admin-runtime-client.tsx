@@ -1,3 +1,4 @@
+import '../app/globals.css';
 import {Component,type ReactNode} from 'react';
 import {createRoot} from 'react-dom/client';
 import AdminPanel from '../app/admin/panel';

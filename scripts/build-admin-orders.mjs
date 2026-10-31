@@ -8,6 +8,7 @@ await build({configFile:false,plugins:[react()],define:{'process.env.NODE_ENV':J
 const client=readFileSync('dist-admin-orders/client.js','utf8'),hash=createHash('sha256').update(client).digest('hex');
 const assetPath=`/assets/plop-admin-orders-${hash.slice(0,16)}.js`;
 const css=runtime?readFileSync('dist-admin-orders/client.css','utf8'):'';
+if(runtime&&!['.admin-header{','.admin-main{','body{'].every(rule=>css.includes(rule)))throw Error('Admin runtime is missing the shared Plop stylesheet. Publication stopped.');
 const stylePath=runtime?`/assets/plop-admin-orders-${createHash('sha256').update(css).digest('hex').slice(0,16)}.css`:'';
 writeFileSync('dist-admin-orders/client.txt',client);
 writeFileSync('dist-admin-orders/style.txt',css);

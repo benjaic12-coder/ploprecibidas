@@ -301,3 +301,19 @@ body:has(.plop-home) :is(.product-image,.personalize-photo,.cart-item)>img[src*=
 /* The framework container width must leave room for tablet margins. */
 @media(max-width:1000px){.plop-home .catalog{width:auto}.plop-home{overflow-x:clip}}
 .catalog-photo-card{touch-action:pan-y}
+
+/* Keep post-order details separate from the short checkout. */
+.checkout-next-step{font-size:13px;color:var(--muted,#665d69)}
+.customer-order-actions{margin:24px 0;padding:20px;border:1px solid #e9dbe4;border-radius:18px;background:#fff8fc}
+.customer-order-actions h2{font-size:22px;margin:0 0 10px}
+.customer-order-actions p{line-height:1.6}
+.customer-order-actions fieldset{border:0;min-width:0;padding:0;margin:0 0 18px}
+.customer-order-actions .checkout-group{border:1px solid #e9dbe4;padding:16px;border-radius:12px;background:white}
+.customer-order-actions legend{padding:0 6px;font-weight:700}
+.customer-order-actions label{display:flex;flex-direction:column;gap:6px;font-size:13px}
+.customer-order-actions input,.customer-order-actions textarea,.customer-order-actions select{box-sizing:border-box;width:100%;min-width:0;max-width:100%;font:inherit}
+.customer-details-form{margin-top:20px}
+.customer-cancel{margin-top:20px;padding-top:16px;border-top:1px solid #e9dbe4}
+.customer-cancel form{margin-top:14px}
+.customer-cancel form>button{margin-top:12px}
+@media(max-width:540px){.customer-order-actions{padding:15px}.customer-order-actions .form-grid{grid-template-columns:1fr}.customer-order-actions .checkout-group{padding:12px}}

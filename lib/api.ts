@@ -82,10 +82,25 @@ export async function login(email:string,password:string,register=false){
  const data=await jsonRequest(register?'/register':'/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,password})});
  if(data.access_token)setSession(data,true);return data;
 }
-export async function uploadOrder(form:FormData,onProgress:(percent:number)=>void){
+export async function uploadMultipart(path:'/orders'|'/receipt',form:FormData,onProgress:(percent:number)=>void,signal?:AbortSignal){
  const value=await session(false);
- return new Promise<any>((resolve,reject)=>{const xhr=new XMLHttpRequest();xhr.open('POST','/api/orders');xhr.setRequestHeader('Authorization','Bearer '+value.access_token);xhr.timeout=120000;xhr.upload.onprogress=e=>{if(e.lengthComputable)onProgress(Math.min(99,Math.round(e.loaded/e.total*100)))};xhr.onerror=()=>reject(Error('Se interrumpió la conexión. El borrador sigue guardado; reintentá para comprobar tu solicitud.'));xhr.ontimeout=()=>reject(Error('La carga está tardando. El borrador sigue guardado; reintentá sin cambiar el pedido para comprobar si llegó.'));xhr.onload=()=>{let data:any;try{data=JSON.parse(xhr.responseText)}catch{reject(Error('No pudimos confirmar la respuesta. Reintentá con el mismo pedido.'));return}if(xhr.status>=200&&xhr.status<300){onProgress(100);resolve(data)}else{if(xhr.status===401)clearSession(false);reject(new ApiError(data?.error||'No pudimos guardar el pedido.',xhr.status))}};xhr.send(form)});
+ return new Promise<any>((resolve,reject)=>{
+  if(signal?.aborted){reject(new ApiError('La carga se interrumpió. Reintentá la misma solicitud para comprobar si llegó.',0));return;}
+  const xhr=new XMLHttpRequest();
+  const cleanup=()=>signal?.removeEventListener('abort',abort);
+  const abort=()=>xhr.abort();
+  xhr.open('POST','/api'+path);xhr.setRequestHeader('Authorization','Bearer '+value.access_token);xhr.timeout=120000;
+  xhr.upload.onprogress=e=>{if(e.lengthComputable)onProgress(Math.min(99,Math.round(e.loaded/e.total*100)))};
+  const interrupted=()=>{cleanup();reject(new ApiError('No pudimos confirmar la carga. Conservamos este intento: reintentá sin cambiar los datos para comprobar si llegó.',0))};
+  xhr.onerror=interrupted;xhr.ontimeout=interrupted;xhr.onabort=interrupted;
+  xhr.onload=()=>{cleanup();let data:any;try{data=JSON.parse(xhr.responseText)}catch{reject(new ApiError('No pudimos confirmar la respuesta. Reintentá la misma solicitud.',502));return}
+   if(xhr.status>=200&&xhr.status<300){onProgress(100);resolve(data)}else{if(xhr.status===401)clearSession(false);reject(new ApiError(data?.error||'No pudimos guardar la solicitud.',xhr.status))}
+  };
+  signal?.addEventListener('abort',abort,{once:true});xhr.send(form);
+ });
 }
+export async function uploadOrder(form:FormData,onProgress:(percent:number)=>void){return uploadMultipart('/orders',form,onProgress)}
+export async function uploadReceipt(form:FormData,onProgress:(percent:number)=>void,signal?:AbortSignal){return uploadMultipart('/receipt',form,onProgress,signal)}
 export async function requestPasswordReset(email:string){return jsonRequest('/recover',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email})})}
 export async function resetPassword(password:string){return api('/recover/password',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({password})},true)}
 export async function logoutAdmin(){

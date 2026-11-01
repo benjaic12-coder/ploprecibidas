@@ -1,4 +1,6 @@
 'use client';
+import {rememberTracking} from '@/lib/tracking-access';
+import {catalogLabel} from '@/lib/catalog-label';
 import {CONDITIONS} from '@/lib/conditions';
 import {readBrowserValue,writeBrowserValue,browserUuid} from '@/lib/browser-storage';
 import {useState,useEffect,useRef,type ReactNode} from 'react';
@@ -86,7 +88,7 @@ export default function Store({campaign}:{campaign?:{title:string;description:st
  async function confirm(raw:unknown,preserve=false){
   const d=orderConfirmation(raw);const mismatch=(raw as {matchesRequest?:boolean}).matchesRequest===false;
   setReceiptNotice(preserve||mismatch?'Recuperamos una solicitud anterior. Los cambios que estabas preparando siguen en tu selección; no se enviaron como otro pedido.':'');
-  setReceipt(d);setCheckout(false);setCartOpen(false);setAttempt(null);setUncertain(false);requestKey.current='';
+  rememberTracking(d.id,d.token);setReceipt(d);setCheckout(false);setCartOpen(false);setAttempt(null);setUncertain(false);requestKey.current='';
   if(!preserve&&!mismatch){track('order_sent',undefined,d.total,d.uuid);clearCoupon();setCart([]);setCustomer(blankCustomer);setReferenceFiles([]);setReferenceLinks('');setDraftNotice('');}
   try{await clearCheckoutDraft();setDraftSaved(false)}catch{setDraftNotice('La solicitud se registró, pero no pudimos eliminar el borrador local. Guardá el enlace privado.');}
  }
@@ -130,7 +132,7 @@ export default function Store({campaign}:{campaign?:{title:string;description:st
  <div className="ticker" aria-hidden="true"><span>DISEÑOS PERSONALIZADOS</span>✦<span>RECUERDOS PARA SIEMPRE</span>✦<span>MUCHO ESFUERZO, MUCHO PLOP</span>✦<span>TU RECIBIDA, TU ESTILO</span>✦</div>
  <section className="catalog container" id="catalogo" aria-label="Catálogo Plop"><div className="section-heading"><div><span className="eyebrow">EL CATÁLOGO PLOP</span><h2>Tu recibida.<br/><span>Tu estilo.</span></h2></div><p>Un combo completo o ese detalle especial.<br/>Vos elegís la idea, nosotros la hacemos realidad.</p></div>
  <div className="catalog-tools"><div className="category-tabs" role="group" aria-label="Filtrar por categoría">{CATEGORIES.map(c=><button key={c} aria-pressed={category===c} className={category===c?'active':''} onClick={()=>{setCategory(c);setSearch('')}}>{c==='Combos'&&<Gift size={16}/>} {c}</button>)}</div><div className="search"><Search size={18}/><input aria-label="Buscar en el catálogo" placeholder={`Buscar en ${category.toLowerCase()}`} value={search} onChange={e=>setSearch(e.target.value)}/>{search&&<button className="icon" aria-label="Limpiar búsqueda" onClick={()=>setSearch('')}><X size={16}/></button>}</div></div>
- <div className="catalog-meta"><span><strong>{filtered.length}</strong> {category.toLowerCase()} para tu recibida <span className="muted">· Precios en pesos argentinos</span></span><label className="sort"><SlidersHorizontal size={15}/><select aria-label="Ordenar productos" value={sort} onChange={e=>setSort(e.target.value)}><option value="recommended">Destacados primero</option><option value="low">Menor precio</option><option value="high">Mayor precio</option></select></label></div>
+ <div className="catalog-meta"><span><strong>{filtered.length}</strong> {catalogLabel(category,filtered.length)} para tu recibida <span className="muted">· Precios en pesos argentinos</span></span><label className="sort"><SlidersHorizontal size={15}/><select aria-label="Ordenar productos" value={sort} onChange={e=>setSort(e.target.value)}><option value="recommended">Destacados primero</option><option value="low">Menor precio</option><option value="high">Mayor precio</option></select></label></div>
  {catalogError&&<p className="error" role="alert">{catalogError} <button onClick={()=>location.reload()}>Recargar</button></p>}
  <div className="product-grid">{filtered.map(p=><article className="product-card" key={p.id}><CatalogCardPhoto product={p} onOpen={index=>openProduct(p,undefined,index)}/><div className="product-body"><span className="product-category">{p.category}</span><span className="image-kind">Imagen de referencia</span><h3>{p.name}</h3><p className="product-dimensions">{p.dimensions}</p><p className="product-includes">{p.includes}</p><div className="price-row"><strong>{money(p.price)}</strong>{p.regular&&p.regular>p.price&&<span className="saving">Ahorrás {money(p.regular-p.price)}</span>}</div><span className="deposit">Seña del 50% · {money(Math.ceil(p.price/2))}</span><button className="product-cta" disabled={!p.available} onClick={()=>addDirect(p)}>{hasProductVariants(p)?'Elegir variantes':'Agregar al pedido'} <Plus size={18}/></button></div></article>)}</div>
  {!filtered.length&&<div className="empty"><Search size={35}/><h3>No encontramos esa idea</h3><p>Probá otra búsqueda o elegí una categoría.</p><button className="btn aqua" onClick={()=>setSearch('')}>Ver {category.toLowerCase()}</button></div>}

@@ -1,0 +1,12 @@
+import {test,beforeEach} from 'node:test';
+import assert from 'node:assert/strict';
+import {rememberTracking,savedTracking,trackingToken} from '../lib/tracking-access.ts';
+import {trackingPath} from '../lib/tracking-link.ts';
+import {catalogLabel} from '../lib/catalog-label.ts';
+const code='PLOP-AABBCCDDEEFF',token='34b0c872-ee68-4be6-83ff-ba9fccb3ce99';
+beforeEach(()=>{const m=new Map();globalThis.localStorage={getItem:k=>m.get(k)||null,setItem:(k,v)=>m.set(k,v),removeItem:k=>m.delete(k)};});
+test('A validated capability can be recovered only for its order',()=>{rememberTracking(code,token);assert.equal(savedTracking(code.toLowerCase()),token);assert.equal(savedTracking('PLOP-112233445566'),'');assert.equal(trackingToken(code,''),token);assert.equal(trackingPath(code,'https://www.ploprecibidas.com.ar',savedTracking),'/pedido/'+code+'#'+token)});
+test('An explicit wrong key never falls back to a remembered capability',()=>{rememberTracking(code,token);assert.equal(trackingToken(code,'#wrong'),'');const other='42e77eaa-9b34-43c1-bbd6-51d0f792341f';assert.equal(trackingToken(code,'#'+other),other);});
+test('Malformed saved values are ignored',()=>{rememberTracking(code,'wrong');assert.equal(savedTracking(code),'');localStorage.setItem('plop-tracking-'+code,'not-a-token');assert.equal(savedTracking(code),'');});
+test('Canonical Plop aliases preserve the key; foreign origins remain rejected',()=>{assert.equal(trackingPath('https://ploprecibidas.com.ar/pedido/'+code+'?utm_source=x#'+token,'https://www.ploprecibidas.com.ar'),'/pedido/'+code+'#'+token);assert.throws(()=>trackingPath('https://foreign.test/pedido/'+code+'#'+token,'https://www.ploprecibidas.com.ar'));});
+test('Single product counts use the singular for every catalog category',()=>{for(const [category,label]of Object.entries({Combos:'combo',Marcos:'marco',Bandas:'banda',Carteles:'cartel',Lonas:'lona',Props:'prop'})){assert.equal(catalogLabel(category,1),label);assert.equal(catalogLabel(category,0),category.toLowerCase());assert.equal(catalogLabel(category,2),category.toLowerCase());}});

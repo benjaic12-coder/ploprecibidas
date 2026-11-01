@@ -23,9 +23,8 @@ export function replaceOriginStream(body) {
 
 export async function handleRequest(request, fetchOrigin = fetch) {
   const url = new URL(request.url);
-  const entryScript = /^\/assets\/index-[A-Za-z0-9_-]+\.js$/.test(url.pathname);
   if (!['ploprecibidas.com.ar', 'www.ploprecibidas.com.ar'].includes(url.hostname)
-      || !['GET', 'HEAD'].includes(request.method) || (!PUBLIC_PATHS.has(url.pathname) && !entryScript)) {
+      || !['GET', 'HEAD'].includes(request.method) || !PUBLIC_PATHS.has(url.pathname)) {
     return fetchOrigin(request);
   }
   // Revalidate public pages so stale validators cannot return an uncorrected 304.
@@ -37,7 +36,7 @@ export async function handleRequest(request, fetchOrigin = fetch) {
   if (response.status !== 200 || !/text\/html|text\/plain|(?:application|text)\/xml|(?:application|text)\/javascript/.test(type)) return response;
   const headers = new Headers(response.headers);
   for (const name of ['content-length', 'content-encoding', 'etag', 'last-modified']) headers.delete(name);
-  headers.set('cache-control', entryScript ? 'public,max-age=31536000,immutable' : 'no-cache');
+  headers.set('cache-control', 'no-cache');
   headers.set('x-plop-seo-domain', 'ploprecibidas.com.ar');
   const rewritten = new Response(response.body ? replaceOriginStream(response.body) : null, {
     status: response.status, statusText: response.statusText, headers,
@@ -47,7 +46,7 @@ export async function handleRequest(request, fetchOrigin = fetch) {
     element(element) {
       const src = element.getAttribute('src');
       if (src && /^\/assets\/index-[A-Za-z0-9_-]+\.js$/.test(src)) {
-        element.setAttribute('src', src + '?plop-domain=20261020');
+        element.setAttribute('src', src + '?plop-domain=20261101');
       }
     },
   }).transform(rewritten);

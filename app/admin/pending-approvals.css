@@ -1,0 +1,8 @@
+.pending-approval-banner{display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap;background:#fff4df;border:1px solid #dec68e;border-radius:18px;padding:18px 22px;margin:20px 0;color:#493e26}
+.pending-approval-banner strong{display:flex;align-items:center;gap:9px;line-height:1.5}
+.pending-approval-banner p{margin:6px 0 0;font-size:13px}
+.pending-approval-list{display:grid;gap:14px;margin:20px 0;max-height:55vh;overflow:auto;padding:2px}
+.pending-approval-list article{border:1px solid #dce4df;border-radius:14px;padding:18px}
+.pending-approval-list small{display:block;margin-top:5px;overflow-wrap:anywhere}
+.pending-approval-list p{font-size:14px;line-height:1.6;margin:12px 0}
+@media(max-width:540px){.pending-approval-banner{padding:16px}.pending-approval-banner .btn,.pending-approval-list .btn{width:100%}}

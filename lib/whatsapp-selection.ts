@@ -1,7 +1,7 @@
 import {selectionReferenceLabel} from './selection-reference.ts';
 import {money,unitPrice,personalizedDimensions,personalizedIncludes,type Product,type CartItem} from './catalog.ts';
 
-export const hasProductVariants=(product:Product)=>!!(product.frameOption||product.choiceOption||product.sizePrices);
+export const hasProductVariants=(product:Product)=>!!(product.frameOption||product.choiceOption||product.sizeOptions||product.variantOf);
 
 export function whatsappSelection(items:CartItem[],products:Product[],coupon?:{code:string;discount:number}|null,selectionRef?:string|null){
  if(!items.length||items.length>30)throw Error('Revisá los productos de tu selección.');

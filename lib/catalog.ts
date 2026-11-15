@@ -1,4 +1,4 @@
-export type Product = { id:string; name:string; category:string; price:number; image:string; description:string; dimensions:string; material:string; includes:string; available:boolean; imageKind?:string; badge?:string; regular?:number; frameOption?:boolean; choiceOption?:boolean; sizePrices?: Record<string, number> };
+export type Product = { id:string; name:string; category:string; price:number; image:string; description:string; dimensions:string; material:string; includes:string; available:boolean; imageKind?:string; badge?:string; regular?:number; frameOption?:boolean; choiceOption?:boolean; sizeOptions?: Record<string, {productId:string;price:number}>; variantOf?:string };
 const base = (id:string,name:string,category:string,price:number,description:string,dimensions:string,material:string,extras:Partial<Product>={}):Product => ({id,name,category,price,image:`/products/${id}.webp`,description,dimensions,material,includes:'Diseño personalizado incluido',available:true,imageKind:'Imagen ilustrativa de referencia',...extras});
 export const PRODUCTS:Product[]=[
 base('combo-1','Combo 1','Combos',50000,'El primer paso para una recibida que se siente tuya.','Marco 100 × 70 cm · cartel 25 × 35 cm','Plástico corrugado, vinilo y papel',{includes:'Marco rectangular + cartel colgante chico + 8 props',badge:'Para empezar',regular:54000,frameOption:true}),
@@ -26,7 +26,7 @@ export type Customization={names:string;career:string;colors:string;phrase:strin
 export type CartItem={key:string;productId:string;quantity:number;custom:Customization};
 export const emptyCustom=():Customization=>({names:'',career:'',colors:'',phrase:'',frame:'Rectangular',choice:'8 props',size:'90 cm'});
 export function unitPrice(p:Product,c:Customization){
- const basePrice=p.sizePrices?.[c.size]??p.price;
+ const basePrice=p.sizeOptions?.[c.size]?.price??p.price;
  return basePrice+(p.frameOption&&c.frame!=='Rectangular'?3000:0);
 }
 const catalogRank=new Map(PRODUCTS.map((p,index)=>[p.id,index]));

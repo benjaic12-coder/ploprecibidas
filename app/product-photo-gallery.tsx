@@ -5,10 +5,8 @@
 import {useState,type ReactNode} from 'react';
 const realPhotos:Record<string,{file:string;label:string}[]>={
  'marco-selfie':[
-  {file:'1000553492',label:'Periodismo en violeta'},
   {file:'1000553495',label:'Medicina en lila'},
   {file:'1000553496',label:'Medicina en rosa'},
-  {file:'1000553619',label:'Periodismo en azul y amarillo'},
  ],
  'marco-forma':[
   {file:'1000553488',label:'Nutrición en rojo'},
@@ -17,7 +15,7 @@ const realPhotos:Record<string,{file:string;label:string}[]>={
   {file:'habemus-conta',label:'Contaduría: Habemus Conta'},
  ],
  'cartel-forma':[
-  {file:'obstetricia',label:'Obstetricia en rosa'},
+  {file:'cartel-seno-belu',label:'Fin de residencia · Seño Belu'},
  ],
  'marco-redondo':[
   {file:'1000553497',label:'Ingeniería forestal en rosa'},

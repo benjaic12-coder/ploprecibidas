@@ -1,4 +1,4 @@
-export type Product = { id:string; name:string; category:string; price:number; image:string; description:string; dimensions:string; material:string; includes:string; available:boolean; imageKind?:string; badge?:string; regular?:number; frameOption?:boolean; choiceOption?:boolean };
+export type Product = { id:string; name:string; category:string; price:number; image:string; description:string; dimensions:string; material:string; includes:string; available:boolean; imageKind?:string; badge?:string; regular?:number; frameOption?:boolean; choiceOption?:boolean; sizePrices?: Record<string, number> };
 const base = (id:string,name:string,category:string,price:number,description:string,dimensions:string,material:string,extras:Partial<Product>={}):Product => ({id,name,category,price,image:`/products/${id}.webp`,description,dimensions,material,includes:'Diseño personalizado incluido',available:true,imageKind:'Imagen ilustrativa de referencia',...extras});
 export const PRODUCTS:Product[]=[
 base('combo-1','Combo 1','Combos',50000,'El primer paso para una recibida que se siente tuya.','Marco 100 × 70 cm · cartel 25 × 35 cm','Plástico corrugado, vinilo y papel',{includes:'Marco rectangular + cartel colgante chico + 8 props',badge:'Para empezar',regular:54000,frameOption:true}),
@@ -25,7 +25,10 @@ export const money=(n:number)=>new Intl.NumberFormat('es-AR',{style:'currency',c
 export type Customization={names:string;career:string;colors:string;phrase:string;frame:string;choice:string;size:string};
 export type CartItem={key:string;productId:string;quantity:number;custom:Customization};
 export const emptyCustom=():Customization=>({names:'',career:'',colors:'Rosa + aqua',phrase:'',frame:'Rectangular',choice:'8 props',size:'70 cm'});
-export function unitPrice(p:Product,c:Customization){return p.price+(p.frameOption&&c.frame!=='Rectangular'?3000:0);}
+export function unitPrice(p:Product,c:Customization){
+ const basePrice=p.sizePrices?.[c.size]??p.price;
+ return basePrice+(p.frameOption&&c.frame!=='Rectangular'?3000:0);
+}
 export function localToday(now=new Date()){return new Intl.DateTimeFormat('en-CA',{timeZone:'America/Argentina/Cordoba',year:'numeric',month:'2-digit',day:'2-digit'}).format(now);}
 export function earliestDate(days=7,now=new Date()){const date=new Date(`${localToday(now)}T12:00:00Z`);date.setUTCDate(date.getUTCDate()+days);return date.toISOString().slice(0,10);}
 

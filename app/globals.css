@@ -360,3 +360,8 @@ body:has(.plop-home) :is(.product-image,.personalize-photo,.cart-item)>img[src*=
  .floating-cart{gap:6px}
  .floating-cart span{white-space:nowrap}
 }
+
+.toast{pointer-events:none}
+@media(max-width:760px){
+ body:has(.consent-banner) .floating-cart{bottom:calc(var(--consent-banner-height, min(60dvh,360px)) + 26px)}
+}

@@ -3,29 +3,22 @@ name: Verify and publish Plop to Cloudflare
 on:
   push:
     branches: [codex/plop-nuevo-2026-10-13, ux-mobile-checkout-20261116]
-  pull_request:
-    branches: [codex/plop-nuevo-2026-10-13]
-    types: [opened, synchronize, reopened]
   workflow_dispatch:
 
 permissions:
   contents: read
 
 concurrency:
-  group: plop-cloudflare-${{ github.head_ref || github.ref_name }}
+  group: plop-cloudflare-${{ github.ref_name }}
   cancel-in-progress: false
 
 jobs:
   publish:
-    if: >-
-      github.event_name != 'pull_request' &&
-      (github.ref_name == 'codex/plop-nuevo-2026-10-13' || github.ref_name == 'ux-mobile-checkout-20261116') ||
-      github.event.pull_request.head.repo.full_name == github.repository &&
-      github.head_ref == 'ux-mobile-checkout-20261116'
-    runs-on: ubuntu-latest
+    if: github.ref_name == 'codex/plop-nuevo-2026-10-13' || github.ref_name == 'ux-mobile-checkout-20261116'
+    runs-on: ${{ github.ref_name == 'ux-mobile-checkout-20261116' && 'ubuntu-24.04' || 'ubuntu-latest' }}
     timeout-minutes: 20
     env:
-      PLOP_BRANCH: ${{ github.head_ref || github.ref_name }}
+      PLOP_BRANCH: ${{ github.ref_name }}
       SITE_URL: https://ploprecibidas.com.ar
       CLOUDFLARE_ACCOUNT_ID: 050d03453800b9195278522d68c479ff
     steps:
@@ -33,7 +26,6 @@ jobs:
         uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
         with:
           persist-credentials: false
-          ref: ${{ github.event.pull_request.head.sha || github.sha }}
       - name: Node 24
         uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
         with:

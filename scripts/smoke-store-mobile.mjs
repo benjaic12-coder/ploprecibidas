@@ -40,7 +40,7 @@ try{
  const visible=async locator=>locator.waitFor({state:'visible'});
  await page.goto(process.env.PLOP_TEST_ORIGIN||'http://127.0.0.1:4173/');
  const consent=page.getByRole('button',{name:'Solo necesarias'});
- if(await consent.isVisible())await consent.click();
+ await visible(consent);
  const search=page.getByRole('textbox',{name:'Buscar en el catálogo'});
  for(const [term,name] of [['marco redondo','Marco redondo'],['banda','Banda para graduados'],['lona','Lona mediana'],['combo 2','Combo 2']]){
   await search.fill(term);
@@ -59,7 +59,8 @@ try{
  await visible(page.getByRole('dialog').getByText(/Marco redondo/).first());
  await page.getByRole('button',{name:'Vaciar pedido'}).click();
  await page.getByRole('button',{name:'Cerrar'}).click();
- console.log('PASS búsqueda global, filtros y marco redondo');
+ await consent.click();
+ console.log('PASS búsqueda global, filtros, marco redondo y acceso al pedido con el aviso de privacidad visible');
 
  await search.fill('combo 2');
  const combo=page.locator('.product-card').filter({has:page.getByRole('heading',{name:'Combo 2',exact:true})});

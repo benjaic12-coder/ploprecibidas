@@ -2,7 +2,7 @@ import {PRODUCTS,type Product} from './catalog.ts';
 
 export const SITE_URL='https://ploprecibidas.com.ar';
 export const SITE_DESCRIPTION='Combos, marcos, bandas, lonas, carteles y props personalizados en Santiago del Estero. Elegí tus colores y armá tu pedido.';
-export const SOCIAL_IMAGE=`${SITE_URL}/social/plop-vista-previa-20261117.jpg`;
+export const SOCIAL_IMAGE=`${SITE_URL}/social/plop-marca-20261117-v2.jpg`;
 export function catalogStructuredData(products:Product[]=PRODUCTS){
  const businessId=`${SITE_URL}/#negocio`;
  return {'@context':'https://schema.org','@graph':[

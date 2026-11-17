@@ -1,5 +1,5 @@
-import socialCover from '../public/social/plop-vista-previa-20261117.jpg';
-const SOCIAL_PATH = '/social/plop-vista-previa-20261117.jpg';
+import socialCover from '../public/social/plop-marca-20261117-v2.jpg';
+const SOCIAL_PATH = '/social/plop-marca-20261117-v2.jpg';
 const SOCIAL_ALT = 'Plop Recibidas: diseños personalizados para tu recibida. Te recibís. Lo celebrás. Lo hacés con Plop!';
 // Edge migration: keep the current Pages release while correcting its public SEO URLs.
 export const OLD_ORIGIN = 'https://plop-recibidas.pages.dev';
@@ -67,4 +67,5 @@ export async function handleRequest(request, fetchOrigin = fetch) {
 }
 
 export default { fetch(request) { return handleRequest(request); } };
+
 

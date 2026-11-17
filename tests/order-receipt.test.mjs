@@ -7,6 +7,26 @@ test('Recibo usa precios del pedido, descuento real y solo cobros verificados',(
  assert.equal(receipt.subtotal,50000);assert.equal(receipt.discount,5000);assert.equal(receipt.total,45000);assert.equal(receipt.paid,22500);assert.equal(receipt.balance,22500);assert.equal(receipt.payment.monto_recibido,22500);
  assert.equal(receipt.reference,receiptModel(fixture(),'pago-1').reference);
 });
+test('Recibo de Combo 4 muestra el marco con forma del pedido y conserva sus importes',()=>{
+ const order=fixture();
+ order.total=79000;
+ order.payments[0].monto_recibido=39500;
+ order.items=[{productId:'combo-4',name:'Combo 4',quantity:1,price:79000,includes:'Marco rectangular + banda + 8 props + lona grande',custom:{frame:'Con forma'}}];
+ const receipt=receiptModel(order,'pago-1');
+ assert.match(receiptHtml(receipt,'https://plop-recibidas.pages.dev/brand/logo-original.webp'),/Marco con forma \+ banda \+ 8 props \+ lona grande/);
+ assert.doesNotMatch(receiptHtml(receipt),/Marco rectangular/);
+ assert.equal(receipt.total,79000);
+ assert.equal(receipt.paid,39500);
+ assert.equal(receipt.balance,39500);
+});
+test('Recibo conserva otros productos y pedidos anteriores sin variante guardada',()=>{
+ const order=fixture();
+ order.items=[
+  {name:'Combo 4',quantity:1,price:25000,includes:'Marco rectangular + banda'},
+  {productId:'marco-forma',name:'Marco con forma',quantity:1,price:25000,includes:'Diseño personalizado incluido',custom:{frame:'Rectangular'}},
+ ];
+ assert.deepEqual(receiptModel(order,'pago-1').items.map(item=>item.includes),['Marco rectangular + banda','Diseño personalizado incluido']);
+});
 test('No emite recibo de pagos pendientes, rechazados ni pedidos cancelados',()=>{
  assert.throws(()=>receiptModel(fixture(),'pago-2'),/verificado/);
  const rejected=fixture();rejected.payments[0].estado='rechazado';assert.throws(()=>receiptModel(rejected,'pago-1'),/verificado/);

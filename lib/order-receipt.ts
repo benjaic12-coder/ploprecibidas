@@ -1,12 +1,29 @@
 import {SELLER} from './conditions.ts';
+import {PRODUCTS} from './catalog.ts';
 export type ReceiptPayment={id:string;tipo:string;estado:string;monto_recibido:number;medio:string;fecha_pago:string;numero_operacion?:string};
-export type ReceiptOrder={id:string;uuid:string;is_test:boolean;status:string;total:number;customer:{name:string;phone:string;locality:string};items:{name:string;quantity:number;price:number;includes?:string}[];payments:ReceiptPayment[]};
+type ReceiptItem={productId?:string;name:string;quantity:number;price:number;includes?:string;custom?:{frame?:string}|null};
+export type ReceiptOrder={id:string;uuid:string;is_test:boolean;status:string;total:number;customer:{name:string;phone:string;locality:string};items:ReceiptItem[];payments:ReceiptPayment[]};
 const amount=(n:number)=>{const v=Number(n);if(!Number.isSafeInteger(v)||v<0)throw Error('Hay un importe inválido en el pedido.');return v};
+const frameDescription=/\bMarco (?:rectangular|redondo|tipo nube|con forma)\b/i;
+function receiptIncludes(item:ReceiptItem){
+ const frame=item.custom?.frame;
+ if(!frame||!['Rectangular','Redondo','Tipo nube','Con forma'].includes(frame))return item.includes;
+ const product=PRODUCTS.find(p=>item.productId?p.id===item.productId:p.name===item.name);
+ if(!product?.frameOption)return item.includes;
+ const label='Marco '+frame.toLowerCase();
+ const includes=item.includes?.trim();
+ if(!includes)return label;
+ return frameDescription.test(includes)?includes.replace(frameDescription,label):label+' · '+includes;
+}
 export function receiptModel(order:ReceiptOrder,paymentId:string,generatedAt=new Date().toISOString()){
  if(order.status==='cancelado')throw Error('El pedido está cancelado. Revisá los cobros antes de emitir un recibo.');
  const payment=order.payments.find(p=>p.id===paymentId&&p.estado==='verificado');
  if(!payment||amount(payment.monto_recibido)<=0)throw Error('Solo se puede emitir un recibo por un pago verificado.');
- const items=order.items.map(i=>{if(!Number.isSafeInteger(i.quantity)||i.quantity<1)throw Error('Cantidad inválida.');return {...i,price:amount(i.price),lineTotal:amount(i.price)*i.quantity}});
+ const items=order.items.map(i=>{
+  if(!Number.isSafeInteger(i.quantity)||i.quantity<1)throw Error('Cantidad inválida.');
+  const price=amount(i.price);
+  return {name:i.name,quantity:i.quantity,includes:receiptIncludes(i),price,lineTotal:price*i.quantity};
+ });
  const subtotal=items.reduce((n,i)=>n+i.lineTotal,0),total=amount(order.total);
  if(total>subtotal)throw Error('El total no coincide con el detalle del pedido. Actualizá la ficha.');
  const paid=order.payments.filter(p=>p.estado==='verificado').reduce((n,p)=>n+amount(p.monto_recibido),0);

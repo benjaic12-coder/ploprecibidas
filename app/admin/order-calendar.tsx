@@ -5,7 +5,7 @@ import {api} from '@/lib/api';
 import {localToday} from '@/lib/catalog';
 import './order-calendar.css';
 type Entry={uuid:string;id:string;date:string;name:string;locality:string;status:string;capacityStatus:string;reserved:boolean};
-const names:Record<string,string>={nuevo:'Nuevo',en_revision:'En revisión',sena_recibida:'Seña recibida',en_produccion:'En producción',entregado:'Entregado',cancelado:'Cancelado'};
+const names:Record<string,string>={nuevo:'Nuevo',en_revision:'En revisión',sena_recibida:'Seña recibida',en_produccion:'En producción',listo_para_entregar:'Listo para entregar',entregado:'Entregado',cancelado:'Cancelado'};
 export default function OrderCalendar({onOpen,revision=0}:{onOpen:(uuid:string)=>void;revision?:number}){
  const today=localToday();const [month,setMonth]=useState(today.slice(0,7)),[day,setDay]=useState(today),[blockedDates,setBlockedDates]=useState<string[]>([]),[orders,setOrders]=useState<Entry[]>([]),[loading,setLoading]=useState(true),[error,setError]=useState(''),[refresh,setRefresh]=useState(0);const request=useRef(0);
  useEffect(()=>{const version=++request.current;setLoading(true);setError('');setOrders([]);setBlockedDates([]);api('/admin/calendar?month='+month,{},true).then(d=>{if(version===request.current){setOrders(d.orders);setBlockedDates(d.blockedDates||[])}}).catch(e=>{if(version===request.current)setError(e.message)}).finally(()=>{if(version===request.current)setLoading(false)});return()=>{request.current++}},[month,refresh,revision]);

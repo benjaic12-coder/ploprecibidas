@@ -1,4 +1,3 @@
-import socialCover from '../public/social/plop-marca-20261117-v2.jpg';
 const SOCIAL_PATH = '/social/plop-marca-20261117-v2.jpg';
 const SOCIAL_ALT = 'Plop Recibidas: diseños personalizados para tu recibida. Te recibís. Lo celebrás. Lo hacés con Plop!';
 // Edge migration: keep the current Pages release while correcting its public SEO URLs.
@@ -24,9 +23,9 @@ export function replaceOriginStream(body) {
   })).pipeThrough(new TextEncoderStream());
 }
 
-export async function handleRequest(request, fetchOrigin = fetch) {
+export async function handleRequest(request, fetchOrigin = fetch, socialCover) {
   const url = new URL(request.url);
-  if (['ploprecibidas.com.ar', 'www.ploprecibidas.com.ar'].includes(url.hostname) && url.pathname === SOCIAL_PATH && ['GET', 'HEAD'].includes(request.method)) {
+  if (socialCover && ['ploprecibidas.com.ar', 'www.ploprecibidas.com.ar'].includes(url.hostname) && url.pathname === SOCIAL_PATH && ['GET', 'HEAD'].includes(request.method)) {
     return new Response(request.method === 'HEAD' ? null : socialCover, {headers: {'content-type':'image/jpeg','cache-control':'public, max-age=31536000, immutable','x-content-type-options':'nosniff'}});
   }
   if (!['ploprecibidas.com.ar', 'www.ploprecibidas.com.ar'].includes(url.hostname)
@@ -65,7 +64,3 @@ export async function handleRequest(request, fetchOrigin = fetch) {
     }
   }).transform(rewritten);
 }
-
-export default { fetch(request) { return handleRequest(request); } };
-
-

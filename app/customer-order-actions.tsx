@@ -9,8 +9,8 @@ export default function CustomerOrderActions({uuid,status,updatedAt,hasPayments,
  const [open,setOpen]=useState(false),[data,setData]=useState<Details|null>(null),[error,setError]=useState(''),[message,setMessage]=useState(''),[loading,setLoading]=useState(false),[busy,setBusy]=useState(false),[files,setFiles]=useState<File[]>([]),[links,setLinks]=useState(''),[preparing,setPreparing]=useState(false),[cancel,setCancel]=useState(false),[reason,setReason]=useState(''),[cancelledRequest,setCancelledRequest]=useState(false);
  const lock=useRef(false);
  const [attempt,setAttempt]=useState<FormData|null>(null);
- const frozen=!!attempt;const editable=!!data?.editable&&!['en_produccion','entregado','cancelado'].includes(status);const canCancel=status!=='cancelado'&&!cancelledRequest&&!data?.cancellationRequested;
- const requestOnly=hasPayments||['en_produccion','entregado'].includes(status);
+ const frozen=!!attempt;const editable=!!data?.editable&&!['en_produccion','listo_para_entregar','entregado','cancelado'].includes(status);const canCancel=status!=='cancelado'&&!cancelledRequest&&!data?.cancellationRequested;
+ const requestOnly=hasPayments||['en_produccion','listo_para_entregar','entregado'].includes(status);
  async function load(){setLoading(true);setError('');try{const d=await api<Details>('/order-details?id='+encodeURIComponent(uuid),{headers:{'x-order-token':location.hash.slice(1)}});setData(d);setLinks(d.referenceLinks.join('\n'));setFiles([]);setAttempt(null);setCancelledRequest(d.cancellationRequested);}catch(e){setError(e instanceof Error?e.message:'No pudimos cargar los detalles.')}finally{setLoading(false)}}
  useEffect(()=>{if(new URLSearchParams(location.search).get('detalles')==='1'){setOpen(true);void load()}},[uuid]);
  useEffect(()=>{const protect=(e:BeforeUnloadEvent)=>{if(open&&(files.length||attempt)){e.preventDefault();e.returnValue=''}};window.addEventListener('beforeunload',protect);return()=>window.removeEventListener('beforeunload',protect)},[open,files,attempt]);

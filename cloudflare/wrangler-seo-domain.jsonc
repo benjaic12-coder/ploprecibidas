@@ -1,6 +1,6 @@
 {
   "name": "plop-seo-domain",
-  "main": "seo-domain.mjs",
+  "main": "seo-domain-worker.mjs",
   "compatibility_date": "2026-10-20",
   "rules": [
     {

@@ -8,6 +8,18 @@ test('Comprobante enviado no alcanza para marcar seña ni para anunciarla al cli
 test('Producción requiere seña, aprobación y cupo; entrega requiere saldo',()=>{
  const o={...order(),paid:25000};assert.equal(workflowBlock(o,'sena_recibida',false),'');assert.match(workflowBlock(o,'en_produccion',false),/aprobación/);assert.equal(workflowBlock(o,'en_produccion',true),'');assert.match(workflowBlock({...o,capacity_status:'pending'},'en_produccion',true),/cupo/);assert.match(workflowBlock(o,'entregado',true),/saldo/);assert.equal(workflowBlock({...o,paid:50000},'entregado',true),'');
 });
+test('Listo para entregar admite saldo pendiente después de verificar la seña y aprobar el diseño',()=>{
+ const o={...order(),paid:25000,status:'listo_para_entregar',design_approved:true};
+ assert.equal(workflowBlock(o,o.status,true),'');
+ assert.match(workflowBlock({...o,paid:0},o.status,true),/verificar/);
+ assert.match(workflowBlock(o,o.status,false),/aprobación/);
+ assert.match(workflowBlock({...o,capacity_status:'pending'},o.status,true),/cupo/);
+ assert.equal(suggestedMessage(o),o.status);
+ assert.equal(messageBlocked(o,o.status),'');
+ assert.match(orderMessage(o,o.status),/coordinar el retiro.*saldo pendiente/i);
+ assert.ok(messageBlocked({...o,status:'en_produccion'},o.status));
+ assert.match(workflowBlock(o,'entregado',true),/saldo/);
+});
 test('Mensajes usan datos guardados y no habilitan producción, entrega ni cancelación anticipadas',()=>{const o=order();for(const kind of ['en_produccion','entregado','cancelado'])assert.ok(messageBlocked(o,kind));assert.equal(messageBlocked({...o,status:'en_produccion',paid:25000,design_approved:true},'en_produccion'),'');});
 test('Seña verificada con cupo pendiente no promete reserva',()=>{const o={...order(),paid:25000,capacity_status:'pending'};const text=orderMessage(o,'sena_recibida');assert.match(text,/pendiente de autorización/);assert.doesNotMatch(text,/figura reservada/);});
 test('Diseño aprobado sin seña no promete producción',()=>{const o={...order(),design_approved:true};assert.equal(suggestedMessage(o),'diseno_aprobado');assert.match(orderMessage(o,'diseno_aprobado'),/falta completar o verificar la seña/);});
@@ -20,3 +32,11 @@ const req=(options={})=>new Request('https://backend.test/plop-v2/admin/workflow
 test('Gestión exige staff, ignora identidades falsificadas y no escribe pagos ni envía mensajes',async()=>{const a=fixture({staff:false});assert.equal((await a.h(req({method:'POST',body:JSON.stringify(payload())}))).status,403);const b=fixture();assert.equal((await b.h(req({method:'POST',body:JSON.stringify({...payload(),actor:'forged'})}))).status,400);assert.equal((await b.h(req({method:'POST',body:JSON.stringify(payload())}))).status,200);const rpc=JSON.parse(b.calls.find(x=>x.u.pathname.endsWith('/rpc/plop_save_order_workflow')).options.body);assert.equal(rpc.p_actor,id);assert.equal(rpc.p_key,key);assert.ok(!b.calls.some(x=>/pagos|notifications/.test(x.u.pathname)));});
 test('Conflicto de versión y requisitos incumplidos devuelven errores sin éxito',async()=>{for(const [dbError,status] of [['workflow_conflict',409],['workflow_reason_required',400],['deposit_required',400],['design_required',400],['balance_required',400],['capacity_approval_required',409]]){const {h}=fixture({dbError});const r=await h(req({method:'POST',body:JSON.stringify(payload())}));assert.equal(r.status,status);assert.equal((await r.json()).ok,undefined);}});
 test('Historial de diseño es privado y reintentos conservan la clave original',async()=>{const a=fixture({staff:false});assert.equal((await a.h(new Request('https://backend.test/plop-v2/admin/workflow?order='+id,{headers:{Authorization:'Bearer anon'}}))).status,403);const b=fixture();for(let i=0;i<2;i++)await b.h(req({method:'POST',body:JSON.stringify(payload())}));const calls=b.calls.filter(x=>x.u.pathname.endsWith('/rpc/plop_save_order_workflow'));assert.equal(calls[0].options.body,calls[1].options.body);});
+
+test('El backend acepta el nuevo estado y lo pasa a la operación auditada',async()=>{
+ const {h,calls}=fixture();
+ const r=await h(req({method:'POST',body:JSON.stringify({...payload(),status:'listo_para_entregar'})}));
+ assert.equal(r.status,200);
+ const rpc=JSON.parse(calls.find(x=>x.u.pathname.endsWith('/rpc/plop_save_order_workflow')).options.body);
+ assert.equal(rpc.p_status,'listo_para_entregar');
+});

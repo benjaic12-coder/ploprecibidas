@@ -1,6 +1,6 @@
 import {z} from 'zod';
 type Rest=(path:string,options?:RequestInit)=>Promise<any>;
-export const workflowSchema=z.object({id:z.string().uuid(),requestKey:z.string().uuid(),expectedUpdatedAt:z.string().datetime({offset:true}),status:z.enum(['nuevo','en_revision','sena_recibida','en_produccion','entregado','cancelado']),designApproved:z.boolean(),notes:z.string().max(2000),reason:z.string().trim().max(500)}).strict();
+export const workflowSchema=z.object({id:z.string().uuid(),requestKey:z.string().uuid(),expectedUpdatedAt:z.string().datetime({offset:true}),status:z.enum(['nuevo','en_revision','sena_recibida','en_produccion','listo_para_entregar','entregado','cancelado']),designApproved:z.boolean(),notes:z.string().max(2000),reason:z.string().trim().max(500)}).strict();
 export async function workflowRoute(req:Request,path:string,url:URL,rest:Rest,user:(req:Request,staff?:boolean)=>Promise<any>,read:(req:Request)=>Promise<any>){
  if(path!=='/admin/workflow')return null;
  const actor=await user(req,true);

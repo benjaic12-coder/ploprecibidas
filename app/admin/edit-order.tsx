@@ -25,7 +25,7 @@ export default function EditOrder({order,products,leadDays,onClose,onSaved}:{ord
  let preview:ReturnType<typeof previewOrderEdit>|null=null,priceError='';
  try{preview=previewOrderEdit(order.items,rows,products,Number(order.discount||0))}catch(e){priceError=e instanceof Error?e.message:'Revisá los productos.'}
  const itemsChanged=JSON.stringify(rows.map(({originalIndex,productId,quantity,custom})=>({originalIndex,productId,quantity,custom})))!==JSON.stringify(editRows(order.items));
- const returnsToReview=itemsChanged&&['en_produccion','entregado'].includes(order.status)||!!preview&&order.status==='sena_recibida'&&order.paid<preview.deposit;
+ const returnsToReview=itemsChanged&&['en_produccion','listo_para_entregar','entregado'].includes(order.status)||!!preview&&order.status==='sena_recibida'&&order.paid<preview.deposit;
  useEffect(()=>{
   if(date===order.customer.date)return;
   let active=true;

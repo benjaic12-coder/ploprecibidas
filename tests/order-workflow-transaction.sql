@@ -32,6 +32,10 @@ begin
  result:=public.plop_save_order_workflow(o.id,actor,gen_random_uuid(),o.updated_at,'en_produccion',true,'','');
  select * into o from public.plop_orders where id=o.id;
  assert o.status='en_produccion' and o.design_approved,'production requirements';
+ result:=public.plop_save_order_workflow(o.id,actor,gen_random_uuid(),o.updated_at,'listo_para_entregar',true,'','');
+ select * into o from public.plop_orders where id=o.id;
+ assert o.status='listo_para_entregar' and o.verified_paid<o.total and o.reserved_at is not null,'ready with outstanding balance';
+ assert exists(select 1 from public.historial_estados where pedido_id=o.id and nuevo='listo_para_entregar'),'ready recorded in order history';
  begin perform public.plop_save_order_workflow(o.id,actor,gen_random_uuid(),o.updated_at,'entregado',true,'','');raise exception 'expected_balance';exception when others then if sqlerrm<>'balance_required' then raise;end if;end;
  update public.plop_orders set verified_paid=unit where id=o.id returning * into o;
  result:=public.plop_save_order_workflow(o.id,actor,gen_random_uuid(),o.updated_at,'entregado',true,'','');
@@ -42,7 +46,7 @@ begin
  begin perform public.plop_save_order_workflow(o.id,actor,gen_random_uuid(),o.updated_at,'en_revision',true,'','');raise exception 'expected_reactivation_reason';exception when others then if sqlerrm<>'workflow_reason_required' then raise;end if;end;
  result:=public.plop_save_order_workflow(o.id,actor,gen_random_uuid(),o.updated_at,'en_revision',true,'','Retomar pedido ficticio');
  select * into o from public.plop_orders where id=o.id;
- assert jsonb_array_length(public.plop_order_workflow_history(o.id))=7,'audit of all state and design changes';
+ assert jsonb_array_length(public.plop_order_workflow_history(o.id))=8,'audit of all state and design changes';
  assert not (public.plop_order_workflow_history(o.id)->0->'after' ? 'notes'),'private notes omitted from history response';
  begin perform public.plop_save_order_workflow(o.id,actor,gen_random_uuid(),o.updated_at,'en_revision',true,'','');raise exception 'expected_no_changes';exception when others then if sqlerrm<>'workflow_no_changes' then raise;end if;end;
  -- Capacity is checked before allowing production, even when a payment exists.

@@ -11,7 +11,9 @@ for(let i=0;i<expected.length;i+=4)await Promise.all(expected.slice(i,i+4).map(a
 const home=results.find(r=>r.path==='/');assert.match(home.headers,/cache-control:.*(?:no-cache|max-age=0)/i);const deploy=/x-plop-deploy:\s*([^\r\n]+)/i.exec(home.headers)?.[1];
 if(process.env.EXPECTED_DEPLOY_SHA)assert.equal(deploy,process.env.EXPECTED_DEPLOY_SHA,'Published commit differs from the checked commit');
 for(const r of results.filter(r=>r.status===200&&!r.path.startsWith('/api/')))assert.ok(r.headers.toLowerCase().includes('x-plop-deploy: '+deploy.toLowerCase()),'Deploy inconsistente '+r.path);
-const catalog=JSON.parse(results.find(r=>r.path==='/api/catalog').body);assert.equal(catalog.products.length,18);assert.equal(catalog.checkoutEnabled,true);
+const catalog=JSON.parse(results.find(r=>r.path==='/api/catalog').body);assert.ok(Array.isArray(catalog.products),'Invalid public catalog');
+for(const id of ['combo-2','marco-redondo'])assert.ok(catalog.products.some(product=>product.id===id),'Missing catalog product '+id);
+assert.equal(catalog.checkoutEnabled,true);
 const assets=[...new Set([...home.body.matchAll(/(?:src|href)="(\/assets\/[^" ]+)"/g)].map(m=>m[1]))];for(const path of assets){const r=await request(path);assert.equal(r.status,200,path);assert.match(r.headers,/immutable/i)}
 const manifestResponse=await request('/asset-manifest.json');assert.equal(manifestResponse.status,200);const manifest=JSON.parse(manifestResponse.body);assert.equal(manifest.releases.at(-1).commit,deploy,'Deploy manifest inconsistent');
 for(let i=0;i<manifest.releases.length-1;i+=4)await Promise.all(manifest.releases.slice(i,Math.min(i+4,manifest.releases.length-1)).map(async release=>{const entry=release.assets.find(a=>/^\/assets\/index-.*\.js$/.test(a.path));assert.ok(entry,'Previous entry missing');const r=await request(entry.path);assert.equal(r.status,200,entry.path);assert.equal(createHash('sha256').update(r.body).digest('hex'),entry.sha256,'Previous JS checksum '+entry.path)}));

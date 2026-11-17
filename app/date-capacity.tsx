@@ -2,27 +2,86 @@
 import {useEffect,useState} from 'react';
 import {CircleCheck,MessageCircle,Send} from 'lucide-react';
 import {earliestDate,MIN_ORDER_LEAD_DAYS} from '@/lib/catalog';
-export default function DateCapacity({date,leadDays=7,onState}:{date:string;leadDays?:number;inquiry?:string;onState?:(value:{date:string;state:string})=>void}){
- const [result,setResult]=useState<{date:string;state:'loading'|'full'|'available'|'blocked'|'error'}>({date:'',state:'loading'});
- const [retry,setRetry]=useState(0);
- const firstDate=earliestDate(MIN_ORDER_LEAD_DAYS);
- const tooSoon=!!date&&date<firstDate;
- const urgent=!!date&&date<earliestDate(Math.max(7,leadDays));
- useEffect(()=>{if(!date)return;let active=true;setResult({date,state:'loading'});fetch('/api/availability?date='+encodeURIComponent(date),{cache:'no-store',signal:AbortSignal.timeout(15000)}).then(async r=>{if(!r.ok)throw Error();return r.json() as Promise<{requiresApproval:boolean;blocked?:boolean}>}).then(d=>{if(typeof d.requiresApproval!=='boolean')throw Error();if(active)setResult({date,state:d.blocked?'blocked':d.requiresApproval?'full':'available'})}).catch(()=>{if(active)setResult({date,state:'error'})});return()=>{active=false}},[date,tooSoon,urgent,retry]);
- useEffect(()=>{onState?.({date,state:!date?'empty':tooSoon?'blocked':result.date===date?(urgent&&result.state==='available'?'blocked':result.state):'loading'})},[date,tooSoon,urgent,result,onState]);
- if(!date)return null;
- if(tooSoon)return <p className="notice full" role="alert" style={{fontSize:14,fontWeight:700}}>No recibimos pedidos para hoy ni de un día para el otro. Elegí una fecha a partir del {firstDate.split('-').reverse().join('/')}.</p>;
- const state=result.date===date?result.state:'loading';
- if(urgent&&state==='available'){
-  const message=`Hola Plop, quiero consultar si pueden preparar un pedido para retirar el ${date.split('-').reverse().join('/')}. Tiene menos de ${Math.max(7,leadDays)} días de anticipación.`.trim();
-  return <div className="notice full" role="status" style={{display:'block'}}><p style={{fontSize:14}}>Para retirar en menos de {Math.max(7,leadDays)} días, consultanos por WhatsApp o Telegram. Te confirmaremos si podemos realizarlo antes de tomar el pedido. No transfieras la seña hasta recibir autorización.</p><div style={{display:'flex',gap:10,flexWrap:'wrap',marginTop:12}}><a className="btn aqua" href={'https://wa.me/5493856870303?text='+encodeURIComponent(message)} target="_blank" rel="noopener noreferrer"><MessageCircle size={18}/>Consultar por WhatsApp ↗</a><a className="btn outline" href={'https://t.me/plopcito_recibidas_bot?start=urgente_'+date.replaceAll('-','')} target="_blank" rel="noopener noreferrer"><Send size={18}/>Consultar por Telegram ↗</a></div><small style={{display:'block',marginTop:10}}>Fecha de retiro: {date.split('-').reverse().join('/')}. En Telegram, indicá esta fecha y lo que necesitás.</small></div>
- }
 
- return <div className="full" aria-live="polite" aria-busy={state==='loading'}>
-  {state==='blocked'?<p className="notice" role="alert">No estamos disponibles para esta fecha. Elegí otra fecha o <a href="https://wa.me/5493856870303" target="_blank" rel="noopener noreferrer">consultanos por WhatsApp</a>. Tu selección sigue guardada.</p>:state==='available'?<div role="status" style={{margin:'10px 0',padding:'12px 14px',border:'1px solid #a7d7b5',borderRadius:12,background:'#edf8f0',color:'#216837'}}>
-   <p style={{display:'flex',alignItems:'center',gap:8,margin:0,fontSize:16,fontWeight:700,color:'inherit'}}><CircleCheck size={22} aria-hidden="true" style={{flexShrink:0}}/>Fecha disponible</p>
-   <p style={{margin:'5px 0 0',fontSize:13,color:'inherit'}}>Hay cupo en nuestro calendario para el {date.split('-').reverse().join('/')}. La fecha se reserva cuando Plop confirma tu pedido y verifica la seña.</p>
-  </div>:<p className={state==='full'?'notice':'muted'} role="status" style={{fontSize:14}}>{state==='loading'?'Consultando disponibilidad en el calendario…':state==='full'?'Esta fecha tiene el cupo completo. El administrador debe autorizar un lugar adicional. Esperá su confirmación antes de pagar la seña.':'No pudimos comprobar el cupo. La fecha queda sujeta a confirmación de Plop.'}</p>}
- {state==='error'&&<button type="button" className="text-button" onClick={()=>setRetry(n=>n+1)}>Volver a consultar disponibilidad</button>}
- </div>
+type Capacity = 'available'|'full'|'blocked';
+type State = Capacity|'empty'|'urgent'|'too-soon'|'loading'|'error';
+
+function displayDate(date:string){return date.split('-').reverse().join('/');}
+
+async function checkDate(date:string,signal:AbortSignal):Promise<Capacity>{
+ const response=await fetch('/api/availability?date='+encodeURIComponent(date),{cache:'no-store',signal:AbortSignal.any([signal,AbortSignal.timeout(10000)])});
+ if(!response.ok)throw Error('No pudimos comprobar el cupo.');
+ const result=await response.json() as {requiresApproval?:boolean;blocked?:boolean};
+ if(typeof result.requiresApproval!=='boolean')throw Error('No pudimos leer el cupo.');
+ return result.blocked?'blocked':result.requiresApproval?'full':'available';
+}
+
+async function findNextDate(date:string,minimum:string,signal:AbortSignal){
+ const candidate=new Date((date<minimum?minimum:date)+'T12:00:00Z');
+ if(date>=minimum)candidate.setUTCDate(candidate.getUTCDate()+1);
+ for(let offset=0;offset<7;offset++){
+  const next=candidate.toISOString().slice(0,10);
+  if(await checkDate(next,signal)==='available')return next;
+  candidate.setUTCDate(candidate.getUTCDate()+1);
+ }
+ return '';
+}
+
+export default function DateCapacity({date,leadDays=7,onSelectDate,onState}:{date:string;leadDays?:number;onSelectDate?:(date:string)=>void;onState?:(value:{date:string;state:string})=>void}){
+ const [retry,setRetry]=useState(0);
+ const [result,setResult]=useState<{key:string;state:Capacity|'error'}|null>(null);
+ const [alternative,setAlternative]=useState<{key:string;date:string}|null>(null);
+ const advance=Math.max(7,leadDays);
+ const minimum=earliestDate(advance);
+ const tooSoon=!!date&&date<earliestDate(MIN_ORDER_LEAD_DAYS);
+ const urgent=!!date&&date<minimum;
+ const key=date+'|'+retry;
+ const checked=result?.key===key?result.state:'loading';
+ const state:State=!date?'empty':tooSoon?'too-soon':urgent&&(checked==='available'||checked==='full')?'urgent':checked;
+ const shouldFindNext=!!onSelectDate&&['too-soon','urgent','full','blocked'].includes(state);
+
+ useEffect(()=>{
+  if(!date||tooSoon)return;
+  const controller=new AbortController();
+  checkDate(date,controller.signal).then(state=>{
+   if(!controller.signal.aborted)setResult({key,state});
+  }).catch(()=>{
+   if(!controller.signal.aborted)setResult({key,state:'error'});
+  });
+  return()=>controller.abort();
+ },[date,key,tooSoon]);
+
+ useEffect(()=>{
+  if(!shouldFindNext)return;
+  const controller=new AbortController();
+  findNextDate(date,minimum,controller.signal).then(next=>{
+   if(!controller.signal.aborted)setAlternative({key,date:next});
+  }).catch(()=>{
+   if(!controller.signal.aborted)setAlternative({key,date:''});
+  });
+  return()=>controller.abort();
+ },[date,key,minimum,shouldFindNext]);
+
+ useEffect(()=>{onState?.({date,state})},[date,state,onState]);
+ if(!date)return null;
+ const message=`Hola Plop, quiero consultar si puedo recibir mi pedido el ${displayDate(date)}. Tiene menos de ${advance} días de anticipación.`;
+ const next=alternative?.key===key?alternative.date:'';
+
+ return <div className="full date-capacity" aria-live="polite" aria-busy={state==='loading'}>
+  <p className="date-capacity-selected">Fecha elegida: <strong>{displayDate(date)}</strong></p>
+  {state==='available'&&<div className="date-capacity-available">
+   <strong><CircleCheck size={22} aria-hidden="true"/>Fecha disponible para solicitar</strong>
+   <p>La reserva queda confirmada cuando Plop verifica la seña.</p>
+  </div>}
+  {state==='loading'&&<p>Consultando disponibilidad…</p>}
+  {state==='too-soon'&&<p className="notice">Para enviar tu solicitud por la web, elegí el {displayDate(minimum)} o una fecha posterior.</p>}
+  {state==='blocked'&&<p className="notice">Plop no toma pedidos para esta fecha. Elegí otra. Tu pedido sigue guardado.</p>}
+  {state==='full'&&<p className="notice">Cupo completo. Si enviás la solicitud para esta fecha, queda pendiente de autorización. Esperá la confirmación de Plop antes de pagar.</p>}
+  {state==='urgent'&&<div className="notice date-capacity-urgent"><p>Para enviar una solicitud por la web necesitás {advance} días de anticipación. Si tu pedido es urgente, consultanos por estas vías.</p><div>
+   <a className="btn aqua" href={'https://wa.me/5493856870303?text='+encodeURIComponent(message)} target="_blank" rel="noopener noreferrer"><MessageCircle size={18}/>Consultar por WhatsApp ↗</a>
+   <a className="btn outline" href={'https://t.me/plopcito_recibidas_bot?start=urgente_'+date.replaceAll('-','')} target="_blank" rel="noopener noreferrer"><Send size={18}/>Consultar por Telegram ↗</a>
+  </div></div>}
+  {state==='error'&&<><p className="error">No pudimos comprobar el cupo. Tu fecha y tu pedido siguen guardados.</p><button type="button" className="text-button" onClick={()=>setRetry(n=>n+1)}>Volver a consultar disponibilidad</button></>}
+  {shouldFindNext&&next&&<button type="button" className="btn aqua" onClick={()=>onSelectDate?.(next)}>Elegir el {displayDate(next)}</button>}
+ </div>;
 }

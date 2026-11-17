@@ -1,3 +1,6 @@
+import socialCover from '../public/social/plop-vista-previa-20261117.jpg';
+const SOCIAL_PATH = '/social/plop-vista-previa-20261117.jpg';
+const SOCIAL_ALT = 'Plop Recibidas: diseños personalizados para tu recibida. Te recibís. Lo celebrás. Lo hacés con Plop!';
 // Edge migration: keep the current Pages release while correcting its public SEO URLs.
 export const OLD_ORIGIN = 'https://plop-recibidas.pages.dev';
 export const SITE_ORIGIN = 'https://ploprecibidas.com.ar';
@@ -23,6 +26,9 @@ export function replaceOriginStream(body) {
 
 export async function handleRequest(request, fetchOrigin = fetch) {
   const url = new URL(request.url);
+  if (['ploprecibidas.com.ar', 'www.ploprecibidas.com.ar'].includes(url.hostname) && url.pathname === SOCIAL_PATH && ['GET', 'HEAD'].includes(request.method)) {
+    return new Response(request.method === 'HEAD' ? null : socialCover, {headers: {'content-type':'image/jpeg','cache-control':'public, max-age=31536000, immutable','x-content-type-options':'nosniff'}});
+  }
   if (!['ploprecibidas.com.ar', 'www.ploprecibidas.com.ar'].includes(url.hostname)
       || !['GET', 'HEAD'].includes(request.method) || !PUBLIC_PATHS.has(url.pathname)) {
     return fetchOrigin(request);
@@ -49,6 +55,14 @@ export async function handleRequest(request, fetchOrigin = fetch) {
         element.setAttribute('src', src + '?plop-domain=20261101');
       }
     },
+  }).on('meta[property="og:image"], meta[name="twitter:image"]', {
+    element(element) { element.setAttribute('content', SITE_ORIGIN + SOCIAL_PATH); }
+  }).on('meta[property="og:image:alt"], meta[name="twitter:image:alt"]', {
+    element(element) { element.setAttribute('content', SOCIAL_ALT); }
+  }).on('head', {
+    element(element) {
+      element.append('<meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:type" content="image/jpeg"><meta property="og:image:secure_url" content="' + SITE_ORIGIN + SOCIAL_PATH + '">', {html:true});
+    }
   }).transform(rewritten);
 }
 

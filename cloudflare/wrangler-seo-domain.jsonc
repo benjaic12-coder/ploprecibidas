@@ -1,0 +1,14 @@
+{
+  "name": "plop-seo-domain",
+  "main": "seo-domain.mjs",
+  "compatibility_date": "2026-10-20",
+  "rules": [
+    {
+      "type": "Data",
+      "globs": [
+        "**/*.jpg"
+      ],
+      "fallthrough": true
+    }
+  ]
+}

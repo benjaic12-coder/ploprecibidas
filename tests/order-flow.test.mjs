@@ -2,7 +2,7 @@ import {test} from 'node:test';import assert from 'node:assert/strict';
 import {createHandler} from '../supabase/functions/plop-v2/backend.ts';
 import {PRODUCTS,emptyCustom,earliestDate} from '../lib/catalog.ts';
 const uuid='34b0c872-ee68-4be6-83ff-ba9fccb3ce99',code='PLOP-AABBCCDDEEFF',key='42e77eaa-9b34-43c1-bbd6-51d0f792341f';
-function fixture({blocked=false,staff=false}={}){let saved=null,creates=0;
+function fixture({blocked=false,staff=false,similar=false}={}){let saved=null,creates=0;
  const handler=createHandler({SUPABASE_URL:'https://backend.test',SUPABASE_ANON_KEY:'public',SUPABASE_SERVICE_ROLE_KEY:'server'},async(raw,opts={})=>{
   const url=new URL(raw),path=url.pathname;
   if(path.endsWith('/rpc/plop_staff_email'))return Response.json(staff);
@@ -14,8 +14,8 @@ function fixture({blocked=false,staff=false}={}){let saved=null,creates=0;
   if(path.endsWith('/plop_catalog'))return Response.json(PRODUCTS.map(p=>({id:p.id,data:p,price:p.price,available:true})));
   if(path.endsWith('/plop_notifications'))return Response.json([]);
   if(path.endsWith('/plop_settings'))return Response.json([{value:{leadDays:7}}]);
+   if(path.endsWith('/rpc/plop_create_order_checked')){const {p_payload:body,p_allow_duplicate}=JSON.parse(opts.body);if(similar&&saved&&!p_allow_duplicate)return Response.json({duplicate:true,existing:{id:saved.code,token:saved.request_key}});creates++;saved={...body,id:uuid,code,deposit:Math.ceil(body.total/2),verified_paid:0,status:'nuevo',internal_notes:'Nota privada de ejemplo',created_at:new Date().toISOString()};return Response.json({order:saved,created:true});}
   if(path.endsWith('/plop_orders')){
-   if(opts.method==='POST'){creates++;const body=JSON.parse(opts.body);saved={...body,id:uuid,code,deposit:Math.ceil(body.total/2),verified_paid:0,status:'nuevo',internal_notes:'Nota privada de ejemplo',created_at:new Date().toISOString()};return Response.json([saved]);}
    return Response.json(saved&&(!url.searchParams.has('request_key')||url.searchParams.get('request_key')==='eq.'+saved.request_key)?[saved]:[]);
   }
   if(path.endsWith('/pagos')||path.endsWith('/historial_estados'))return Response.json([]);
@@ -86,3 +86,16 @@ test('La referencia de selección requiere equipo autorizado y conserva atribuci
  assert.deepEqual(await (await recover('42e77eaa-9b34-43c1-bbd6-51d0f792341e')).json(),{found:false});assert.equal((await recover('wrong')).status,400);
  const denied=await f.handler(new Request('https://backend.test/plop-v2/orders/recover',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({requestKey:key})}));assert.equal(denied.status,401);
  });
+
+test('Un segundo envío con otra clave requiere confirmación explícita',async()=>{
+ const f=fixture({similar:true});
+ assert.equal((await f.send()).status,201);
+ f.payload.requestKey=crypto.randomUUID();
+ const warning=await f.send();
+ assert.equal(warning.status,409);
+ assert.equal((await warning.json()).code,'similar_order');
+ assert.equal(f.count(),1);
+ f.payload.allowDuplicate=true;
+ assert.equal((await f.send()).status,201);
+ assert.equal(f.count(),2);
+});

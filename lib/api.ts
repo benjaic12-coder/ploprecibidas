@@ -4,7 +4,7 @@ type Session={access_token:string;refresh_token:string;expires_at?:number;expire
 const key=(admin:boolean)=>admin?'plop-admin-session':'plop-customer-session';
 let adminRevision=0;
 const pending=new Map<boolean,Promise<Session>>();
-export class ApiError extends Error{readonly status:number;constructor(message:string,status:number){super(message);this.name='ApiError';this.status=status;}}
+export class ApiError extends Error{readonly status:number;readonly data?:{code?:string;existing?:{id:string;token:string}};constructor(message:string,status:number,data?:ApiError['data']){super(message);this.name='ApiError';this.status=status;this.data=data;}}
 function readSession(area:'local'|'session',admin:boolean):Session|null{
  try{const value=JSON.parse(readBrowserValue(area,key(admin))||'null');return value&&typeof value.access_token==='string'&&value.access_token&&typeof value.refresh_token==='string'&&value.refresh_token?value:null;}catch{return null;}
 }
@@ -94,7 +94,7 @@ export async function uploadMultipart(path:'/orders'|'/receipt',form:FormData,on
   const interrupted=()=>{cleanup();reject(new ApiError('No pudimos confirmar la carga. Conservamos este intento: reintentá sin cambiar los datos para comprobar si llegó.',0))};
   xhr.onerror=interrupted;xhr.ontimeout=interrupted;xhr.onabort=interrupted;
   xhr.onload=()=>{cleanup();let data:any;try{data=JSON.parse(xhr.responseText)}catch{reject(new ApiError('No pudimos confirmar la respuesta. Reintentá la misma solicitud.',502));return}
-   if(xhr.status>=200&&xhr.status<300){onProgress(100);resolve(data)}else{if(xhr.status===401)clearSession(false);reject(new ApiError(data?.error||'No pudimos guardar la solicitud.',xhr.status))}
+   if(xhr.status>=200&&xhr.status<300){onProgress(100);resolve(data)}else{if(xhr.status===401)clearSession(false);reject(new ApiError(data?.error||'No pudimos guardar la solicitud.',xhr.status,data))}
   };
   signal?.addEventListener('abort',abort,{once:true});xhr.send(form);
  });

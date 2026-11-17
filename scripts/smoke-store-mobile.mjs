@@ -54,7 +54,7 @@ try{
  const round=page.locator('.product-card').filter({has:page.getByRole('heading',{name:'Marco redondo',exact:true})});
  await round.getByRole('button',{name:/Elegir tamaño|Agregar al pedido/}).click();
  const productDialog=page.getByRole('dialog');
- if(await productDialog.isVisible())await productDialog.getByRole('button',{name:'Agregar al pedido'}).click();
+ if(await productDialog.isVisible())await productDialog.getByRole('button',{name:'Agregar y definir después'}).click();
  await page.locator('.floating-cart').click();
  await visible(page.getByRole('dialog').getByText(/Marco redondo/).first());
  await page.getByRole('button',{name:'Vaciar pedido'}).click();
@@ -65,7 +65,7 @@ try{
  await search.fill('combo 2');
  const combo=page.locator('.product-card').filter({has:page.getByRole('heading',{name:'Combo 2',exact:true})});
  await combo.getByRole('button',{name:'Elegir tipo de marco'}).click();
- await page.getByRole('button',{name:'Agregar al pedido'}).click();
+ await page.getByRole('button',{name:'Agregar y definir después'}).click();
  await page.locator('.floating-cart').click();
  await page.getByRole('textbox',{name:'Cupón (opcional)'}).fill('PLOPTEST');
  await visible(page.getByText(/Cupón PLOPTEST.*Validado/));

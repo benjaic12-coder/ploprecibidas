@@ -5,7 +5,7 @@ type ReceiptItem={productId?:string;name:string;quantity:number;price:number;inc
 export type ReceiptOrder={id:string;uuid:string;is_test:boolean;status:string;total:number;customer:{name:string;phone:string;locality:string};items:ReceiptItem[];payments:ReceiptPayment[]};
 const amount=(n:number)=>{const v=Number(n);if(!Number.isSafeInteger(v)||v<0)throw Error('Hay un importe inválido en el pedido.');return v};
 const frameDescription=/\bMarco (?:rectangular|redondo|tipo nube|con forma)\b/i;
-function receiptIncludes(item:ReceiptItem){
+export function receiptIncludes(item:ReceiptItem){
  const frame=item.custom?.frame;
  if(!frame||!['Rectangular','Redondo','Tipo nube','Con forma'].includes(frame))return item.includes;
  const product=PRODUCTS.find(p=>item.productId?p.id===item.productId:p.name===item.name);

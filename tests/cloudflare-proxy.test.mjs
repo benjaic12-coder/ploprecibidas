@@ -21,6 +21,27 @@ test('La configuración ausente y los fallos temporales no exponen detalles inte
  const failed=await proxy(req,env,async()=>{throw Error('private detail');});
  assert.equal(failed.status,503);assert.equal((await failed.text()).includes('private detail'),false);
 });
+test('El panel publicado recibe la variante del pedido en la descripción que imprime el recibo',async()=>{
+ const id='00000000-0000-4000-8000-000000000001';
+ const item={productId:'combo-4',name:'Combo 4',quantity:1,price:79000,includes:'Marco rectangular + banda + 8 props + lona grande',custom:{frame:'Con forma'}};
+ const order={uuid:id,total:79000,items:[item],payments:[{monto_recibido:39500}]};
+ const other={...order,uuid:'00000000-0000-4000-8000-000000000002'};
+ const url='https://shop.test/api/admin?pedido='+id;
+ const req=new Request(url,{headers:{authorization:'Bearer staff-session'}});
+ const result=await proxy(req,env,async(_url,init)=>{
+  assert.equal(init.headers.get('authorization'),'Bearer staff-session');
+  return Response.json({requestedOrder:order,orders:[order,other]});
+ });
+ assert.equal(result.status,200);
+ assert.equal(result.headers.get('cache-control'),'no-store');
+ const data=await result.json();
+ const expected={...order,items:[{...item,includes:'Marco con forma + banda + 8 props + lona grande'}]};
+ assert.deepEqual(data.requestedOrder,expected);
+ assert.deepEqual(data.orders,[expected,other]);
+ const unauthorized=await proxy(new Request(url),env,async()=>Response.json({error:'No autorizado'},{status:401}));
+ assert.equal(unauthorized.status,401);
+ assert.deepEqual(await unauthorized.json(),{error:'No autorizado'});
+});
 
 test('Cabeceras de seguridad también se aplican a errores de configuración y conexión',async()=>{
  for(const env of [{},{SUPABASE_URL:'https://backend.test',SUPABASE_PUBLISHABLE_KEY:'public'}]){

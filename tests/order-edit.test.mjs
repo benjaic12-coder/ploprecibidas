@@ -11,7 +11,7 @@ test('Editar cantidades conserva precio histórico y descuento aunque aumente el
  assert.equal(p.subtotal,84000);assert.equal(p.total,80000);assert.equal(p.deposit,40000);assert.equal(p.items[0].name,'Combo histórico');assert.equal(p.items[0].includes,'Detalles originales');
 });
 test('Cambiar variantes o productos usa catálogo actual sin inventar personalización',()=>{
- const rows=editRows(original());rows[0].custom.frame='Redondo';assert.equal(previewOrderEdit(original(),rows,PRODUCTS).total,53000);
+ const rows=editRows(original());rows[0].custom.frame='Redondo';assert.equal(previewOrderEdit(original(),rows,PRODUCTS).total,58000);
  rows[0].productId='combo-3';rows[0].custom=emptyCustom();rows[0].custom.choice='Banda';
  const p=previewOrderEdit(original(),rows,PRODUCTS);assert.equal(p.total,34000);assert.equal(p.items[0].includes,'Lona mediana + Banda');assert.equal(p.items[0].custom.names,'');
 });

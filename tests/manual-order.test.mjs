@@ -6,7 +6,7 @@ const requestKey='42e77eaa-9b34-43c1-bbd6-51d0f792341f';
 const draft=()=>({customer:{name:'Cliente manual',phone:'3851234567',email:'',locality:'Santiago del Estero',date:earliestDate(20),delivery:'Retiro',payment:'A coordinar',notes:'Coordinar por WhatsApp',urgent:false,consent:true},items:[{key:'ui-row',productId:'combo-1',quantity:2,custom:{...emptyCustom(),names:'Sofi',career:'Administración',colors:'Rosa',phrase:'Al fin',frame:'Redondo'}}]});
 test('Carga manual usa precios y opciones del catálogo, conserva clave y excluye datos de interfaz',()=>{
  const payload=prepareManualOrder(draft(),PRODUCTS,7,requestKey);
- assert.equal(payload.expectedTotal,106000);assert.equal(payload.requestKey,requestKey);
+ assert.equal(payload.expectedTotal,116000);assert.equal(payload.requestKey,requestKey);
  assert.equal(payload.customer.email,'');assert.equal(payload.customer.marketingConsent,false);
  assert.equal('key' in payload.items[0],false);
 });

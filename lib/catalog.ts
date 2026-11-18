@@ -33,7 +33,8 @@ export type CartItem={key:string;productId:string;quantity:number;custom:Customi
 export const emptyCustom=():Customization=>({names:'',career:'',colors:'',phrase:'',frame:'Rectangular',choice:'8 props',size:'90 cm'});
 export function unitPrice(p:Product,c:Customization){
  const basePrice=p.sizeOptions?.[c.size]?.price??p.price;
- return basePrice+(p.frameOption&&c.frame!=='Rectangular'?3000:0);
+ if (!p.frameOption || c.frame==='Rectangular') return basePrice;
+ return basePrice+(c.frame==='Redondo' && c.size==='90 cm' ? 8000 : 3000);
 }
 const catalogRank=new Map(PRODUCTS.map((p,index)=>[p.id,index]));
 export function recommendedOrder(a:Product,b:Product){

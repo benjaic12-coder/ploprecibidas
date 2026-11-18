@@ -25,7 +25,10 @@ import Testimonials from './testimonials';
 import ClientAlbum from './client-album';
 import ProductPhotoGallery,{catalogPhoto,catalogPhotoCount} from './product-photo-gallery';
 import ConsentBanner from './consent';
+import './new-products.css';
 import {getAttribution,track,trackView,trackSelectionStart,trackCheckout} from '@/lib/analytics';
+
+const NEW_PRODUCT_IDS=['vincha-flores','vincha-flores-plumas','tatoo-station'];
 
 export function Logo(){return <a href="/" className="logo" aria-label="Plop Recibidas, inicio"><img className="logo-img" src="/brand/logo-original.webp" alt="Plop Recibidas" width="108" height="70"/></a>}
 export function Modal({children,onClose,wide=false,label}:{children:ReactNode;onClose:()=>void;wide?:boolean;label:string}){const ref=useRef<HTMLDialogElement>(null);useEffect(()=>{const opener=document.activeElement instanceof HTMLElement?document.activeElement:null;const dialog=ref.current;dialog?.showModal();const old=document.body.style.overflow;document.body.style.overflow='hidden';return()=>{dialog?.close();document.body.style.overflow=old;if(opener?.isConnected)opener.focus({preventScroll:true});}},[]);return <dialog ref={ref} className={`modal ${wide?'wide':''}`} aria-label={label} onCancel={e=>{e.preventDefault();onClose();}} onClick={e=>{if(e.target===ref.current)onClose();}}><button className="icon close" onClick={onClose} aria-label="Cerrar"><X size={20}/></button>{children}</dialog>}
@@ -85,6 +88,7 @@ export default function Store({campaign}:{campaign?:{title:string;description:st
  const norm=(s:string)=>s.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
  const query=search.trim();
  const activeCategory=query?searchCategory:category;
+ const newProducts=NEW_PRODUCT_IDS.flatMap(id=>products.filter(p=>p.id===id&&p.available));
  const filtered=products.filter(p=>!p.variantOf&&(!campaign?.products.length||campaign.products.includes(p.id))&&(!activeCategory||p.category===activeCategory)&&norm(p.name+' '+p.description+' '+p.includes).includes(norm(query))).sort((a,b)=>sort==='low'?a.price-b.price:sort==='high'?b.price-a.price:recommendedOrder(a,b));
  function selectCategory(value:string){setCategory(value);setSearchCategory(value||null);}
  function updateSearch(value:string){setSearch(value);if(!value.trim())setSearchCategory(null);}
@@ -153,6 +157,22 @@ export default function Store({campaign}:{campaign?:{title:string;description:st
  <header className="header"><div className="header-inner"><Logo/><nav aria-label="Navegación principal"><a href="#inicio">Inicio</a><button onClick={()=>browse()}>Catálogo</button><button onClick={()=>browse('Combos')}>Combos <span className="tiny-tag">★</span></button><button aria-haspopup="dialog" onClick={()=>{setMobileMenu(false);setFaqOpen(true)}}>Preguntas frecuentes</button><a href="#quienes-somos">Quiénes somos</a><a href="#disponibilidad">Consultar disponibilidad</a><a href="#team-plop">Team Plop</a><TrackOrderButton/></nav><div className="header-actions"><a className="contact-link" href={whatsapp} target="_blank" rel="noopener noreferrer"><MessageCircle size={18}/> Hablemos</a><button className="bag" onClick={()=>setCartOpen(true)} aria-label={`Abrir pedido, ${count} productos`}><ShoppingBag size={19}/><span>{count}</span></button><button className="icon mobile-toggle" aria-label="Abrir menú" aria-expanded={mobileMenu} aria-controls="plop-mobile-nav" onClick={()=>setMobileMenu(!mobileMenu)} onKeyDown={e=>{if(e.key==='Escape')setMobileMenu(false)}}><Menu/></button></div></div>{mobileMenu&&<div className="mobile-nav" id="plop-mobile-nav" onKeyDown={e=>{if(e.key==='Escape'){setMobileMenu(false);document.querySelector<HTMLButtonElement>('.mobile-toggle')?.focus()}}}><a href="#inicio" onClick={()=>setMobileMenu(false)}>Inicio</a><button onClick={()=>browse()}>Catálogo</button><button onClick={()=>browse('Combos')}>Combos</button><button aria-haspopup="dialog" onClick={()=>{setMobileMenu(false);setFaqOpen(true)}}>Preguntas frecuentes</button><a href="#quienes-somos" onClick={()=>setMobileMenu(false)}>Quiénes somos</a><a href="#disponibilidad" onClick={()=>setMobileMenu(false)}>Consultar disponibilidad</a><a href="#team-plop" onClick={()=>setMobileMenu(false)}>Team Plop</a><TrackOrderButton/></div>}</header>
  <main id="inicio" className="plop-home">
  <section className="hero container"><div className="hero-text"><span className="eyebrow"><span className="dot"/> HECHO PARA TU GRAN DÍA</span><h1>{campaign?campaign.title:<><span className="hero-brand-line hero-brand-mint">Te recibís.</span><span className="hero-brand-line hero-brand-coral">Lo celebrás.</span><span className="hero-brand-line hero-brand-final">Lo hacés con <span className="sr-only">Plop</span><svg className="hero-logo-word" viewBox="190 35 1420 660" aria-hidden="true" focusable="false"><image href="/brand/logo-original.webp" width="1775" height="886"/></svg><span className="hero-brand-period">.</span></span></>}</h1><p>{campaign?campaign.description:<>Después de tanto esfuerzo, llega tu momento.<br className="desktop-only"/> Armamos los detalles que cuentan <strong>tu historia.</strong></>}</p><div className="hero-buttons"><button className="btn pink" onClick={()=>browse()}>Armá tu recibida <ArrowUpRight size={20}/></button><button className="text-button" onClick={()=>browse('Combos')}>Quiero ver los combos <ArrowRight size={18}/></button></div></div><div className="hero-art"><div className="aqua-shape"/><span className="hero-spark s1">✦</span><span className="hero-spark s2" aria-hidden="true"><svg viewBox="0 0 64 64" width="1em" height="1em" focusable="false" style={{display:'block'}}><path d="M32 6v52M6 32h52M14 14l36 36M14 50l36-36" fill="none" stroke="currentColor" strokeWidth="9" strokeLinecap="round"/></svg></span><div className="photo-frame hero-photo"><img src="/products/hero-color-studio.webp" width="1152" height="864" fetchPriority="high" alt="Recibida con un diseño Plop rosa personalizado"/><span className="photo-caption">Tu esfuerzo merece esta fiesta ♡</span></div><div className="small-polaroid"><img src="/products/props.webp" width="334" height="177" decoding="async" alt="Pack de props personalizados para las fotos"/><span>¡Al fin me recibí!</span></div><div className="round-stamp">TU MOMENTO<br/><strong>tu estilo.</strong><Sparkles size={21}/></div><span className="hand-note">Que las fotos<br/>lo digan todo <span>↗</span></span></div></section>
+ {!campaign&&newProducts.length>0&&<section className="new-products container" aria-labelledby="new-products-heading">
+  <div className="new-products-panel">
+   <div className="new-products-heading">
+    <h2 id="new-products-heading">Nuevos en Plop</h2>
+    <button type="button" className="text-button" onClick={()=>{setSearch('');browse('Accesorios');}}>Ver accesorios <ArrowRight size={18}/></button>
+   </div>
+   <ul className="new-products-grid">
+    {newProducts.map(product=><li key={product.id}>
+     <button type="button" className="new-product" onClick={()=>openProduct(product)}>
+      <img src={product.image} alt="" width="360" height="360" loading="lazy" decoding="async"/>
+      <span className="new-product-info"><strong>{product.name}</strong><span>{money(product.price)}</span></span>
+     </button>
+    </li>)}
+   </ul>
+  </div>
+ </section>}
  <section className="order-guide container" aria-labelledby="order-guide-title">
   <div className="order-guide-heading"><span className="eyebrow">ASÍ DE SIMPLE</span><h2 id="order-guide-title">Cómo hacer tu pedido</h2><p>Empezá con lo que ya sabés. El diseño lo definimos después con vos.</p></div>
   <ol className="order-guide-steps">

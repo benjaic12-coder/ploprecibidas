@@ -4,6 +4,10 @@
 /* eslint-disable @next/next/no-img-element */
 import {useState,type ReactNode} from 'react';
 const realPhotos:Record<string,{file:string;label:string}[]>={
+ 'tatoo-station':[
+  {file:'/products/tatoo-station.webp',label:'Vista frontal de la estación'},
+  {file:'/products/tatoo-station-detalle.webp',label:'Detalle de las instrucciones y los tatuajes'},
+ ],
  'vincha-flores':[
   {file:'/products/vincha-flores-fucsia.webp',label:'Fucsia'},
   {file:'/products/vincha-flores-amarillo.webp',label:'Amarillo'},
@@ -40,6 +44,6 @@ export default function ProductPhotoGallery({productId,children,initialIndex=0}:
   <button type="button" className={`product-photo-stage ${zoomed?'is-zoomed':''}`} onClick={()=>setZoomed(v=>!v)} aria-label={zoomed?'Reducir foto':'Ampliar foto'} aria-pressed={zoomed}><img className="product-real-photo" src={photoPath(photo.file)} alt={`Foto de diseño personalizado: ${photo.label}`} width="1024" height="1024"/></button><small>{zoomed?'Tocá para reducir':'Tocá la foto para ampliarla'}</small>
   <p aria-live="polite">{index+1} de {photos.length} · {photo.label}</p>
   <div className="product-photo-thumbs">{photos.map((item,i)=><button key={item.file} type="button" aria-label={`Ver ${item.label}`} aria-pressed={index===i} onClick={()=>{setIndex(i);setZoomed(false)}}><img src={photoPath(item.file)} alt="" loading="lazy" width="64" height="70"/></button>)}</div>
-  {productId!=='vincha-flores'&&<small>Cada foto muestra un diseño de referencia. Personalizamos el tuyo con tu nombre, carrera y colores.</small>}
+  {productId!=='vincha-flores'&&productId!=='tatoo-station'&&<small>Cada foto muestra un diseño de referencia. Personalizamos el tuyo con tu nombre, carrera y colores.</small>}
  </div>;
 }

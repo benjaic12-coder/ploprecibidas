@@ -6,7 +6,16 @@ const now=new Date('2026-10-13T00:00:00Z');
 const payload=()=>({requestKey:'877c0507-03a3-409d-bde0-9b1c974a809f',customer:{name:'Prueba de validación',phone:'+5493851234567',email:'',locality:'Santiago del Estero',date:'2026-11-01',delivery:'Retiro',payment:'Transferencia',notes:'',urgent:false,consent:true},items:[{productId:'combo-1',quantity:1,custom:{...emptyCustom(),names:'Sofi',career:'Administración',colors:'Rosa',phrase:'Al fin'}}]});
 test('Los 21 productos del catálogo tienen identificadores únicos',()=>assert.equal(new Set(PRODUCTS.map(p=>p.id)).size,21));
 test('El servidor calcula total y seña; ignora importes del cliente',()=>{const p=payload();p.total=1;p.items[0].price=1;const r=calculateOrder(p,PRODUCTS,7,now);assert.equal(r.total,50000);assert.equal(r.deposit,25000)});
-test('El cambio de marco suma $3000 por combo',()=>{const p=payload();p.items[0].quantity=2;p.items[0].custom.frame='Redondo';assert.equal(calculateOrder(p,PRODUCTS,7,now).total,106000)});
+test('Los combos con marco cobran el diámetro elegido por unidad',()=>{
+ for(const [productId,base] of [['combo-1',50000],['combo-2',55000],['combo-4',76000]]){
+  for(const [size,extra] of [['80 cm',3000],['90 cm',8000]]){
+   const p=payload();const item=p.items[0];
+   item.productId=productId;item.quantity=2;item.custom.frame='Redondo';item.custom.size=size;
+   const result=calculateOrder(p,PRODUCTS,7,now);
+   assert.equal(result.total,2*(base+extra));assert.equal(result.deposit,base+extra);
+  }
+ }
+});
 test('Combo 3 permite elegir banda sin sobreprecio',()=>{const p=payload();p.items[0].productId='combo-3';p.items[0].custom.choice='Banda';const r=calculateOrder(p,PRODUCTS,7,now);assert.equal(r.total,34000);assert.match(r.items[0].includes,/Banda/)});
 test('Un producto pausado no se puede comprar',()=>{assert.throws(()=>calculateOrder(payload(),PRODUCTS.map(p=>({...p,available:false})),7,now),/disponible/)});
 test('Rechaza productos inexistentes y cantidades negativas',()=>{const p=payload();p.items[0].productId='inventado';assert.throws(()=>calculateOrder(p,PRODUCTS,7,now));p.items[0].quantity=-1;assert.throws(()=>calculateOrder(p,PRODUCTS,7,now))});
